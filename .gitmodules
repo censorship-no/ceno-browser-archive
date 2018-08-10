@@ -1,0 +1,6 @@
+[submodule "ouinet"]
+	path = ouinet
+	url = https://github.com/equalitie/ouinet
+[submodule "gecko-dev"]
+	path = gecko-dev
+	url = https://github.com/mozilla/gecko-dev
