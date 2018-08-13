@@ -67,7 +67,7 @@ Vagrant.configure("2") do |config|
     vm.vm.box = "debian/testing64"
 
     vm.vm.provider "libvirt" do |v|
-      v.memory = 4096
+      v.memory = 8192
       v.cpus = 4
 
       v.storage :file, :size => '50G', :device => 'vdb'
