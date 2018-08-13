@@ -26,7 +26,7 @@ function build_ouinet {
 
 function build_oui_fennec {
     mkdir -p $DIR/build.fennec
-    yes | $ROOT/ouinet/scripts/build-firefox-for-android.sh $ROOT/gecko-dev
+    $ROOT/ouinet/scripts/build-firefox-for-android.sh $ROOT/gecko-dev
     cd -
 }
 
