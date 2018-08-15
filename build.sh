@@ -27,5 +27,5 @@ function build_oui_fennec {
     cd -
 }
 
-#build_ouinet
+build_ouinet
 build_oui_fennec
