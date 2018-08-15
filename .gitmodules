@@ -3,4 +3,4 @@
 	url = git@github.com:equalitie/ouinet
 [submodule "gecko-dev"]
 	path = gecko-dev
-	url = git@github.com:mozilla/gecko-dev.git
+	url = git@github.com:equalitie/gecko-dev.git
