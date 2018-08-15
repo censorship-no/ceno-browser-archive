@@ -4,18 +4,14 @@ set -e
 
 DIR=`pwd`
 SELF=$0
-ROOT=`dirname $0`
+ROOT=$(cd $(dirname $0); pwd)
+MOZ_GIT=https://github.com/mozilla/gecko-dev
 
-function usage {
-    echo "Usage: $SELF <PATH-TO-OUIFENNEC-ROOT>"
-}
-
-if [ ! -d "$ROOT" ]; then
-    usage
-    [ "$ROOT" == "help" ] && return 0 || return 1
-fi
-
-(cd $ROOT; git submodule update --init --recursive)
+while getopts m:g: option; do
+    case "$option" in
+        g) MOZ_GIT=${OPTARG};;
+    esac
+done
 
 function build_ouinet {
     mkdir -p $DIR/build.ouinet
@@ -26,7 +22,8 @@ function build_ouinet {
 
 function build_oui_fennec {
     mkdir -p $DIR/build.fennec
-    $ROOT/ouinet/scripts/build-firefox-for-android.sh $ROOT/gecko-dev
+    cd $DIR/build.fennec
+    $ROOT/ouinet/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT
     cd -
 }
 
