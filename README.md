@@ -6,7 +6,8 @@ A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 
 ## Technical
 
-* Stop Ouinet in onDestroy
+* Set up ouinet with injector's IPFS ID, IP and I2P addresses and
+  injector's creadentials.
 
 ## Non technical
 
