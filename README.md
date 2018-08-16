@@ -8,6 +8,7 @@ A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 
 * Set up ouinet with injector's IPFS ID, IP and I2P addresses and
   injector's creadentials.
+* Preinstall root certificate given by ouinet/client
 
 ## Non technical
 
