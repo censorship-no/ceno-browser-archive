@@ -2,6 +2,11 @@
 
 A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 
+# Set up injector's parameters
+
+These are currently hardcoded in [ouinet.xml](https://github.com/equalitie/gecko-dev/blob/ouinet/mobile/android/app/src/main/res/values/ouinet.xml)
+and can't be changed during the runtime (See TODO).
+
 # Build
 
     $ vagrant up
@@ -17,7 +22,9 @@ A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 
 * Set up ouinet with injector's IPFS ID, IP and I2P addresses and
   injector's creadentials.
-* Preinstall root certificate given by ouinet/client
+* Try to get rid of the prompt asking to install Ouinet/Client's CA Root
+  certificate
+* Allow setting up Injector's values using QR codes
 
 ## Non technical
 
