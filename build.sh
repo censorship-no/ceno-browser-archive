@@ -23,7 +23,7 @@ function build_ouinet {
 function build_oui_fennec {
     mkdir -p $DIR/build.fennec
     cd $DIR/build.fennec
-    $ROOT/ouinet/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT
+    $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT
     cd -
 }
 
