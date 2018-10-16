@@ -7,6 +7,9 @@ A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 These are currently hardcoded in [ouinet.xml](https://github.com/equalitie/gecko-dev/blob/ouinet/mobile/android/app/src/main/res/values/ouinet.xml)
 and can't be changed during the runtime (See TODO).
 
+To change the icon name, change the `MOZ_APP_DISPLAYNAME` variable in
+`gecko-dev/mobile/android/branding/unofficial/configure.sh`
+
 # Build
 
     $ vagrant up
