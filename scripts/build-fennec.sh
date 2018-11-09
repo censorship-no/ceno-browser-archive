@@ -102,6 +102,7 @@ if [ ! -f mozconfig ]; then
 fi
 
 # Note: If during building clang crashes, try increasing vagrant's RAM
+export MOZ_INSTALL_TRACKING=''
 ./mach build
 ./mach package
 
