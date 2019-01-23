@@ -19,6 +19,16 @@ To change the icon name, change the `MOZ_APP_DISPLAYNAME` variable in
     vagrant $ cd ouifennec
     vagrant $ ./build.sh
 
+Or, with Docker:
+
+```sh
+sudo docker build - < Dockerfile
+mkdir root.build # build cache will be stored in $PWD/ouinet.build, $PWD/ouifennec.build, and $PWD/root.build
+sudo docker run --rm -it --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build",target=/root $CONTAINER_ID_FROM_↑_BUILD
+cd ouifennec
+bash build.sh
+```
+
 # TODO
 
 ## Technical
