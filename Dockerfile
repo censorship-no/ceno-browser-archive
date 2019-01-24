@@ -53,5 +53,9 @@ RUN apt-get -qq update && \
       unzip \
       python \
       python3
+# A workaround for ouinet/scripts/build-android.sh & mach bootstrap
+# doing apt-get install default-jdk and thus breaking the build
+# (Fennec only builds w/JDK8)
+RUN update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 # mach
 ENV SHELL /bin/bash
