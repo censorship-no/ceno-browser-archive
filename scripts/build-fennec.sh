@@ -83,7 +83,7 @@ ac_add_options --target=arm-linux-androideabi
 ac_add_options --with-android-sdk="$HOME/.mozbuild/android-sdk-linux"
 ac_add_options --with-android-ndk="$HOME/.mozbuild/android-ndk-$NDK_VERSION"
 
-ac_add_options --with-android-distribution-directory=../distribution
+ac_add_options --with-android-distribution-directory=$MOZ_DIR/../distribution
 EOL
 }
 
