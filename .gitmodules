@@ -4,3 +4,6 @@
 [submodule "gecko-dev"]
 	path = gecko-dev
 	url = git@github.com:equalitie/gecko-dev.git
+[submodule "distribution"]
+	path = distribution
+	url = git@github.com:equalitie/ouifennec-distribution.git

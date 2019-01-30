@@ -82,6 +82,8 @@ ac_add_options --target=arm-linux-androideabi
 # With the following Android SDK and NDK:
 ac_add_options --with-android-sdk="$HOME/.mozbuild/android-sdk-linux"
 ac_add_options --with-android-ndk="$HOME/.mozbuild/android-ndk-$NDK_VERSION"
+
+ac_add_options --with-android-distribution-directory=../distribution
 EOL
 }
 
