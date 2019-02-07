@@ -15,8 +15,8 @@ To change the icon name, change the `MOZ_APP_DISPLAYNAME` variable in
     $ vagrant up
     $ vagrant ssh
     vagrant $ git clone /vagrant ouifennec
-    vagrant $ git submodule update --init --recursive
     vagrant $ cd ouifennec
+    vagrant $ git submodule update --init --recursive
     vagrant $ ./build.sh
 
 Or, with Docker:
