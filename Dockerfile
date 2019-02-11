@@ -51,6 +51,7 @@ RUN apt-get -qq update && \
       bsdtar \
       zip \
       unzip \
+      zipalign \
       python \
       python3
 # A workaround for ouinet/scripts/build-android.sh & mach bootstrap
