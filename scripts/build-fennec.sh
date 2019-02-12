@@ -17,23 +17,6 @@ while getopts m:g: option; do
     esac
 done
 
-function install_dependencies {
-    local deps="curl mercurial libpulse-dev libpango1.0-dev \
-               libgtk-3-dev libgtk2.0-dev libgconf2-dev libdbus-glib-1-dev \
-               yasm libnotify-dev libnotify-bin clang-4.0"
-
-    local need_install=0
-
-    for d in $deps; do
-        dpkg -s $d >/dev/null || (need_install=1 && break)
-    done
-
-    if [ "$need_install" == "1" ]; then
-        sudo apt-get update
-        sudo apt-get -y install $deps
-    fi
-}
-
 function maybe_download_moz_sources {
     # Useful for debuggning when we often need to fetch unmodified versions
     # of Mozilla's source tree (which is about 6GB big).
@@ -88,7 +71,6 @@ EOL
 }
 
 ################################################################################
-install_dependencies
 cd $DIR; maybe_install_rust; cd -
 cd $DIR; maybe_download_moz_sources; cd -
 ################################################################################
