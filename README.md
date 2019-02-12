@@ -26,13 +26,5 @@ bash build.sh
 
 * Set up ouinet with injector's IPFS ID, IP and I2P addresses and
   injector's creadentials.
-* Try to get rid of the prompt asking to install Ouinet/Client's CA Root
-  certificate
 * Allow setting up Injector's values using QR codes
 * Get rid of our [`OUINET_QUICK_HACK`](https://github.com/equalitie/gecko-dev/commit/2de7aad32981201d5a75cfbc9c49acf38f21dc0c)
-
-## Non technical
-
-* Change icon
-* Change package name (currently org.mozilla.fennec_`HOME_DIR`)
-* Change description
