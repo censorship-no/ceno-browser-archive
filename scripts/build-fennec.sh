@@ -108,3 +108,5 @@ export MOZ_INSTALL_TRACKING=''
 ./mach build
 ./mach package
 
+echo 'Result APKs:'
+find $DIR/obj-arm-linux-androideabi/dist -maxdepth 1 -name '*.apk'
