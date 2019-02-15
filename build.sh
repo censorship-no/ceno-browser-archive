@@ -6,12 +6,20 @@ DIR=`pwd`
 SELF=$0
 ROOT=$(cd $(dirname $0); pwd)
 MOZ_GIT=https://github.com/mozilla/gecko-dev
-
-while getopts m:g: option; do
+BUILD_OUINET=0
+BUILD_FENNEC=0
+while getopts ofg: option; do
     case "$option" in
         g) MOZ_GIT=${OPTARG};;
+	o) BUILD_OUINET=1;;
+	f) BUILD_FENNEC=1;;
     esac
 done
+if [[ $BUILD_OUINET == 0 && $BUILD_FENNEC == 0 ]]; then
+  # Build both if neither specified
+  BUILD_OUINET=1
+  BUILD_FENNEC=1
+fi
 
 function build_ouinet {
     mkdir -p $DIR/build.ouinet
@@ -42,5 +50,9 @@ function build_oui_fennec {
     cd -
 }
 
-build_ouinet
-build_oui_fennec
+if [[ $BUILD_OUINET == 1 ]]; then
+  build_ouinet
+fi
+if [[ $BUILD_FENNEC == 1 ]]; then
+  build_oui_fennec
+fi
