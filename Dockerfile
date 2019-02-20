@@ -23,6 +23,8 @@ RUN apt-get update && apt-get install -y \
     texinfo \
     wget \
     zlib1g-dev \
+    libnotify-bin \
+    sudo \
  && rm -rf /var/lib/apt/lists/*
 WORKDIR /usr/local/src
 RUN wget -q "https://downloads.sourceforge.net/project/boost/boost/1.67.0/boost_1_67_0.tar.bz2" \
