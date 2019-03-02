@@ -77,6 +77,7 @@ function write_mozconfig {
 cat > mozconfig <<EOL
 # Build Firefox for Android:
 ac_add_options --enable-application=mobile/android
+ac_add_options --with-android-min-sdk=16
 ac_add_options --target=arm-linux-androideabi
 
 # With the following Android SDK and NDK:
@@ -100,8 +101,8 @@ cd ${MOZ_DIR}
 if [ ! -f mozconfig ]; then
     # Install some dependencies and configure Firefox build
     ./mach bootstrap --application-choice=mobile_android --no-interactive
-    write_mozconfig
 fi
+write_mozconfig
 
 # Note: If during building clang crashes, try increasing vagrant's RAM
 export MOZ_INSTALL_TRACKING=''
@@ -109,4 +110,4 @@ export MOZ_INSTALL_TRACKING=''
 ./mach package
 
 echo 'Result APKs:'
-find $DIR/obj-arm-linux-androideabi/dist -maxdepth 1 -name '*.apk'
+find obj-arm-linux-androideabi/dist -maxdepth 1 -name '*.apk'
