@@ -7,13 +7,15 @@ set -e
 DIR=`pwd`
 MOZ_DIR=gecko-dev
 MOZ_GIT=https://github.com/mozilla/gecko-dev
+IS_RELEASE_BUILD=0
 
 export PATH="$HOME/.cargo/bin:$PATH"
 
-while getopts m:g: option; do
+while getopts m:g:r option; do
     case "$option" in
         m) MOZ_DIR=${OPTARG};;
         g) MOZ_GIT=${OPTARG};;
+        r) IS_RELEASE_BUILD=1;;
     esac
 done
 
@@ -74,7 +76,14 @@ function maybe_install_rust {
 export NDK_VERSION="r15c"
 
 function write_mozconfig {
-cat > mozconfig <<EOL
+    MOZ_OFFICIAL=
+    if [ $IS_RELEASE_BUILD -eq 1 ]; then
+        MOZ_OFFICIAL="export MOZILLA_OFFICIAL=1"
+    fi
+    cat > mozconfig <<EOL
+${MOZ_OFFICIAL}
+export MOZ_INSTALL_TRACKING=
+
 # Build Firefox for Android:
 ac_add_options --enable-application=mobile/android
 ac_add_options --with-android-min-sdk=16
@@ -105,9 +114,15 @@ fi
 write_mozconfig
 
 # Note: If during building clang crashes, try increasing vagrant's RAM
-export MOZ_INSTALL_TRACKING=''
 ./mach build
 ./mach package
 
-echo 'Result APKs:'
-find obj-arm-linux-androideabi/dist -maxdepth 1 -name '*.apk'
+if [ $IS_RELEASE_BUILD -eq 1 ]; then
+  ./mach gradle app:assembleOfficialWithGeckoBinariesNoMinApiPhotonRelease
+  echo
+  echo "Signed release APK:"
+  ls -al obj-arm-linux-androideabi/gradle/build/mobile/android/app/outputs/apk/officialWithGeckoBinariesNoMinApiPhoton/release/app-official-withGeckoBinaries-noMinApi-photon-release.apk
+else
+  echo 'Result APKs:'
+  find obj-arm-linux-androideabi/dist -maxdepth 1 -name '*.apk'
+fi

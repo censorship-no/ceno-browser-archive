@@ -8,11 +8,13 @@ ROOT=$(cd $(dirname $0); pwd)
 MOZ_GIT=https://github.com/mozilla/gecko-dev
 BUILD_OUINET=0
 BUILD_FENNEC=0
-while getopts ofg: option; do
+RELEASE_BUILD=
+while getopts rofg: option; do
     case "$option" in
-        g) MOZ_GIT=${OPTARG};;
-	o) BUILD_OUINET=1;;
-	f) BUILD_FENNEC=1;;
+    g) MOZ_GIT=${OPTARG};;
+    r) RELEASE_BUILD=-r;;
+    o) BUILD_OUINET=1;;
+    f) BUILD_FENNEC=1;;
     esac
 done
 if [[ $BUILD_OUINET == 0 && $BUILD_FENNEC == 0 ]]; then
@@ -46,7 +48,7 @@ function build_oui_fennec {
     local gradle_file=$ROOT/gecko-dev/mobile/android/app/build.gradle
     sed -i "s|\(\s*def\s\+ouinetArchiveDir\s*=\s*\).*|\1\"${aar_path}\"|" $gradle_file
 
-    $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT
+    $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT $RELEASE_BUILD
     cd -
 }
 
