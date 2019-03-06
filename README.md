@@ -19,6 +19,31 @@ sudo docker run --rm -it --mount type=bind,source="$(pwd)",target=/usr/local/src
 cd ouifennec
 bash build.sh
 ```
+# To Make A Release Build
+
+Get the upload keystore file and store it somewhere outside of VCS.
+
+Create a gradle settings file `~/.gradle/gradle.properties` with the following content. Fill in the correct values for the passwords and path to the keystore.
+```
+RELEASE_STORE_FILE=/path/to/upload-keystore.jks
+RELEASE_STORE_PASSWORD=XXXX
+RELEASE_KEY_ALIAS=upload
+RELEASE_KEY_PASSWORD=XXXX
+```
+This is preferable to using the gradle.properties file in gecko-dev as there is no way it can accidently be checked into VCS.
+
+Update the build version in the following files:
+```
+gecko-dev/browser/config/version.txt
+gecko-dev/browser/config/version_display.txt
+gecko-dev/config/milestone.txt
+```
+
+In the ouifennec directory:
+```
+./build -r
+```
+Go for lunch while the build compiles.
 
 # TODO
 
