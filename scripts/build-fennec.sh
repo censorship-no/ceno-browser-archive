@@ -111,6 +111,10 @@ if [ ! -f mozconfig ]; then
     # Install some dependencies and configure Firefox build
     ./mach bootstrap --application-choice=mobile_android --no-interactive
 fi
+if [ $IS_RELEASE_BUILD -eq 1 ]; then
+  # The release build needs a rebuild to reset the generated build ID timestamp in buildid.h.
+  ./mach clobber
+fi
 write_mozconfig
 
 # Note: If during building clang crashes, try increasing vagrant's RAM
@@ -121,7 +125,7 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
   ./mach gradle app:assembleOfficialWithGeckoBinariesNoMinApiPhotonRelease
   echo
   echo "Signed release APK:"
-  ls -al obj-arm-linux-androideabi/gradle/build/mobile/android/app/outputs/apk/officialWithGeckoBinariesNoMinApiPhoton/release/app-official-withGeckoBinaries-noMinApi-photon-release.apk
+  ls -alh obj-arm-linux-androideabi/gradle/build/mobile/android/app/outputs/apk/officialWithGeckoBinariesNoMinApiPhoton/release/app-official-withGeckoBinaries-noMinApi-photon-release.apk
 else
   echo 'Result APKs:'
   find obj-arm-linux-androideabi/dist -maxdepth 1 -name '*.apk'
