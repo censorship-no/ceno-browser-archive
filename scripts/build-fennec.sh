@@ -8,14 +8,19 @@ DIR=`pwd`
 MOZ_DIR=gecko-dev
 MOZ_GIT=https://github.com/mozilla/gecko-dev
 IS_RELEASE_BUILD=0
+# Do a full rebuild when building the release APK. This is necessary when making a release build for upload to the
+# play store as it updates the build number, but it is very slow so if you are making a release build for testing,
+# it is unnecessary. Use the command line option -n to disable clobbering.
+CLOBBER=1
 
 export PATH="$HOME/.cargo/bin:$PATH"
 
-while getopts m:g:r option; do
+while getopts m:g:rn option; do
     case "$option" in
         m) MOZ_DIR=${OPTARG};;
         g) MOZ_GIT=${OPTARG};;
         r) IS_RELEASE_BUILD=1;;
+        n) CLOBBER=0;;
     esac
 done
 
@@ -111,8 +116,11 @@ if [ ! -f mozconfig ]; then
     # Install some dependencies and configure Firefox build
     ./mach bootstrap --application-choice=mobile_android --no-interactive
 fi
-if [ $IS_RELEASE_BUILD -eq 1 ]; then
+if [ $IS_RELEASE_BUILD -eq 1 -a $CLOBBER -eq 1 ]; then
   # The release build needs a rebuild to reset the generated build ID timestamp in buildid.h.
+  read -p 'This script is about to clobber any intermediate build files and will perform a full rebuild.
+This is extrememly slow, so if it is not what you want Ctrl-C this script now, otherwise hit Enter to continue.
+If you do not need to update the build number use the -n flag to make a release build without clobbering. > '
   ./mach clobber
 fi
 write_mozconfig
