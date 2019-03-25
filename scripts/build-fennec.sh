@@ -133,7 +133,7 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
   ./mach gradle app:assembleOfficialWithGeckoBinariesNoMinApiPhotonRelease
   echo
   echo "Signed release APK:"
-  ls -alh obj-arm-linux-androideabi/gradle/build/mobile/android/app/outputs/apk/officialWithGeckoBinariesNoMinApiPhoton/release/app-official-withGeckoBinaries-noMinApi-photon-release.apk
+  ls -alh $(realpath obj-arm-linux-androideabi/gradle/build/mobile/android/app/outputs/apk/officialWithGeckoBinariesNoMinApiPhoton/release/app-official-withGeckoBinaries-noMinApi-photon-release.apk)
 else
   echo 'Result APKs:'
   find obj-arm-linux-androideabi/dist -maxdepth 1 -name '*.apk'
