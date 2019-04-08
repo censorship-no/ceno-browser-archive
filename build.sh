@@ -28,7 +28,7 @@ fi
 function build_ouinet {
     mkdir -p $DIR/build.ouinet
     cd $DIR/build.ouinet
-    $ROOT/ouinet/scripts/build-android.sh
+    $ROOT/ouinet/scripts/build-android.sh $RELEASE_BUILD
     cd -
 }
 
