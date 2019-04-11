@@ -10,15 +10,25 @@ BUILD_OUINET=0
 BUILD_FENNEC=0
 RELEASE_BUILD=
 NO_CLOBBER=
-while getopts rofg:n option; do
+while getopts rofg:x:n option; do
     case "$option" in
     g) MOZ_GIT=${OPTARG};;
     r) RELEASE_BUILD=-r;;
     o) BUILD_OUINET=1;;
     f) BUILD_FENNEC=1;;
     n) NO_CLOBBER=-n;;
+    x) OUINET_VALUES_XML=${OPTARG};;
     esac
 done
+
+if [[ -n "$OUINET_VALUES_XML" ]]; then
+    if [[ ! -f "$OUINET_VALUES_XML" ]]; then
+        echo "No such xml file '$OUINET_VALUES_XML'"
+        exit 1
+    fi
+    cp $OUINET_VALUES_XML $ROOT/gecko-dev/mobile/android/app/src/main/res/values/ouinet.xml
+fi
+
 if [[ $BUILD_OUINET -eq 0 && $BUILD_FENNEC -eq 0 ]]; then
   # Build both if neither specified
   BUILD_OUINET=1
