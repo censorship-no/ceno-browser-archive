@@ -62,3 +62,5 @@ RUN apt-get -qq update && \
 RUN update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
 # mach
 ENV SHELL /bin/bash
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
