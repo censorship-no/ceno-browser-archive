@@ -13,12 +13,13 @@ To change the icon name, change the `MOZ_APP_DISPLAYNAME` variable in
 # Build
 
 ```sh
-sudo docker build - < Dockerfile
+sudo docker build -t ceno - < Dockerfile
 mkdir -p root.build/.mozbuild # build cache will be stored in $PWD/ouinet.build, $PWD/ouifennec.build, and $PWD/root.build
-sudo docker run --rm -it --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build",target=/root $CONTAINER_ID_FROM_↑_BUILD
+sudo docker run --rm -it --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build",target=/root ceno
 cd ouifennec
-bash build.sh
+./build.sh
 ```
+
 # To Make A Release Build
 
 Get the upload keystore file and store it somewhere outside of VCS.
