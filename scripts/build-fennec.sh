@@ -162,5 +162,5 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
   ls -alh $(realpath obj-arm-linux-androideabi/gradle/build/mobile/android/app/outputs/apk/withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
 else
   echo 'Result APKs:'
-  ind obj-arm-linux-androideabi/dist -maxdepth 1 -name '*multi*arm.apk'
+  find $(realpath obj-arm-linux-androideabi/dist) -maxdepth 1 -name '*multi*arm.apk'
 fi
