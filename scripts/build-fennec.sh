@@ -156,11 +156,11 @@ write_mozconfig
 ./mach package-multi-locale --locales en-US ${LOCALES}
 
 if [ $IS_RELEASE_BUILD -eq 1 ]; then
-  ./mach gradle app:assembleOfficialWithGeckoBinariesNoMinApiPhotonRelease
+  ./mach gradle app:assembleWithGeckoBinariesRelease
   echo
   echo "Signed release APK:"
-  ls -alh $(realpath obj-arm-linux-androideabi/gradle/build/mobile/android/app/outputs/apk/officialWithGeckoBinariesNoMinApiPhoton/release/app-official-withGeckoBinaries-noMinApi-photon-release.apk)
+  ls -alh $(realpath obj-arm-linux-androideabi/gradle/build/mobile/android/app/outputs/apk/withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
 else
   echo 'Result APKs:'
-  find obj-arm-linux-androideabi/dist -maxdepth 1 -name '*.apk'
+  ind obj-arm-linux-androideabi/dist -maxdepth 1 -name '*multi*arm.apk'
 fi
