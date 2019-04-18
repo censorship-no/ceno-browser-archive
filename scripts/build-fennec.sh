@@ -104,6 +104,9 @@ function write_mozconfig {
     if [ $IS_RELEASE_BUILD -eq 1 ]; then
         MOZ_OFFICIAL="export MOZILLA_OFFICIAL=1"
     fi
+    local DIST_DIR=$(realpath $MOZ_DIR/../distribution)
+    local L10N_BASE=$DIR/${L10N_DIR}
+
     cat > mozconfig <<EOL
 ${MOZ_OFFICIAL}
 export MOZ_INSTALL_TRACKING=
@@ -115,9 +118,11 @@ ac_add_options --target=arm-linux-androideabi
 
 # With the following Android SDK and NDK:
 ac_add_options --with-android-sdk="$HOME/.mozbuild/android-sdk-linux"
-ac_add_options --with-android-ndk="$HOME/.mozbuild/android-ndk-$NDK_VERSION"
+ac_add_options --with-android-ndk="$HOME/.mozbuild/android-ndk-${NDK_VERSION}"
 
-ac_add_options --with-android-distribution-directory=$MOZ_DIR/../distribution
+ac_add_options --with-android-distribution-directory=${DIST_DIR}
+
+ac_add_options --with-l10n-base=${L10N_BASE}
 EOL
 }
 
@@ -148,6 +153,7 @@ write_mozconfig
 # Note: If during building clang crashes, try increasing vagrant's RAM
 ./mach build
 ./mach package
+./mach package-multi-locale --locales en-US ${LOCALES}
 
 if [ $IS_RELEASE_BUILD -eq 1 ]; then
   ./mach gradle app:assembleOfficialWithGeckoBinariesNoMinApiPhotonRelease
