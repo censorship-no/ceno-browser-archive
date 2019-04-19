@@ -42,9 +42,12 @@ gecko-dev/config/milestone.txt
 
 In the ouifennec directory:
 ```
-./build -r
+./build -rx /path/to/ouinet.xml
 ```
 Go for lunch while the build compiles.
+
+# Adding language support 
+The locales that are included in the APK are defined in `scripts/build-fennec.sh`. To add support for more languages, update the `LOCALES` variable in this script. The l10n files will be downloaded from the Mozilla repo by the build script to `build.fennec/l10n-central/`.
 
 # TODO
 
