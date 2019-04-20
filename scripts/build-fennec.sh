@@ -100,16 +100,21 @@ function clone_or_pull_l10n {
 export NDK_VERSION="r15c"
 
 function write_mozconfig {
-    MOZ_OFFICIAL=
+    echo -n >  mozconfig
+
     if [ $IS_RELEASE_BUILD -eq 1 ]; then
-        MOZ_OFFICIAL="export MOZILLA_OFFICIAL=1"
+      cat >> mozconfig <<EOF
+export MOZILLA_OFFICIAL=1
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@-release
+
+EOF
     fi
     local DIST_DIR=$(realpath $MOZ_DIR/../distribution)
     local L10N_BASE=$DIR/${L10N_DIR}
 
-    cat > mozconfig <<EOL
-${MOZ_OFFICIAL}
+    cat >> mozconfig <<EOL
 export MOZ_INSTALL_TRACKING=
+export MOZ_TELEMETRY_REPORTING=
 
 # Build Firefox for Android:
 ac_add_options --enable-application=mobile/android
@@ -121,8 +126,12 @@ ac_add_options --with-android-sdk="$HOME/.mozbuild/android-sdk-linux"
 ac_add_options --with-android-ndk="$HOME/.mozbuild/android-ndk-${NDK_VERSION}"
 
 ac_add_options --with-android-distribution-directory=${DIST_DIR}
-
 ac_add_options --with-l10n-base=${L10N_BASE}
+
+ac_add_options --disable-crashreporter
+# Don't build tests
+ac_add_options --disable-tests
+ac_add_options --disable-ipdl-tests
 EOL
 }
 
