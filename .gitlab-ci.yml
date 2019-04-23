@@ -1,0 +1,8 @@
+image: wldhx/ouifennec-ci:latest
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+build:
+  script:
+    - ./build.sh
