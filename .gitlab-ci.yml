@@ -14,6 +14,7 @@ build-image:
     - docker push $CI_REGISTRY_IMAGE:latest
 
 build:
+  stage: build
   tags:
     - docker
   script:
