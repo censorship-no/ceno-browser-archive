@@ -28,20 +28,9 @@ while getopts m:g:rn option; do
 done
 
 function install_dependencies {
-    local deps="curl mercurial libpulse-dev libpango1.0-dev \
+    sudo apt-get -y install curl mercurial libpulse-dev libpango1.0-dev \
                libgtk-3-dev libgtk2.0-dev libgconf2-dev libdbus-glib-1-dev \
-               yasm libnotify-dev libnotify-bin clang-4.0"
-
-    local need_install=0
-
-    for d in $deps; do
-        dpkg -s $d >/dev/null || (need_install=1 && break)
-    done
-
-    if [ "$need_install" == "1" ]; then
-        sudo apt-get update
-        sudo apt-get -y install $deps
-    fi
+               yasm libnotify-dev libnotify-bin clang-4.0
 }
 
 function maybe_download_moz_sources {
