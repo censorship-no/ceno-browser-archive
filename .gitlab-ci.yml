@@ -8,11 +8,15 @@ before_script:
 
 build-image:
   stage: build
+  tags:
+    - shell
   when: manual
   script:
     - docker build -t $CI_REGISTRY_IMAGE:latest .
     - docker push $CI_REGISTRY_IMAGE:latest
 
 build:
+  tags:
+    - docker
   script:
     - ./build.sh
