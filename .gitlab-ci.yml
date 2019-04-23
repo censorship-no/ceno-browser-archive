@@ -3,11 +3,18 @@ image: registry.gitlab.com/wldhx/ouifennec:latest
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
+cache:
+  key: single
+  paths:
+    - ~/.mozbuild/
+    - ~/.rustup/
+
 build-image:
   stage: build
   tags:
     - shell
   when: manual
+  cache: {}
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $CI_REGISTRY_IMAGE:latest - < Dockerfile
