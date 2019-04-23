@@ -1,9 +1,9 @@
 [submodule "ouinet"]
 	path = ouinet
-	url = git@github.com:equalitie/ouinet
+	url = https://github.com/equalitie/ouinet
 [submodule "gecko-dev"]
 	path = gecko-dev
-	url = git@github.com:equalitie/gecko-dev.git
+	url = https://github.com/equalitie/gecko-dev.git
 [submodule "distribution"]
 	path = distribution
-	url = git@github.com:equalitie/ouifennec-distribution.git
+	url = https://github.com/equalitie/ouifennec-distribution.git
