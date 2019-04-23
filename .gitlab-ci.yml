@@ -1,4 +1,4 @@
-image: wldhx/ouifennec-ci:latest
+image: registry.gitlab.com/wldhx/ouifennec:latest
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
