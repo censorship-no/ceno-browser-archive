@@ -12,7 +12,7 @@ build-image:
     - shell
   when: manual
   script:
-    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker build -t $CI_REGISTRY_IMAGE:latest - < Dockerfile
     - docker push $CI_REGISTRY_IMAGE:latest
 
 build:
