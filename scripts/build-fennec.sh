@@ -89,7 +89,7 @@ function clone_or_pull_l10n {
         else
             cd $LOCALE
             hg -q pull
-            cd -
+            cd - > /dev/null
         fi
     done
 }
@@ -137,8 +137,8 @@ EOL
 
 ################################################################################
 install_dependencies
-cd $DIR; maybe_install_rust; cd -
-cd $DIR; maybe_download_moz_sources; cd -
+cd $DIR; maybe_install_rust; cd - > /dev/null
+cd $DIR; maybe_download_moz_sources; cd - > /dev/null
 clone_or_pull_l10n
 ################################################################################
 
@@ -166,9 +166,17 @@ write_mozconfig
 
 if [ $IS_RELEASE_BUILD -eq 1 ]; then
   ./mach gradle app:assembleWithGeckoBinariesRelease
+
+  APK=$(realpath obj-arm-linux-androideabi-release/gradle/build/mobile/android/app/outputs/apk/\
+withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
+  DATE=$(date  +'%Y-%m-%d_%H%m')
+  COMMIT=$(git rev-parse HEAD)
+  DEST="ceno_${DATE}_${COMMIT: -8}.apk"
+  cp $APK $DEST
   echo
   echo "Signed release APK:"
-  ls -alh $(realpath obj-arm-linux-androideabi-release/gradle/build/mobile/android/app/outputs/apk/withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
+  ls -alh $(realpath $APK)
+  ls -alh $(realpath $DEST)
 else
   echo 'Result APKs:'
   find $(realpath obj-arm-linux-androideabi/dist) -maxdepth 1 -name '*multi*arm.apk'
