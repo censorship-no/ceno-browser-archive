@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     zlib1g-dev \
     libnotify-bin \
+    mercurial \
     sudo \
  && rm -rf /var/lib/apt/lists/*
 WORKDIR /usr/local/src
