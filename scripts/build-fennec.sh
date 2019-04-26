@@ -162,6 +162,7 @@ write_mozconfig
 # Note: If during building clang crashes, try increasing vagrant's RAM
 ./mach build
 ./mach package
+./mach package-multi-locale --locales en-US
 ./mach package-multi-locale --locales en-US ${LOCALES}
 
 if [ $IS_RELEASE_BUILD -eq 1 ]; then
