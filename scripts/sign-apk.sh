@@ -8,7 +8,7 @@ Example usage:
     export KEYSTORE_PASSWORD=pass
     export KEY_PASSWORD=ssap
 
-    $(basename $0) gecko-dev/obj-arm-linux-androideabi/dist/ceno-64.0.1.en-US.android-arm-unsigned-unaligned.apk
+    $(basename $0) gecko-dev/obj-*-linux-android*/dist/ceno-64.0.1.en-US.android-*-unsigned-unaligned.apk
 
 USAGE
     exit 0
