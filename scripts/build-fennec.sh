@@ -27,12 +27,6 @@ while getopts m:g:rn option; do
     esac
 done
 
-function install_dependencies {
-    sudo apt-get -y install curl mercurial libpulse-dev libpango1.0-dev \
-               libgtk-3-dev libgtk2.0-dev libgconf2-dev libdbus-glib-1-dev \
-               yasm libnotify-dev libnotify-bin clang-4.0
-}
-
 function maybe_download_moz_sources {
     # Useful for debuggning when we often need to fetch unmodified versions
     # of Mozilla's source tree (which is about 6GB big).
@@ -125,7 +119,6 @@ EOL
 }
 
 ################################################################################
-install_dependencies
 cd $DIR; maybe_install_rust; cd - > /dev/null
 cd $DIR; maybe_download_moz_sources; cd - > /dev/null
 clone_or_pull_l10n

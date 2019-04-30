@@ -49,14 +49,25 @@ RUN wget -q "https://downloads.sourceforge.net/project/boost/boost/1.67.0/boost_
 RUN apt-get -qq update && \
     apt-get install -qqy --no-install-recommends \
       autoconf2.13 \
-      openjdk-8-jdk-headless \
-      curl \
       bsdtar \
-      zip \
-      unzip \
-      zipalign \
+      clang-4.0 \
+      curl \
+      libdbus-glib-1-dev \
+      libgconf2-dev \
+      libgtk-3-dev \
+      libgtk2.0-dev \
+      libnotify-bin \
+      libnotify-dev \
+      libpango1.0-dev \
+      libpulse-dev \
+      mercurial \
+      openjdk-8-jdk-headless \
       python \
-      python3
+      python3 \
+      unzip \
+      yasm \
+      zip \
+      zipalign
 # A workaround for ouinet/scripts/build-android.sh & mach bootstrap
 # doing apt-get install default-jdk and thus breaking the build
 # (Fennec only builds w/JDK8)
