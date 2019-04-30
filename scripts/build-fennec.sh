@@ -7,6 +7,9 @@ set -e
 DIR=`pwd`
 MOZ_DIR=gecko-dev
 MOZ_GIT=https://github.com/mozilla/gecko-dev
+L10N_DIR=l10n-central
+L10N_REPO='https://hg.mozilla.org/l10n-central/'
+LOCALES='fa az' # en-US is included by default, you do not need to list it here
 IS_RELEASE_BUILD=0
 # Do a full rebuild when building the release APK. This is necessary when making a release build for upload to the
 # play store as it updates the build number, but it is very slow so if you are making a release build for testing,
@@ -103,15 +106,39 @@ function maybe_install_rust {
     fi
 }
 
+function clone_or_pull_l10n {
+    cd $DIR
+    if [ ! -d $L10N_DIR ]; then
+        mkdir $L10N_DIR
+    fi
+    cd $L10N_DIR
+    for LOCALE in $LOCALES; do
+        if [ ! -d $LOCALE ]; then
+            hg clone ${L10N_REPO}${LOCALE}
+        else
+            cd $LOCALE
+            hg -q pull
+            cd - > /dev/null
+        fi
+    done
+}
 
 function write_mozconfig {
-    MOZ_OFFICIAL=
+    echo -n >  mozconfig
+
     if [ $IS_RELEASE_BUILD -eq 1 ]; then
-        MOZ_OFFICIAL="export MOZILLA_OFFICIAL=1"
+      cat >> mozconfig <<EOF
+export MOZILLA_OFFICIAL=1
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@-release
+
+EOF
     fi
-    cat > mozconfig <<EOL
-${MOZ_OFFICIAL}
+    local DIST_DIR=$(realpath $MOZ_DIR/../distribution)
+    local L10N_BASE=$DIR/${L10N_DIR}
+
+    cat >> mozconfig <<EOL
 export MOZ_INSTALL_TRACKING=
+export MOZ_TELEMETRY_REPORTING=
 
 # Build Firefox for Android:
 ac_add_options --enable-application=mobile/android
@@ -120,17 +147,24 @@ ac_add_options --target=${ANDROIDABI}
 
 # With the following Android SDK and NDK:
 ac_add_options --with-android-sdk="$HOME/.mozbuild/android-sdk-linux"
-ac_add_options --with-android-ndk="$HOME/.mozbuild/android-ndk-$NDK_VERSION"
+ac_add_options --with-android-ndk="$HOME/.mozbuild/android-ndk-${NDK_VERSION}"
 
-ac_add_options --with-android-distribution-directory=$MOZ_DIR/../distribution
+ac_add_options --with-android-distribution-directory=${DIST_DIR}
+ac_add_options --with-l10n-base=${L10N_BASE}
+
 ac_add_options --disable-elf-hack
+ac_add_options --disable-crashreporter
+# Don't build tests
+ac_add_options --disable-tests
+ac_add_options --disable-ipdl-tests
 EOL
 }
 
 ################################################################################
 install_dependencies
-cd $DIR; maybe_install_rust; cd -
-cd $DIR; maybe_download_moz_sources; cd -
+cd $DIR; maybe_install_rust; cd - > /dev/null
+cd $DIR; maybe_download_moz_sources; cd - > /dev/null
+clone_or_pull_l10n
 ################################################################################
 
 cd ${MOZ_DIR}
@@ -147,7 +181,7 @@ if [ ! -f mozconfig ]; then
     ./mach bootstrap --application-choice=mobile_android --no-interactive
 fi
 if [ $IS_RELEASE_BUILD -eq 1 -a $CLOBBER -eq 1 ]; then
-  # The release build needs a rebuild to reset the generated build ID timestamp in buildid.h.
+  # The release build needs a full rebuild to reset the generated build ID timestamp in buildid.h.
   read -p 'This script is about to clobber any intermediate build files and will perform a full rebuild.
 This is extrememly slow, so if it is not what you want Ctrl-C this script now, otherwise hit Enter to continue.
 If you do not need to update the build number use the -n flag to make a release build without clobbering. > '
@@ -158,13 +192,23 @@ write_mozconfig
 # Note: If during building clang crashes, try increasing vagrant's RAM
 ./mach build
 ./mach package
+./mach package-multi-locale --locales en-US
+./mach package-multi-locale --locales en-US ${LOCALES}
 
 if [ $IS_RELEASE_BUILD -eq 1 ]; then
-  ./mach gradle app:assembleOfficialWithGeckoBinariesNoMinApiPhotonRelease
+  ./mach gradle app:assembleWithGeckoBinariesRelease
+
+  APK=$(realpath obj-${ANDROIDABI}/gradle/build/mobile/android/app/outputs/apk/\
+withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
+  DATE=$(date  +'%Y-%m-%d_%H%m')
+  COMMIT=$(git rev-parse HEAD)
+  DEST="ceno_${DATE}_${COMMIT: -8}.apk"
+  cp $APK $DEST
   echo
   echo "Signed release APK:"
-  ls -alh $(realpath obj-${ANDROIDABI}/gradle/build/mobile/android/app/outputs/apk/officialWithGeckoBinariesNoMinApiPhoton/release/app-official-withGeckoBinaries-noMinApi-photon-release.apk)
+  ls -alh $(realpath $APK)
+  ls -alh $(realpath $DEST)
 else
   echo 'Result APKs:'
-  find obj-${ANDROIDABI}/dist -maxdepth 1 -name '*.apk'
+  find $(realpath obj-${ANDROIDABI}/dist) -maxdepth 1 -name '*multi*.apk'
 fi

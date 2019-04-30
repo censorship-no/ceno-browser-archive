@@ -13,12 +13,13 @@ To change the icon name, change the `MOZ_APP_DISPLAYNAME` variable in
 # Build
 
 ```sh
-sudo docker build - < Dockerfile
+sudo docker build -t ceno - < Dockerfile
 mkdir -p root.build/.mozbuild # build cache will be stored in $PWD/ouinet.build, $PWD/ouifennec.build, and $PWD/root.build
-sudo docker run --rm -it --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build",target=/root $CONTAINER_ID_FROM_↑_BUILD
+sudo docker run --rm -it --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build",target=/root ceno
 cd ouifennec
-bash build.sh
+./build.sh
 ```
+
 # To Make A Release Build
 
 Get the upload keystore file and store it somewhere outside of VCS.
@@ -41,9 +42,12 @@ gecko-dev/config/milestone.txt
 
 In the ouifennec directory:
 ```
-./build -r
+./build -rx /path/to/ouinet.xml
 ```
 Go for lunch while the build compiles.
+
+# Adding language support 
+The locales that are included in the APK are defined in `scripts/build-fennec.sh`. To add support for more languages, update the `LOCALES` variable in this script. The l10n files will be downloaded from the Mozilla repo by the build script to `build.fennec/l10n-central/`.
 
 # TODO
 
