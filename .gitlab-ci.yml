@@ -23,5 +23,8 @@ build:
   stage: build
   tags:
     - docker
+  artifacts:
+    paths:
+      - gecko-dev/obj-arm-linux-androideabi/dist/ceno-66.0.3.multi.android-arm.apk
   script:
     - ./build.sh
