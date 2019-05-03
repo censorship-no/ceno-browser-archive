@@ -10,8 +10,7 @@ variables:
 cache:
   key: single
   paths:
-    - ~/.mozbuild/
-    - ~/.rustup/
+    - "$HOME"
 
 build-image:
   stage: build-image
