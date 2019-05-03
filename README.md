@@ -1,5 +1,7 @@
 # OuiFennec
 
+[![pipeline status](https://gitlab.com/equalitie/ouifennec/badges/master/pipeline.svg)](https://gitlab.com/equalitie/ouifennec/commits/master)
+
 A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 
 # Set up injector's parameters
