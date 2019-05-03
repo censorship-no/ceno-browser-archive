@@ -1,0 +1,27 @@
+image: registry.gitlab.com/equalitie/ouifennec:latest
+
+stages:
+  - build-image
+  - build
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+build-image:
+  stage: build-image
+  tags:
+    - shell
+  only:
+    changes:
+      - Dockerfile
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:latest - < Dockerfile
+    - docker push $CI_REGISTRY_IMAGE:latest
+
+build:
+  stage: build
+  tags:
+    - docker
+  script:
+    - ./build.sh
