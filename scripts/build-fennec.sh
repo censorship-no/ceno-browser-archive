@@ -144,10 +144,10 @@ write_mozconfig
 # Note: If during building clang crashes, try increasing vagrant's RAM
 ./mach build
 ./mach package
-./mach package-multi-locale --locales en-US
-./mach package-multi-locale --locales en-US ${LOCALES}
 
 if [ $IS_RELEASE_BUILD -eq 1 ]; then
+  ./mach package-multi-locale --locales en-US
+  ./mach package-multi-locale --locales en-US ${LOCALES}
   ./mach gradle app:assembleWithGeckoBinariesRelease
 
   APK=$(realpath obj-arm-linux-androideabi-release/gradle/build/mobile/android/app/outputs/apk/\
@@ -162,5 +162,5 @@ withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
   ls -alh $(realpath $DEST)
 else
   echo 'Result APKs:'
-  find $(realpath obj-arm-linux-androideabi/dist) -maxdepth 1 -name '*multi*arm.apk'
+  find $(realpath obj-arm-linux-androideabi/dist) -maxdepth 1 -name 'ceno*en-US.android-arm.apk'
 fi
