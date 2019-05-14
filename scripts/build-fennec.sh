@@ -88,6 +88,7 @@ function write_mozconfig {
     if [ $IS_RELEASE_BUILD -eq 1 ]; then
       cat >> mozconfig <<EOF
 export MOZILLA_OFFICIAL=1
+mk_add_options AUTOCLOBBER=1
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@-release
 
 EOF
@@ -134,9 +135,9 @@ if [ ! -f mozconfig ]; then
 fi
 if [ $IS_RELEASE_BUILD -eq 1 -a $CLOBBER -eq 1 ]; then
   # The release build needs a full rebuild to reset the generated build ID timestamp in buildid.h.
-  read -p 'This script is about to clobber any intermediate build files and will perform a full rebuild.
+  (read -t 10 -p 'This script is about to clobber any intermediate build files and will perform a full rebuild.
 This is extrememly slow, so if it is not what you want Ctrl-C this script now, otherwise hit Enter to continue.
-If you do not need to update the build number use the -n flag to make a release build without clobbering. > '
+If you do not need to update the build number use the -n flag to make a release build without clobbering. > ' || true)
   ./mach clobber
 fi
 write_mozconfig
