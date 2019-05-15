@@ -25,3 +25,8 @@ build:
       - gecko-dev/obj-arm-linux-androideabi/dist/ceno-66.0.3.en-US.android-arm.apk
   script:
     - ./build.sh
+
+    - echo "$GRADLE_PROPERTIES_BASE64" > /dev/shm/gradle.properties
+    - echo "$UPLOAD_KEYSTORE_BASE64" > /dev/shm/upload-keystore.jks
+    - export GRADLE_USER_HOME=/dev/shm
+    - ./build.sh -r
