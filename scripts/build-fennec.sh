@@ -88,15 +88,19 @@ function write_mozconfig {
     if [ $IS_RELEASE_BUILD -eq 1 ]; then
       cat >> mozconfig <<EOF
 export MOZILLA_OFFICIAL=1
-mk_add_options AUTOCLOBBER=1
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@-release
 
+EOF
+    fi
+    if [ $IS_RELEASE_BUILD -eq 1 -a $CLOBBER -eq 1 ]; then
+        cat >> mozconfig <<EOF
+mk_add_options AUTOCLOBBER=1
 EOF
     fi
     local DIST_DIR=$(realpath $MOZ_DIR/../distribution)
     local L10N_BASE=$DIR/${L10N_DIR}
 
-    cat >> mozconfig <<EOL
+    cat >> mozconfig <<EOF
 export MOZ_INSTALL_TRACKING=
 export MOZ_TELEMETRY_REPORTING=
 
@@ -116,7 +120,7 @@ ac_add_options --disable-crashreporter
 # Don't build tests
 ac_add_options --disable-tests
 ac_add_options --disable-ipdl-tests
-EOL
+EOF
 }
 
 ################################################################################
@@ -151,7 +155,7 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
   ./mach package-multi-locale --locales en-US ${LOCALES}
   ./mach gradle app:assembleWithGeckoBinariesRelease
 
-  APK=$(realpath obj-arm-linux-androideabi-release/gradle/build/mobile/android/app/outputs/apk/\
+  APK=$(realpath obj-arm-unknown-linux-androideabi-release/gradle/build/mobile/android/app/outputs/apk/\
 withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
   DATE=$(date  +'%Y-%m-%d_%H%m')
   COMMIT=$(git rev-parse HEAD)
