@@ -39,14 +39,14 @@ function build_ouinet {
     mkdir -p $DIR/build.ouinet
     cd $DIR/build.ouinet
     $ROOT/ouinet/scripts/build-android.sh $RELEASE_BUILD
-    cd -
+    cd - > /dev/null
 }
 
 function build_oui_fennec {
     mkdir -p $DIR/build.fennec
     cd $DIR/build.fennec
     $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT $RELEASE_BUILD $NO_CLOBBER
-    cd -
+    cd - > /dev/null
 }
 
 if [[ $BUILD_OUINET -eq 1 ]]; then

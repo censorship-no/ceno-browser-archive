@@ -159,7 +159,7 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
 withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
   DATE=$(date  +'%Y-%m-%d_%H%m')
   COMMIT=$(git rev-parse HEAD)
-  DEST="ceno_${DATE}_${COMMIT: -8}.apk"
+  DEST="${DIR}/ceno_${DATE}_${COMMIT: -8}.apk"
   cp $APK $DEST
   echo
   echo "Signed release APK:"
