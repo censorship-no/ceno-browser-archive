@@ -9,6 +9,11 @@ variables:
 
 build-image:
   stage: build-image
+  only:
+    changes:
+      - gecko-dev/build/
+      - ouinet/
+      - Dockerfile
   tags:
     - shell
   script:
