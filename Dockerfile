@@ -12,4 +12,6 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
   # Touch mozconfig so that scripts/build-fennec.sh doesn't rerun bootstrap
   touch mozconfig && \
-  cd ..
+  cd .. && \
+  apt-get install -y ccache && \
+  /root/.cargo/bin/cargo install sccache
