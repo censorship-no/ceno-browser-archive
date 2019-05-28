@@ -120,6 +120,10 @@ ac_add_options --disable-crashreporter
 # Don't build tests
 ac_add_options --disable-tests
 ac_add_options --disable-ipdl-tests
+
+mk_add_options 'export RUSTC_WRAPPER=sccache'
+mk_add_options 'export CCACHE_CPP2=yes'
+ac_add_options --with-ccache
 EOF
 }
 
