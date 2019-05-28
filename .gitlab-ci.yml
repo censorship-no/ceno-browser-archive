@@ -6,6 +6,7 @@ stages:
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  DOCKER_BUILDKIT: 1
 
 build-image:
   stage: build-image
@@ -18,7 +19,7 @@ build-image:
     - shell
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --pull --target bootstrap -t $CI_REGISTRY_IMAGE:bootstrap .
+    - docker build --pull -t $CI_REGISTRY_IMAGE:bootstrap .
     - docker push $CI_REGISTRY_IMAGE:bootstrap
 
 build:
