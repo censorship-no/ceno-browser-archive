@@ -15,10 +15,9 @@ To change the icon name, change the `MOZ_APP_DISPLAYNAME` variable in
 # Build
 
 ```sh
-sudo docker build -t ceno - < Dockerfile
-mkdir -p root.build/.mozbuild # build cache will be stored in $PWD/ouinet.build, $PWD/ouifennec.build, and $PWD/root.build
-sudo docker run --rm -it --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build",target=/root ceno
-cd ouifennec
+sudo DOCKER_BUILDKIT=1 docker build -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap .
+mkdir -p root.build/.cache/ root.build/.ccache/ # build cache will be stored in $PWD/ouinet.build, $PWD/ouifennec.build, and $PWD/root.build
+sudo docker run --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build/.cache",target=/root/.cache --mount type=bind,source="$(pwd)/root.build/.ccache",target=/root/.ccache registry.gitlab.com/censorship-no/ceno-browser:bootstrap
 ./build.sh
 ```
 
