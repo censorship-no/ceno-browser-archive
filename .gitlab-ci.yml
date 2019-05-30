@@ -1,30 +1,33 @@
-image: registry.gitlab.com/equalitie/ouifennec:latest
-
 stages:
   - build-image
   - build
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  DOCKER_BUILDKIT: 1
 
 build-image:
   stage: build-image
-  tags:
-    - shell
   only:
     changes:
+      - gecko-dev/build/
+      - ouinet/
       - Dockerfile
+  tags:
+    - shell
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $CI_REGISTRY_IMAGE:latest - < Dockerfile
-    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker build --pull -t $CI_REGISTRY_IMAGE:bootstrap .
+    - docker push $CI_REGISTRY_IMAGE:bootstrap
 
 build:
   stage: build
   tags:
-    - docker
-  artifacts:
-    paths:
-      - gecko-dev/obj-arm-linux-androideabi/dist/ceno-66.0.3.en-US.android-arm.apk
+    - shell
   script:
-    - ./build.sh
+    - mkdir -p root.build/.cache/ root.build/.ccache/
+    - docker run --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build/.cache",target=/root/.cache --mount type=bind,source="$(pwd)/root.build/.ccache",target=/root/.ccache $CI_REGISTRY_IMAGE:bootstrap ./build.sh
+  cache:
+    key: single
+    paths:
+      - root.build/

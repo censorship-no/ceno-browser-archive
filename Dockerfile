@@ -1,78 +1,17 @@
-# This is similar to ouinet/Dockerfile, but based on ubuntu (easier to build Android on)
-FROM ubuntu:18.04
-# To get the list of build dependency packages from the Vagrantfile, run:
-#
-#     sed '/# Install toolchain/,/^$/!d' Vagrantfile \
-#         | sed -En 's/^\s+(\S+)\s*\\?$/\1/p' | sort
-#
-RUN apt-get update && apt-get install -y \
-    autoconf \
-    automake \
-    autopoint \
-    build-essential \
-    cmake \
-    gettext \
-    git \
-    libgcrypt-dev \
-    libidn11-dev \
-    libssl-dev \
-    libtool \
-    libunistring-dev \
-    pkg-config \
-    rsync \
-    texinfo \
-    wget \
-    zlib1g-dev \
-    libnotify-bin \
-    mercurial \
-    sudo \
- && rm -rf /var/lib/apt/lists/*
-WORKDIR /usr/local/src
-RUN wget -q "https://downloads.sourceforge.net/project/boost/boost/1.67.0/boost_1_67_0.tar.bz2" \
- && tar -xf boost_1_67_0.tar.bz2 \
- && cd boost_1_67_0 \
- && ./bootstrap.sh \
- && ./b2 -j `nproc` -d+0 --link=shared \
-         --with-system \
-         --with-program_options \
-         --with-test \
-         --with-coroutine \
-         --with-filesystem \
-         --with-date_time \
-         --with-regex \
-         --with-iostreams \
-         --prefix=/usr/local install
-# Fennec-specific part
-# Observe we don't clean lists here:
-# ouinet/scripts/build-android.sh & mach bootstrap will `apt-get install` things
-# and will be unhappy shall there be no install candidates
-RUN apt-get -qq update && \
-    apt-get install -qqy --no-install-recommends \
-      autoconf2.13 \
-      bsdtar \
-      clang-4.0 \
-      curl \
-      libdbus-glib-1-dev \
-      libgconf2-dev \
-      libgtk-3-dev \
-      libgtk2.0-dev \
-      libnotify-bin \
-      libnotify-dev \
-      libpango1.0-dev \
-      libpulse-dev \
-      mercurial \
-      openjdk-8-jdk-headless \
-      python \
-      python3 \
-      unzip \
-      yasm \
-      zip \
-      zipalign
-# A workaround for ouinet/scripts/build-android.sh & mach bootstrap
-# doing apt-get install default-jdk and thus breaking the build
-# (Fennec only builds w/JDK8)
-RUN update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
-# mach
+# syntax=docker/dockerfile:experimental
+FROM registry.gitlab.com/equalitie/ouinet:android
+WORKDIR /usr/local/src/ouifennec
 ENV SHELL /bin/bash
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
+RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
+  cd gecko-dev && \
+  ./mach bootstrap --application-choice=mobile_android --no-interactive && \
+  # Invoke twice to make sure gecko-dev/python/mozboot/mozboot/base.py::
+  # ensure_rust_targets() gets called. It won't normally due to logic being such:
+  # have_rust ? ensure_rust_targets() : install_rust() (note no ensure targets
+  # in second branch). See gecko-dev/python/mozboot/mozboot/base.py L652.
+  ./mach bootstrap --application-choice=mobile_android --no-interactive && \
+  # Touch mozconfig so that scripts/build-fennec.sh doesn't rerun bootstrap
+  touch mozconfig && \
+  cd .. && \
+  apt-get install -y ccache && \
+  /root/.cargo/bin/cargo install sccache
