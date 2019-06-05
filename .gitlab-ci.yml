@@ -26,7 +26,7 @@ build:
     - shell
   script:
     - mkdir -p root.build/.cache/ root.build/.ccache/
-    - docker run --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build/.cache",target=/root/.cache --mount type=bind,source="$(pwd)/root.build/.ccache",target=/root/.ccache $CI_REGISTRY_IMAGE:bootstrap ./build.sh
+    - docker run --user $(id -u):$(id -g) --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build/.cache",target=/root/.cache --mount type=bind,source="$(pwd)/root.build/.ccache",target=/root/.ccache $CI_REGISTRY_IMAGE:bootstrap ./build.sh
   cache:
     key: single
     paths:
