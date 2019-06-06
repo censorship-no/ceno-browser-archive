@@ -171,5 +171,5 @@ withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
   ls -alh $(realpath $DEST)
 else
   echo 'Result APKs:'
-  find $(realpath obj-arm-linux-androideabi/dist) -maxdepth 1 -name 'ceno*en-US.android-arm.apk'
+  find $(realpath obj-arm-unknown-linux-androideabi/dist) -maxdepth 1 -name 'ceno*en-US.android-arm.apk'
 fi
