@@ -35,6 +35,9 @@ if [[ $BUILD_OUINET -eq 0 && $BUILD_FENNEC -eq 0 ]]; then
   BUILD_FENNEC=1
 fi
 
+# https://developer.android.com/ndk/guides/abis.html
+export ABI=${ABI:-armeabi-v7a}
+
 function build_ouinet {
     mkdir -p $DIR/build.ouinet
     cd $DIR/build.ouinet
@@ -42,7 +45,7 @@ function build_ouinet {
     cd - > /dev/null
 }
 
-function build_oui_fennec {
+function build_ouifennec {
     mkdir -p $DIR/build.fennec
     cd $DIR/build.fennec
     $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT $RELEASE_BUILD $NO_CLOBBER
@@ -53,5 +56,5 @@ if [[ $BUILD_OUINET -eq 1 ]]; then
   build_ouinet
 fi
 if [[ $BUILD_FENNEC -eq 1 ]]; then
-  build_oui_fennec
+  build_ouifennec
 fi
