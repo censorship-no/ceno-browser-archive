@@ -107,7 +107,7 @@ export MOZ_TELEMETRY_REPORTING=
 # Build Firefox for Android:
 ac_add_options --enable-application=mobile/android
 ac_add_options --with-android-min-sdk=16
-ac_add_options --target=arm-linux-androideabi
+ac_add_options --target=${TARGET}
 
 # With the following Android SDK and NDK:
 ac_add_options --with-android-sdk="$HOME/.mozbuild/android-sdk-linux"
@@ -128,12 +128,26 @@ EOF
 }
 
 ################################################################################
-cd $DIR; maybe_install_rust; cd - > /dev/null
-cd $DIR; maybe_download_moz_sources; cd - > /dev/null
+(cd $DIR; maybe_install_rust)
+(cd $DIR; maybe_download_moz_sources)
 clone_or_pull_l10n
 ################################################################################
 
 cd ${MOZ_DIR}
+
+case "$ABI" in
+    armeabi-v7a)
+        TARGET=arm-linux-androideabi
+        BUILDDIR=obj-arm-unknown-linux-androideabi
+        ;;
+    arm64-v8a)
+        TARGET=aarch64
+        BUILDDIR=obj-aarch64-unknown-linux-android
+        ;;
+    *)
+        echo $"Unknown ABI, valid values are armeabi-v7a or arm64-v8a."
+        exit 1
+esac
 
 ## https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Simple_Firefox_for_Android_build#I_want_to_work_on_the_back-end
 
@@ -141,6 +155,7 @@ if [ ! -f mozconfig ]; then
     # Install some dependencies and configure Firefox build
     ./mach bootstrap --application-choice=mobile_android --no-interactive
 fi
+
 if [ $IS_RELEASE_BUILD -eq 1 -a $CLOBBER -eq 1 ]; then
   # The release build needs a full rebuild to reset the generated build ID timestamp in buildid.h.
   (read -t 10 -p 'This script is about to clobber any intermediate build files and will perform a full rebuild.
@@ -159,7 +174,7 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
   ./mach package-multi-locale --locales en-US ${LOCALES}
   ./mach gradle app:assembleWithGeckoBinariesRelease
 
-  APK=$(realpath obj-arm-unknown-linux-androideabi-release/gradle/build/mobile/android/app/outputs/apk/\
+  APK=$(realpath ${BUILDDIR}-release/gradle/build/mobile/android/app/outputs/apk/\
 withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
   DATE=$(date  +'%Y-%m-%d_%H%m')
   COMMIT=$(git rev-parse HEAD)
@@ -171,5 +186,5 @@ withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
   ls -alh $(realpath $DEST)
 else
   echo 'Result APKs:'
-  find $(realpath obj-arm-unknown-linux-androideabi/dist) -maxdepth 1 -name 'ceno*en-US.android-arm.apk'
+  find $(realpath ${BUILDDIR}/dist) -maxdepth 1 -name 'ceno*en-US.android*.apk' | grep -v unsigned
 fi
