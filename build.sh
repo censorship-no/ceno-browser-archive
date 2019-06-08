@@ -35,26 +35,32 @@ if [[ $BUILD_OUINET -eq 0 && $BUILD_FENNEC -eq 0 ]]; then
   BUILD_FENNEC=1
 fi
 
-# https://developer.android.com/ndk/guides/abis.html
-export ABI=${ABI:-armeabi-v7a}
+if [[ -z "$TARGETS" ]]; then
+    if [[ -n "$RELEASE_BUILD" ]]; then
+        # Build both targets when making the release build if none are specified
+        TARGETS="armeabi-v7a arm64-v8a"
+    else
+        TARGETS="armeabi-v7a"
+    fi
+fi
 
-function build_ouinet {
+function maybe_build_ouinet {
+    if [[ $BUILD_OUINET -ne 1 ]]; then
+        return
+    fi
     mkdir -p $DIR/build.ouinet
-    cd $DIR/build.ouinet
-    $ROOT/ouinet/scripts/build-android.sh $RELEASE_BUILD
-    cd - > /dev/null
+    (cd $DIR/build.ouinet; $ROOT/ouinet/scripts/build-android.sh $RELEASE_BUILD)
 }
 
-function build_ouifennec {
+function maybe_build_ouifennec {
+    if [[ $BUILD_FENNEC -ne 1 ]]; then
+        return
+    fi
     mkdir -p $DIR/build.fennec
-    cd $DIR/build.fennec
-    $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT $RELEASE_BUILD $NO_CLOBBER
-    cd - > /dev/null
+    (cd $DIR/build.fennec; $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT $RELEASE_BUILD $NO_CLOBBER)
 }
 
-if [[ $BUILD_OUINET -eq 1 ]]; then
-  build_ouinet
-fi
-if [[ $BUILD_FENNEC -eq 1 ]]; then
-  build_ouifennec
-fi
+for ABI in $TARGETS; do
+    maybe_build_ouinet
+    maybe_build_ouifennec
+done
