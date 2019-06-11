@@ -11,8 +11,6 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   # have_rust ? ensure_rust_targets() : install_rust() (note no ensure targets
   # in second branch). See gecko-dev/python/mozboot/mozboot/base.py L652.
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
-  # Touch mozconfig so that scripts/build-fennec.sh doesn't rerun bootstrap
-  touch mozconfig && \
   cd .. && \
   apt-get install -y ccache && \
   /mnt/home/.cargo/bin/cargo install sccache && \
