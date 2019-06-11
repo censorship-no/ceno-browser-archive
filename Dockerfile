@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:experimental
 FROM registry.gitlab.com/equalitie/ouinet:android
 WORKDIR /usr/local/src/ouifennec
+ENV HOME /mnt/home
 ENV SHELL /bin/bash
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   cd gecko-dev && \
@@ -14,4 +15,5 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   touch mozconfig && \
   cd .. && \
   apt-get install -y ccache && \
-  /root/.cargo/bin/cargo install sccache
+  /mnt/home/.cargo/bin/cargo install sccache && \
+  chmod -R 777 /mnt/home
