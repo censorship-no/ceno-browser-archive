@@ -135,6 +135,7 @@ clone_or_pull_l10n
 
 cd ${MOZ_DIR}
 
+ABI=${ABI:-armeabi-v7a}
 case "$ABI" in
     armeabi-v7a)
         TARGET=arm-linux-androideabi
