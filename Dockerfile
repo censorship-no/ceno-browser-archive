@@ -12,6 +12,7 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   # in second branch). See gecko-dev/python/mozboot/mozboot/base.py L652.
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
   cd .. && \
+  ./ouinet/scripts/build-android.sh bootstrap && \
   apt-get install -y ccache && \
   /mnt/home/.cargo/bin/cargo install sccache && \
   chmod -R 777 /mnt/home
