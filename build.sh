@@ -1,23 +1,25 @@
 #!/bin/bash
 
 set -e
+set -x
 
 DIR=`pwd`
-SELF=$0
 ROOT=$(cd $(dirname $0); pwd)
 MOZ_GIT=https://github.com/mozilla/gecko-dev
 BUILD_OUINET=0
 BUILD_FENNEC=0
 RELEASE_BUILD=
 NO_CLOBBER=
-while getopts rofg:x:n option; do
+TARGETS=()
+while getopts rofng:x:t: option; do
     case "$option" in
-    g) MOZ_GIT=${OPTARG};;
     r) RELEASE_BUILD=-r;;
     o) BUILD_OUINET=1;;
     f) BUILD_FENNEC=1;;
     n) NO_CLOBBER=-n;;
+    g) MOZ_GIT=${OPTARG};;
     x) OUINET_VALUES_XML=${OPTARG};;
+    t) TARGETS+=("$OPTARG");;
     esac
 done
 
@@ -35,12 +37,13 @@ if [[ $BUILD_OUINET -eq 0 && $BUILD_FENNEC -eq 0 ]]; then
   BUILD_FENNEC=1
 fi
 
-if [[ -z "$TARGETS" ]]; then
+if [[ ${#TARGETS[@]} -eq 0 ]]; then
+    #Use default values for targets
     if [[ -n "$RELEASE_BUILD" ]]; then
         # Build both targets when making the release build if none are specified
-        TARGETS="armeabi-v7a arm64-v8a"
+        TARGETS=(armeabi-v7a arm64-v8a)
     else
-        TARGETS="armeabi-v7a"
+        TARGETS=(armeabi-v7a)
     fi
 fi
 

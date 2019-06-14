@@ -145,7 +145,7 @@ case "$ABI" in
         BUILDDIR=obj-aarch64-unknown-linux-android
         ;;
     *)
-        echo $"Unknown ABI, valid values are armeabi-v7a or arm64-v8a."
+        echo "Unknown ABI: '$ABI', valid values are armeabi-v7a or arm64-v8a."
         exit 1
 esac
 
