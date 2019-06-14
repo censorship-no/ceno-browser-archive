@@ -49,7 +49,7 @@ function maybe_build_ouinet {
         return
     fi
     mkdir -p $DIR/build.ouinet
-    (cd $DIR/build.ouinet; $ROOT/ouinet/scripts/build-android.sh $RELEASE_BUILD)
+    (cd $DIR/build.ouinet; ABI=$ABI $ROOT/ouinet/scripts/build-android.sh $RELEASE_BUILD)
 }
 
 function maybe_build_ouifennec {
@@ -57,7 +57,7 @@ function maybe_build_ouifennec {
         return
     fi
     mkdir -p $DIR/build.fennec
-    (cd $DIR/build.fennec; $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT $RELEASE_BUILD $NO_CLOBBER)
+    (cd $DIR/build.fennec; ABI=$ABI $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT $RELEASE_BUILD $NO_CLOBBER)
 }
 
 for ABI in $TARGETS; do
