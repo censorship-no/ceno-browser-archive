@@ -1,6 +1,6 @@
 # OuiFennec
 
-[![pipeline status](https://gitlab.com/equalitie/ouifennec/badges/master/pipeline.svg)](https://gitlab.com/equalitie/ouifennec/commits/master)
+[![pipeline status](https://gitlab.com/censorship-no/ceno-browser/badges/master/pipeline.svg)](https://gitlab.com/censorship-no/ceno-browser/commits/master)
 
 A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 
