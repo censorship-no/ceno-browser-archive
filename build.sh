@@ -62,8 +62,7 @@ function maybe_build_ouifennec {
     mkdir -p $DIR/build.fennec
     (cd $DIR/build.fennec; ABI=$ABI $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT $RELEASE_BUILD $NO_CLOBBER)
 }
-
-for ABI in $TARGETS; do
+for ABI in "${TARGETS[@]}"; do
     maybe_build_ouinet
     maybe_build_ouifennec
 done
