@@ -20,7 +20,7 @@ while getopts rofng:x:t: option; do
         g) MOZ_GIT=${OPTARG};;
         x) OUINET_VALUES_XML=${OPTARG};;
         t) TARGETS+=("$OPTARG");;
-        *) echo "Error processing options" >2; exit 1;;
+        *) echo "Error processing options" >&2; exit 1;;
     esac
 done
 
