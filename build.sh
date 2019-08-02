@@ -13,13 +13,14 @@ NO_CLOBBER=
 TARGETS=()
 while getopts rofng:x:t: option; do
     case "$option" in
-    r) RELEASE_BUILD=-r;;
-    o) BUILD_OUINET=1;;
-    f) BUILD_FENNEC=1;;
-    n) NO_CLOBBER=-n;;
-    g) MOZ_GIT=${OPTARG};;
-    x) OUINET_VALUES_XML=${OPTARG};;
-    t) TARGETS+=("$OPTARG");;
+        r) RELEASE_BUILD=-r;;
+        o) BUILD_OUINET=1;;
+        f) BUILD_FENNEC=1;;
+        n) NO_CLOBBER=-n;;
+        g) MOZ_GIT=${OPTARG};;
+        x) OUINET_VALUES_XML=${OPTARG};;
+        t) TARGETS+=("$OPTARG");;
+        *) echo "Error processing options" >2; exit 1;;
     esac
 done
 
@@ -62,6 +63,7 @@ function maybe_build_ouifennec {
     mkdir -p $DIR/build.fennec
     (cd $DIR/build.fennec; ABI=$ABI $ROOT/scripts/build-fennec.sh -m $ROOT/gecko-dev -g $MOZ_GIT $RELEASE_BUILD $NO_CLOBBER)
 }
+
 for ABI in "${TARGETS[@]}"; do
     maybe_build_ouinet
     maybe_build_ouifennec
