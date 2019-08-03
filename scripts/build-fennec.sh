@@ -103,8 +103,12 @@ function write_mozconfig {
     local DIST_DIR=$(realpath $MOZ_DIR/../distribution)
     local L10N_BASE=$DIR/${L10N_DIR}
     local MOZ_OFFICIAL=
+    local ELF_HACK=
     if [ $IS_RELEASE_BUILD -eq 1 ]; then
       MOZ_OFFICIAL="export MOZILLA_OFFICIAL=1 "
+    fi
+    if [ "$ABI" == armeabi-v7a ]; then
+      ELF_HACK="ac_add_options --disable-elf-hack"
     fi
 
     cat > mozconfig <<EOF
@@ -133,7 +137,7 @@ ac_add_options --with-ccache
 
 # See https://mozilla.logbot.info/mobile/20190706#c16442172
 # This can be removed when the bug causing it is fixed.
-ac_add_options --disable-elf-hack
+${ELF_HACK}
 
 mk_add_options AUTOCLOBBER=${AUTOCLOBBER}
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@${BUILDDIR_EXT}
