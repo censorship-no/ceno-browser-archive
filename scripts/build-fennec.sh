@@ -47,6 +47,10 @@ if [ $IS_RELEASE_BUILD -eq 1 -a $CLOBBER -eq 1 ]; then
     AUTOCLOBBER=1
 fi
 
+if [ $IS_RELEASE_BUILD -eq 1 ]; then
+  BUILDDIR_EXT=-release
+fi
+
 function maybe_download_moz_sources {
     # Useful for debuggning when we often need to fetch unmodified versions
     # of Mozilla's source tree (which is about 6GB big).
@@ -98,10 +102,8 @@ function clone_or_pull_l10n {
 function write_mozconfig {
     local DIST_DIR=$(realpath $MOZ_DIR/../distribution)
     local L10N_BASE=$DIR/${L10N_DIR}
-    local BUILDDIR_EXT=
     local MOZ_OFFICIAL=
     if [ $IS_RELEASE_BUILD -eq 1 ]; then
-      BUILDDIR_EXT=-release
       MOZ_OFFICIAL="export MOZILLA_OFFICIAL=1 "
     fi
 
@@ -170,8 +172,12 @@ fi
 
 write_mozconfig
 
+export OUINET_BUILDDIR=$(realpath $DIR/../build.ouinet/build-android-${ABI}${BUILDDIR_EXT}/ouinet/outputs/aar/)
+export OUINET_LIBRARY="ouinet-debug"
+if [ $IS_RELEASE_BUILD -eq 1 ]; then
+    export OUINET_LIBRARY="ouinet-release"
+fi
 # Note: If during building clang crashes, try increasing vagrant's RAM
-export OUINET_BUILDDIR=$(realpath $DIR/../build.ouinet/build-android-$ABI/ouinet/outputs/aar/)
 ./mach build
 ./mach package
 
