@@ -38,8 +38,12 @@ case "$ABI" in
         TARGET=aarch64
         BUILDDIR=obj-aarch64-unknown-linux-android
         ;;
+    x86_64)
+        TARGET=x86_64
+        BUILDDIR=obj-x86_64-unknown-linux-android
+        ;;
     *)
-        echo "Unknown ABI: '$ABI', valid values are armeabi-v7a or arm64-v8a."
+        echo "Unknown ABI: '$ABI', valid values are armeabi-v7a, arm64-v8a and x86_64."
         exit 1
 esac
 
@@ -102,13 +106,23 @@ function clone_or_pull_l10n {
 function write_mozconfig {
     local DIST_DIR=$(realpath $MOZ_DIR/../distribution)
     local L10N_BASE=$DIR/${L10N_DIR}
+
     local MOZ_OFFICIAL=
-    local ELF_HACK=
     if [ $IS_RELEASE_BUILD -eq 1 ]; then
-      MOZ_OFFICIAL="export MOZILLA_OFFICIAL=1 "
+        MOZ_OFFICIAL="export MOZILLA_OFFICIAL=1 "
     fi
+
+    local ELF_HACK=
     if [ "$ABI" == armeabi-v7a ]; then
-      ELF_HACK="ac_add_options --disable-elf-hack"
+        # See https://mozilla.logbot.info/mobile/20190706#c16442172
+        # This can be removed when the bug causing it is fixed.
+        ELF_HACK="ac_add_options --disable-elf-hack"
+    fi
+
+    local LINKER=
+    if [ "$ABI" == armeabi-v7a -o "$ABI" == arm64-v8a ]; then
+        # Use the linked installed by mach instead of the system linker.
+        LINKER="ac_add_options --enable-linker=lld"
     fi
 
     cat > mozconfig <<EOF
@@ -128,16 +142,12 @@ ac_add_options --with-android-ndk="${HOME}/.mozbuild/android-ndk-r15c"
 # Only the versions of clang and ld installed by ./mach bootstrap are supported.
 CC="${HOME}/.mozbuild/clang/bin/clang"
 CXX="${HOME}/.mozbuild/clang/bin/clang++"
-# Use the linked installed by mach instead of the system linker.
-ac_add_options --enable-linker=lld
+${LINKER}
+${ELF_HACK}
 
 mk_add_options 'export RUSTC_WRAPPER=sccache'
 mk_add_options 'export CCACHE_CPP2=yes'
 ac_add_options --with-ccache
-
-# See https://mozilla.logbot.info/mobile/20190706#c16442172
-# This can be removed when the bug causing it is fixed.
-${ELF_HACK}
 
 mk_add_options AUTOCLOBBER=${AUTOCLOBBER}
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@${BUILDDIR_EXT}
