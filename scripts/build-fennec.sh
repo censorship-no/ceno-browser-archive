@@ -55,6 +55,14 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
   BUILDDIR_EXT=-release
 fi
 
+if [ $IS_RELEASE_BUILD -eq 1 ]; then
+    OUINET_AAR=${OUINET_AAR:-${DIR}/../build.ouinet/build-android-${ABI}-release/ouinet/outputs/aar/ouinet-release.aar}
+else
+    OUINET_AAR=${OUINET_AAR:-${DIR}/../build.ouinet/build-android-${ABI}/ouinet/outputs/aar/ouinet-debug.aar}
+fi
+export OUINET_BUILDDIR=$(dirname ${OUINET_AAR})
+export OUINET_LIBRARY=$(basename ${OUINET_AAR} .aar)
+
 function maybe_download_moz_sources {
     # Useful for debuggning when we often need to fetch unmodified versions
     # of Mozilla's source tree (which is about 6GB big).
@@ -186,11 +194,6 @@ fi
 
 write_mozconfig
 
-export OUINET_BUILDDIR=$(realpath $DIR/../build.ouinet/build-android-${ABI}${BUILDDIR_EXT}/ouinet/outputs/aar/)
-export OUINET_LIBRARY="ouinet-debug"
-if [ $IS_RELEASE_BUILD -eq 1 ]; then
-    export OUINET_LIBRARY="ouinet-release"
-fi
 # Note: If during building clang crashes, try increasing vagrant's RAM
 ./mach build
 ./mach package
