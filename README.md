@@ -27,16 +27,7 @@ You can build Ouinet separately with `./build.sh -o`, and correspondingly, you c
 
 # To Make A Release Build
 
-Get the upload keystore file and store it somewhere outside of VCS.
-
-Create a gradle settings file `~/.gradle/gradle.properties` with the following content. Fill in the correct values for the passwords and path to the keystore.
-```
-RELEASE_STORE_FILE=/path/to/upload-keystore.jks
-RELEASE_STORE_PASSWORD=XXXX
-RELEASE_KEY_ALIAS=upload
-RELEASE_KEY_PASSWORD=XXXX
-```
-This is preferable to using the gradle.properties file in gecko-dev as there is no way it can accidently be checked into VCS.
+Get the upload keystore file and store it in ~/upload-keystore.jks. Create a file `~/.upload-keystore.pass` that contains the keystore password on the first line and key password on the second line.
 
 **Optional** Update the version number. CENO is currently using the same version as the release of Firefox it is forked from. If you want to change the version, update the following files:
 ```
