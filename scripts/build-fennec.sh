@@ -17,7 +17,11 @@ IS_RELEASE_BUILD=0
 CLOBBER=1
 AUTOCLOBBER=0
 
-export PATH="$HOME/.cargo/bin:$PATH"
+RELEASE_KEYSTORE_FILE=~/upload-keystore.jks
+RELEASE_KEYSTORE_PASSWORDS=~/.upload-keystore.pass
+RELEASE_KEY_ALIAS=upload
+
+export PATH="$HOME/.mozbuild/android-sdk-linux/build-tools/27.0.3/:$HOME/.cargo/bin:$PATH"
 
 while getopts m:g:rn option; do
     case "$option" in
@@ -203,17 +207,29 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
   ./mach package-multi-locale --locales en-US ${LOCALES}
   ./mach gradle app:assembleWithGeckoBinariesRelease
 
-  APK=$(realpath ${BUILDDIR}-release/gradle/build/mobile/android/app/outputs/apk/\
-withGeckoBinaries/release/app-withGeckoBinaries-release.apk)
+  APK=$(ls -tr ${BUILDDIR}-release/dist/ceno-*.multi.android-arm.apk | tail -1)
+
+  echo "Release APK: "
+  ls -al "$(realpath $APK)"
+
   DATE=$(date  +'%Y-%m-%d_%H%m')
   COMMIT=$(git rev-parse HEAD)
   DEST="${DIR}/ceno_${ABI}_${DATE}_${COMMIT: -8}.apk"
-  cp $APK $DEST
+
+  apksigner sign \
+      --ks "$RELEASE_KEYSTORE_FILE" --ks-pass "file:${RELEASE_KEYSTORE_PASSWORDS}" \
+      --ks-key-alias "$RELEASE_KEY_ALIAS" --key-pass "file:${RELEASE_KEYSTORE_PASSWORDS}" \
+      --out "$DEST" "$APK"
+
   echo
   echo "Signed release APK:"
-  ls -alh $(realpath $APK)
   ls -alh $(realpath $DEST)
 else
-  echo 'Result APKs:'
-  find $(realpath ${BUILDDIR}/dist) -maxdepth 1 -name 'ceno*en-US.android*.apk' | grep -v unsigned
+  APK=$(ls -tr ${BUILDDIR}/dist/ceno-*.android-arm.apk | tail -1)
+
+  apksigner sign --ks ~/.android/debug.keystore --ks-pass pass:android \
+      --ks-key-alias androiddebugkey --key-pass pass:android "$APK"
+  echo
+  echo 'Developer APK:'
+  ls -al $(realpath $APK)
 fi
