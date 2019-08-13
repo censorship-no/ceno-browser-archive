@@ -129,7 +129,7 @@ function write_mozconfig {
     fi
 
     local ELF_HACK=
-    if [ "$ABI" == armeabi-v7a ]; then
+    if [ "$ABI" == armeabi-v7a -o "$ABI" == x86 -o "$ABI" == x86_64 ]; then
         # See https://mozilla.logbot.info/mobile/20190706#c16442172
         # This can be removed when the bug causing it is fixed.
         ELF_HACK="ac_add_options --disable-elf-hack"
@@ -147,12 +147,12 @@ ac_add_options --target=${TARGET}
 # With the following Android SDK and NDK
 ac_add_options --with-android-sdk="${HOME}/.mozbuild/android-sdk-linux"
 # Only the NDK version installed by ./mach bootstrap is supported.
-ac_add_options --with-android-ndk="${HOME}/.mozbuild/android-ndk-r15c"
+ac_add_options --with-android-ndk="${HOME}/.mozbuild/android-ndk-r17b"
 
 # Only the versions of clang and ld installed by ./mach bootstrap are supported.
 CC="${HOME}/.mozbuild/clang/bin/clang"
 CXX="${HOME}/.mozbuild/clang/bin/clang++"
-# Use the linked installed by mach instead of the system linker.
+# Use the linker installed by mach instead of the system linker.
 ac_add_options --enable-linker=lld
 ${ELF_HACK}
 
