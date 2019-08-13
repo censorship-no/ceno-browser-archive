@@ -46,8 +46,12 @@ case "$ABI" in
         TARGET=x86_64
         BUILDDIR=obj-x86_64-unknown-linux-android
         ;;
+    x86)
+        TARGET=i686
+        BUILDDIR=obj-i686-unknown-linux-android
+        ;;
     *)
-        echo "Unknown ABI: '$ABI', valid values are armeabi-v7a, arm64-v8a and x86_64."
+        echo "Unknown ABI: '$ABI', valid values are armeabi-v7a, arm64-v8a, x86 and x86_64."
         exit 1
 esac
 
@@ -207,7 +211,7 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
   ./mach package-multi-locale --locales en-US ${LOCALES}
   ./mach gradle app:assembleWithGeckoBinariesRelease
 
-  APK=$(ls -tr ${BUILDDIR}-release/dist/ceno-*.multi.android-arm.apk | tail -1)
+  APK=$(ls -tr ${BUILDDIR}-release/dist/ceno-*.multi.android-*.apk | tail -1)
 
   echo "Release APK: "
   ls -al "$(realpath $APK)"
@@ -225,7 +229,7 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
   echo "Signed release APK:"
   ls -alh $(realpath $DEST)
 else
-  APK=$(ls -tr ${BUILDDIR}/dist/ceno-*.android-arm.apk | tail -1)
+  APK=$(ls -tr ${BUILDDIR}/dist/ceno-*.android-*.apk | tail -1)
 
   apksigner sign --ks ~/.android/debug.keystore --ks-pass pass:android \
       --ks-key-alias androiddebugkey --key-pass pass:android "$APK"
