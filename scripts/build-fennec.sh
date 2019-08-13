@@ -135,12 +135,6 @@ function write_mozconfig {
         ELF_HACK="ac_add_options --disable-elf-hack"
     fi
 
-    local LINKER=
-    if [ "$ABI" == armeabi-v7a -o "$ABI" == arm64-v8a ]; then
-        # Use the linked installed by mach instead of the system linker.
-        LINKER="ac_add_options --enable-linker=lld"
-    fi
-
     cat > mozconfig <<EOF
 export MOZ_INSTALL_TRACKING=
 export MOZ_TELEMETRY_REPORTING=
@@ -158,7 +152,8 @@ ac_add_options --with-android-ndk="${HOME}/.mozbuild/android-ndk-r15c"
 # Only the versions of clang and ld installed by ./mach bootstrap are supported.
 CC="${HOME}/.mozbuild/clang/bin/clang"
 CXX="${HOME}/.mozbuild/clang/bin/clang++"
-${LINKER}
+# Use the linked installed by mach instead of the system linker.
+ac_add_options --enable-linker=lld
 ${ELF_HACK}
 
 mk_add_options 'export RUSTC_WRAPPER=sccache'
