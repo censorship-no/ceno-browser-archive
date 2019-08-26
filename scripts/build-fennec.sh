@@ -156,7 +156,6 @@ CXX="${HOME}/.mozbuild/clang/bin/clang++"
 ac_add_options --enable-linker=lld
 ${ELF_HACK}
 
-mk_add_options 'export RUSTC_WRAPPER=sccache'
 mk_add_options 'export CCACHE_CPP2=yes'
 ac_add_options --with-ccache
 
