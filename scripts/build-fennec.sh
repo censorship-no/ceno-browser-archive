@@ -212,8 +212,8 @@ if [ $IS_RELEASE_BUILD -eq 1 ]; then
   ls -al "$(realpath $APK)"
 
   DATE=$(date  +'%Y-%m-%d_%H%m')
-  COMMIT=$(git rev-parse HEAD)
-  DEST="${DIR}/ceno_${ABI}_${DATE}_${COMMIT: -8}.apk"
+  COMMIT=$(cd ../ && git rev-parse HEAD)
+  DEST="${DIR}/ceno_${ABI}_${DATE}_${COMMIT:0:8}.apk"
 
   apksigner sign \
       --ks "$RELEASE_KEYSTORE_FILE" --ks-pass "file:${RELEASE_KEYSTORE_PASSWORDS}" \
