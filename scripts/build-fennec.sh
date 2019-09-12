@@ -71,6 +71,11 @@ fi
 export OUINET_BUILDDIR=$(dirname ${OUINET_AAR})
 export OUINET_LIBRARY=$(basename ${OUINET_AAR} .aar)
 
+export CENOBROWSER_DEBUG_KEYSTORE_FILE="$PWD/debug.keystore"
+if [ ! -f "$CENOBROWSER_DEBUG_KEYSTORE_FILE" ]; then
+    keytool -genkeypair -keystore "$CENOBROWSER_DEBUG_KEYSTORE_FILE" -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -deststoretype pkcs12 -dname "cn=Unknown, ou=Unknown, o=Unknown, c=Unknown"
+fi
+
 function maybe_download_moz_sources {
     # Useful for debuggning when we often need to fetch unmodified versions
     # of Mozilla's source tree (which is about 6GB big).
