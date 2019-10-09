@@ -104,6 +104,8 @@ function maybe_install_rust {
         # Install rust https://www.rust-lang.org/en-US/install.html
         curl https://sh.rustup.rs -sSf | sh -s -- -y
         rustup update
+        rustup toolchain install 1.37.0
+        rustup default 1.37.0
         # https://bugzilla.mozilla.org/show_bug.cgi?id=1384231
         rustup target add armv7-linux-androideabi
     fi
