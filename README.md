@@ -19,8 +19,8 @@ sudo docker run \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
   --mount type=bind,source="$(pwd)/root.build/.cache",target=/root/.cache \
   --mount type=bind,source="$(pwd)/root.build/.ccache",target=/root/.ccache \
-  registry.gitlab.com/censorship-no/ceno-browser:bootstrap
-./build.sh
+  registry.gitlab.com/censorship-no/ceno-browser:bootstrap \
+  ./build.sh
 ```
 
 # Developer Build
