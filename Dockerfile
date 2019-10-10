@@ -3,6 +3,15 @@ FROM registry.gitlab.com/equalitie/ouinet:android
 WORKDIR /usr/local/src/ouifennec
 ENV HOME /mnt/home
 ENV SHELL /bin/bash
+RUN \
+  # Bootstrapping below installs the latest version of Rust,
+  # which may break the build,
+  # so pin one that we know works.
+  # See <https://bugzilla.mozilla.org/show_bug.cgi?id=1585099>.
+  wget -q -O- https://sh.rustup.rs | sh -s -- -y && \
+  ~/.cargo/bin/rustup update && \
+  ~/.cargo/bin/rustup toolchain install 1.37.0 && \
+  ~/.cargo/bin/rustup default 1.37.0
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   cd gecko-dev && \
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
