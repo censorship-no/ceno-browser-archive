@@ -16,6 +16,7 @@ sudo DOCKER_BUILDKIT=1 docker build -t registry.gitlab.com/censorship-no/ceno-br
 touch gecko-dev/mozconfig # avoid bootstrap already done above
 mkdir -p root.build/.cache/ root.build/.ccache/ # build cache will be stored in $PWD/ouinet.build, $PWD/ouifennec.build, and $PWD/root.build
 sudo docker run \
+  --rm -it \
   --user $(id -u):$(id -g) \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
   --mount type=bind,source="$(pwd)/root.build/.cache",target=/root/.cache \
@@ -23,6 +24,14 @@ sudo docker run \
   registry.gitlab.com/censorship-no/ceno-browser:bootstrap \
   ./build.sh
 ```
+
+You can run the last command several times, and already built artifacts will be kept in different cache directories under the current directory and reused.
+
+If you want to run arbitrary commands in the container, drop the `./build.sh` argument at the end.
+
+If you need to run commands as `root` (e.g. to install additional packages), you can drop the `--user` option and its argument, but be warned that running `./build.sh` will create root-owned files and directories in your cache and source directories which you may have problems to reuse or delete later on.
+
+If you want to reuse the container itself, remove the `--rm` option and `./build.sh` argument and add `--name SOMETHING`. After exiting the container, run `sudo docker start -ia SOMETHING` to start it again.
 
 # Developer Build
 Build the APK locally with the following script:
