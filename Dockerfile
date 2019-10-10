@@ -12,6 +12,9 @@ RUN \
   ~/.cargo/bin/rustup update && \
   ~/.cargo/bin/rustup toolchain install 1.37.0 && \
   ~/.cargo/bin/rustup default 1.37.0
+RUN \
+  # See <https://bugzilla.mozilla.org/show_bug.cgi?id=1384231>.
+  ~/.cargo/bin/rustup target add armv7-linux-androideabi
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   cd gecko-dev && \
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
