@@ -14,5 +14,5 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   cd .. && \
   ./ouinet/scripts/build-android.sh bootstrap && \
   apt-get install -y ccache && \
-  /mnt/home/.cargo/bin/cargo install sccache && \
-  chmod -R 777 /mnt/home
+  ~/.cargo/bin/cargo install sccache && \
+  chmod -R 777 ~
