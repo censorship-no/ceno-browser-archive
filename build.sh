@@ -1,6 +1,14 @@
 #!/bin/bash
 
 set -e
+
+if [ "$(id -u)" = 0 ]; then
+    echo "Running this script as root is discouraged."
+    echo "If you are sure you want to continue, press Enter."
+    echo "Otherwise press Ctrl+C."
+    read
+fi
+
 set -x
 
 DIR=`pwd`
