@@ -29,7 +29,7 @@ You can run the last command several times, and already built artifacts will be 
 
 If you want to run arbitrary commands in the container, drop the `./build.sh` argument at the end.
 
-If you need to run commands as `root` (e.g. to install additional packages), you can drop the `--user` option and its argument, but be warned that running `./build.sh` will create root-owned files and directories in your cache and source directories which you may have problems to reuse or delete later on.
+If you need to run commands as `root` (e.g. to install additional packages), you can drop the `--user` option and its argument, but be warned that running `./build.sh` as is will create root-owned files and directories in your cache and source directories which you may have problems to reuse or delete later on. To avoid that, you can run `id -u` and `id -g` at the host machine to get your user and group IDs there, then run `gosu HOST_USER_ID:HOST_GROUP_ID ./build.sh` in the container.
 
 If you want to reuse the container itself, remove the `--rm` option and `./build.sh` argument and add `--name SOMETHING`. After exiting the container, run `sudo docker start -ia SOMETHING` to start it again.
 

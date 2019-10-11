@@ -15,6 +15,10 @@ RUN \
 RUN \
   # See <https://bugzilla.mozilla.org/show_bug.cgi?id=1384231>.
   ~/.cargo/bin/rustup target add armv7-linux-androideabi
+RUN apt-get update && apt-get install -y \
+  ccache \
+  gosu \
+  && rm -rf /var/lib/apt/lists/*
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   cd gecko-dev && \
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
@@ -25,6 +29,5 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
   cd .. && \
   ./ouinet/scripts/build-android.sh bootstrap && \
-  apt-get install -y ccache && \
   ~/.cargo/bin/cargo install sccache && \
   chmod -R 777 ~
