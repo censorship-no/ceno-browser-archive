@@ -15,7 +15,7 @@ RUN \
 RUN \
   # See <https://bugzilla.mozilla.org/show_bug.cgi?id=1384231>.
   ~/.cargo/bin/rustup target add armv7-linux-androideabi
-RUN apt-get update && apt-get install -y ccache gosu
+RUN apt-get update && apt-get install -y ccache gosu ninja-build libnotify4
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   cd gecko-dev && \
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
