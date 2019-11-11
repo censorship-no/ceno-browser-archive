@@ -27,6 +27,7 @@ build:
   script:
     - mkdir -p root.build/.cache/ root.build/.ccache/ /dev/shm/.android/
     - echo "$CENO_DEBUG_KEYSTORE" | base64 -d - > debug.keystore
+    - export OUINET_VALUES_XML="$OUINET_VALUES_XML"
     - touch gecko-dev/mozconfig
     - docker run --rm --user $(id -u):$(id -g) --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build/.cache",target=/mnt/home/.cache --mount type=bind,source="$(pwd)/root.build/.ccache",target=/mnt/home/.ccache $CI_REGISTRY_IMAGE:bootstrap ./build.sh
   artifacts:
