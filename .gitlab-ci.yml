@@ -31,7 +31,14 @@ build:
     - echo "$CENO_DEBUG_KEYSTORE" | base64 -d - > debug.keystore
     - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" ouinet.xml && export OUINET_VALUES_XML=ouinet.xml; fi
     - touch gecko-dev/mozconfig
-    - docker run --rm --user $(id -u):$(id -g) --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec --mount type=bind,source="$(pwd)/root.build/.cache",target=/mnt/home/.cache --mount type=bind,source="$(pwd)/root.build/.ccache",target=/mnt/home/.ccache --env OUINET_VALUES_XML $CI_REGISTRY_IMAGE:bootstrap ./build.sh
+    - docker run \
+        --rm --user $(id -u):$(id -g) \
+        --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
+        --mount type=bind,source="$(pwd)/root.build/.cache",target=/mnt/home/.cache \
+        --mount type=bind,source="$(pwd)/root.build/.ccache",target=/mnt/home/.ccache \
+        --env OUINET_VALUES_XML \
+        $CI_REGISTRY_IMAGE:bootstrap \
+        ./build.sh
   artifacts:
     paths:
       - gecko-dev/obj-*/dist/*.apk
