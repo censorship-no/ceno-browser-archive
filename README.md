@@ -33,6 +33,8 @@ If you need to run commands as `root` (e.g. to install additional packages), you
 
 If you want to reuse the container itself, remove the `--rm` option and `./build.sh` argument and add `--name SOMETHING`. After exiting the container, run `sudo docker start -ia SOMETHING` to start it again.
 
+Also, please note that running an APK built with the default `ouinet.xml` configuration is quite pointless, but it may help you check that the build succeeds. If you want a useful configuration, copy your `ouinet.xml` file to the current directory and add the parameters `-x ouinet.xml` after `./build.sh`.
+
 # Developer Build
 Build the APK locally with the following script:
 ```
