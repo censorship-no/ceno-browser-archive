@@ -63,6 +63,15 @@ Go for lunch while the build compiles.
 # Adding language support 
 The locales that are included in the APK are defined in `scripts/build-fennec.sh`. To add support for more languages, update the `LOCALES` variable in this script. The l10n files will be downloaded from the Mozilla repo by the build script to `build.fennec/l10n-central/`.
 
+# Uninstall using `adb`
+
+The ceno-browser's application package name is `ie.equalit.ceno` and thus to
+uninstall the app one would invoke:
+
+```
+$ adb uninstall ie.equalit.ceno
+```
+
 # TODO
 
 ## Technical
