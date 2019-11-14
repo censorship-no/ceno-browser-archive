@@ -67,7 +67,4 @@ The locales that are included in the APK are defined in `scripts/build-fennec.sh
 
 ## Technical
 
-* Set up ouinet with injector's IPFS ID, IP and I2P addresses and
-  injector's creadentials.
-* Allow setting up Injector's values using QR codes
 * Get rid of our [`OUINET_QUICK_HACK`](https://github.com/equalitie/gecko-dev/commit/2de7aad32981201d5a75cfbc9c49acf38f21dc0c)
