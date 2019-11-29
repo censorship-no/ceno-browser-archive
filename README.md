@@ -40,18 +40,13 @@ Build the APK locally with the following script:
 ```
 ./build.sh -x /path/to/ouinet.xml
 ```
-You can build Ouinet separately with `./build.sh -o`, and correspondingly, you can build and package just the browser with `./build.sh -fx /path/to/ouinet.xml`
 
 # To Make A Release Build
 
 Get the upload keystore file and store it in `~/upload-keystore.jks`. Create a file `~/.upload-keystore.pass` that contains the keystore password on the first line and key password on the second line.
 
-**Optional** Update the version number. CENO is currently using the same version as the release of Firefox it is forked from. If you want to change the version, update the following files:
-```
-gecko-dev/browser/config/version.txt
-gecko-dev/browser/config/version_display.txt
-gecko-dev/config/milestone.txt
-```
+**Optional** Update the version number. CENO is currently using the same version as the release of Firefox it is forked from. If you want to change the version, call `build.sh -v <version-number>` to update the relevant numbers in your build.
+
 The *build number* which corresponds to the version code in the APK is automatically generated from the current timestamp so it does not need to manually updated.
 
 In the ouifennec directory:
