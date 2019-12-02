@@ -15,9 +15,14 @@ and can't be changed during the runtime (See TODO).
 sudo DOCKER_BUILDKIT=1 docker build -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap .
 touch gecko-dev/mozconfig # avoid bootstrap already done above
 mkdir -p root.build/.cache/ root.build/.ccache/ # build cache will be stored in $PWD/ouinet.build, $PWD/ouifennec.build, and $PWD/root.build
+
+# Notes on enabling fuse inside docker
+# https://stackoverflow.com/questions/48402218/fuse-inside-docker
+
 sudo docker run \
   --rm -it \
   --user $(id -u):$(id -g) \
+  --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
   --mount type=bind,source="$(pwd)/root.build/.cache",target=/root/.cache \
   --mount type=bind,source="$(pwd)/root.build/.ccache",target=/root/.ccache \
