@@ -229,9 +229,8 @@ MOZCONFIG_BASE
         cp_if_different "${OUINET_CONFIG_XML}" "${SOURCE_DIR_RW}"/${MOZ_DIR}/mobile/android/app/src/main/res/values/ouinet.xml
     fi
     if [[ -n $VERSION_NUMBER ]]; then
-        # TODO: Which of these files should we be patching?
         echo "${VERSION_NUMBER}" > "${ABI_BUILD_DIR}"/ouifennec-version.txt
-        #cp_if_different "${ABI_BUILD_DIR}"/ouifennec-version.txt "${SOURCE_DIR_RW}"/${MOZ_DIR}/browser/config/version.txt
+        cp_if_different "${ABI_BUILD_DIR}"/ouifennec-version.txt "${SOURCE_DIR_RW}"/${MOZ_DIR}/browser/config/version.txt
         cp_if_different "${ABI_BUILD_DIR}"/ouifennec-version.txt "${SOURCE_DIR_RW}"/${MOZ_DIR}/browser/config/version_display.txt
         #cp_if_different "${ABI_BUILD_DIR}"/ouifennec-version.txt "${SOURCE_DIR_RW}"/${MOZ_DIR}/config/milestone.txt
     fi
