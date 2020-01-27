@@ -9,7 +9,7 @@ SUPPORTED_ABIS=(armeabi-v7a arm64-v8a x86 x86_64)
 DEFAULT_ABI=armeabi-v7a
 RELEASE_KEYSTORE_KEY_ALIAS=upload
 
-
+CLEAN=false
 BUILD_RELEASE=false
 BUILD_DEBUG=false
 ABIS=()
@@ -21,6 +21,7 @@ RELEASE_KEYSTORE_PASSWORDS_FILE=
 function usage {
     echo "build.sh -- Builds ouinet and ouifennec for android"
     echo "Usage: build-fennec.sh [OPTION]..."
+    echo "  -c                            Remove build files (keep downloaded dependencies)"
     echo "  -r                            Build a release build. Requires -x, -v, -k, and -p."
     echo "  -d                            Build a debug build. Will optionally apply -x and -v. This is the default."
     echo "  -a <abi>                      Build for android ABI <abi>. Can be specified multiple times."
@@ -37,8 +38,11 @@ function usage {
     exit 1
 }
 
-while getopts rda:x:v:k:p: option; do
+while getopts crda:x:v:k:p: option; do
     case "$option" in
+        c)
+            CLEAN=true
+            ;;
         r)
             BUILD_RELEASE=true
             ;;
@@ -79,6 +83,14 @@ while getopts rda:x:v:k:p: option; do
             usage
     esac
 done
+
+if $CLEAN; then
+    rm *.apk || true
+    rm *.aar || true
+    rm -rf ouinet-*-{debug,release}/build-android-*-{debug,release} || true
+    rm -rf fennec
+    exit
+fi
 
 $BUILD_RELEASE || $BUILD_DEBUG || BUILD_DEBUG=true
 
