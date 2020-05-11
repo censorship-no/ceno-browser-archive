@@ -45,7 +45,8 @@ build:
       ./build.sh
   artifacts:
     paths:
-      - gecko-dev/obj-*/dist/*.apk
+      - *.aar
+      - *.apk
     expire_in: 6h
   cache:
     key: single
