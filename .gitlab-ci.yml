@@ -48,8 +48,8 @@ build:
       ./build.sh
   artifacts:
     paths:
-      - *.aar
-      - *.apk
+      - "*.aar"
+      - "*.apk"
     expire_in: 6h
   cache:
     key: single
