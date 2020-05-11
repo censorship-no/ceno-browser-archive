@@ -19,7 +19,10 @@ build-image:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build --pull -t $CI_REGISTRY_IMAGE:bootstrap .
     - docker push $CI_REGISTRY_IMAGE:bootstrap
-    - docker build --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) -t $CI_REGISTRY_IMAGE:bootstrap-$USER - < Dockerfile.user
+    - >
+      docker build
+      --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g)
+      -t $CI_REGISTRY_IMAGE:bootstrap-$USER - < Dockerfile.user
     - docker push $CI_REGISTRY_IMAGE:bootstrap-$USER
 
 build:
