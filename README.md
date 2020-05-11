@@ -13,7 +13,7 @@ and can't be changed during the runtime (See TODO).
 
 ```sh
 sudo DOCKER_BUILDKIT=1 docker build -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap .
-touch gecko-dev/mozconfig # avoid bootstrap already done above
+mkdir fennec && touch fennec/.finished-bootstrap # avoid bootstrap already done above
 mkdir -p root.build/.cache/ root.build/.ccache/ # build cache will be stored in $PWD/ouinet.build, $PWD/ouifennec.build, and $PWD/root.build
 
 # Notes on enabling fuse inside docker

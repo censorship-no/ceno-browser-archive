@@ -30,7 +30,7 @@ build:
     - mkdir -p root.build/.cache/ root.build/.ccache/ /dev/shm/.android/
     - echo "$CENO_DEBUG_KEYSTORE" | base64 -d - > debug.keystore
     - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" ouinet.xml && export OUINET_VALUES_XML=ouinet.xml; fi
-    - touch gecko-dev/mozconfig
+    - mkdir fennec && touch fennec/.finished-bootstrap
     - >
       docker run
       --rm --user $(id -u):$(id -g)
