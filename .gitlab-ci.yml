@@ -36,6 +36,7 @@ build:
     - >
       docker run
       --rm --user $(id -u):$(id -g)
+      --device /dev/fuse --cap-add SYS_ADMIN
       --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec
       --mount type=bind,source="$(pwd)/root.build/.cache",target=/mnt/home/.cache
       --mount type=bind,source="$(pwd)/root.build/.ccache",target=/mnt/home/.ccache
