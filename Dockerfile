@@ -30,5 +30,4 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   # (note no ensure targets in second branch).
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
   cd .. && \
-  ./ouinet/scripts/build-android.sh bootstrap && \
   chmod -R 777 ~
