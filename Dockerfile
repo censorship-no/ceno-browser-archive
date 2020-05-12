@@ -1,7 +1,6 @@
 # syntax=docker/dockerfile:experimental
 FROM registry.gitlab.com/equalitie/ouinet:android
 WORKDIR /usr/local/src/ouifennec
-ENV HOME /mnt/home
 ENV SHELL /bin/bash
 RUN \
   # Bootstrapping below installs the latest version of Rust,
@@ -28,6 +27,4 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   # It won't normally due to logic being such:
   # `have_rust ? ensure_rust_targets() : install_rust()`
   # (note no ensure targets in second branch).
-  ./mach bootstrap --application-choice=mobile_android --no-interactive && \
-  cd .. && \
-  chmod -R 777 ~
+  ./mach bootstrap --application-choice=mobile_android --no-interactive

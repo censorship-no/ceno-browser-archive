@@ -30,8 +30,8 @@ sudo docker run \
   --user $(id -u):$(id -g) \
   --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
-  --mount type=bind,source="$(pwd)/root.build/.cache",target=/mnt/home/.cache \
-  --mount type=bind,source="$(pwd)/root.build/.ccache",target=/mnt/home/.ccache \
+  --mount type=bind,source="$(pwd)/root.build/.cache",target=/root/.cache \
+  --mount type=bind,source="$(pwd)/root.build/.ccache",target=/root/.ccache \
   registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER \
   ./build.sh
 ```

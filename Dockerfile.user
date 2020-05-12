@@ -15,4 +15,4 @@ RUN addgroup --quiet --gid "${USER_GID}" ceno \
  && adduser --quiet --home ~ --no-create-home \
             --uid "${USER_UID}" --ingroup ceno \
             --disabled-password --gecos CENO ceno \
- && chown ceno:ceno ~
+ && chown -R ceno:ceno ~
