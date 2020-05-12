@@ -22,11 +22,11 @@ RUN \
 RUN apt-get update && apt-get install -y ccache gosu ninja-build unionfs-fuse libnotify4
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   cd gecko-dev && \
-  ./mach bootstrap --application-choice=mobile_android --no-interactive && \
-  # Invoke twice to make sure gecko-dev/python/mozboot/mozboot/base.py::
-  # ensure_rust_targets() gets called. It won't normally due to logic being such:
-  # have_rust ? ensure_rust_targets() : install_rust() (note no ensure targets
-  # in second branch). See gecko-dev/python/mozboot/mozboot/base.py L652.
+  # This would need to be invoked twice if we hadn't installed Rust above,
+  # so that `gecko-dev/python/mozboot/mozboot/base.py::ensure_rust_targets` gets called.
+  # It won't normally due to logic being such:
+  # `have_rust ? ensure_rust_targets() : install_rust()`
+  # (note no ensure targets in second branch).
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
   cd .. && \
   ./ouinet/scripts/build-android.sh bootstrap && \
