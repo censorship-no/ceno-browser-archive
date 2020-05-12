@@ -20,6 +20,7 @@ RUN \
   # That one might work for us, but it still needs testing.
   ~/.cargo/bin/rustup target add armv7-linux-androideabi
 RUN apt-get update && apt-get install -y ccache gosu ninja-build unionfs-fuse libnotify4
+RUN ~/.cargo/bin/cargo install sccache
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   cd gecko-dev && \
   # This would need to be invoked twice if we hadn't installed Rust above,
@@ -30,5 +31,4 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
   cd .. && \
   ./ouinet/scripts/build-android.sh bootstrap && \
-  ~/.cargo/bin/cargo install sccache && \
   chmod -R 777 ~
