@@ -1,5 +1,6 @@
 stages:
   - build-image
+  - build-user-image
   - build
 
 variables:
@@ -13,13 +14,22 @@ build-image:
       - gecko-dev/build/
       - ouinet/
       - Dockerfile
-      - Dockerfile.user
   tags:
     - shell
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build --pull -t $CI_REGISTRY_IMAGE:bootstrap .
     - docker push $CI_REGISTRY_IMAGE:bootstrap
+
+build-user-image:
+  stage: build-user-image
+  only:
+    changes:
+      - Dockerfile.user
+  tags:
+    - shell
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - >
       docker build
       --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g)
