@@ -23,9 +23,6 @@ build-image:
 
 build-user-image:
   stage: build-user-image
-  only:
-    changes:
-      - Dockerfile.user
   tags:
     - shell
   script:
