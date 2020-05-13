@@ -19,8 +19,7 @@ sudo DOCKER_BUILDKIT=1 docker build --pull \
   --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
 
-mkdir -p fennec/dot-android # this will hold various Gradle cached stuff
-touch fennec/.finished-bootstrap # avoid bootstrap already done above
+mkdir fennec && touch fennec/.finished-bootstrap # avoid bootstrap already done above
 
 # Notes on enabling fuse inside docker
 # https://stackoverflow.com/questions/48402218/fuse-inside-docker
@@ -30,7 +29,6 @@ sudo docker run \
   --user $(id -u):$(id -g) \
   --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
-  --mount type=bind,source="$(pwd)/fennec/dot-android",target=/root/.android \
   registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER \
   ./build.sh
 ```
