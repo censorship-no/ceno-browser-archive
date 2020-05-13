@@ -20,7 +20,6 @@ sudo docker build \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
 
 mkdir fennec && touch fennec/.finished-bootstrap # avoid bootstrap already done above
-mkdir -p root.build/.ccache/ # build cache will be stored in $PWD/ouinet.build, $PWD/ouifennec.build, and $PWD/root.build
 
 # Notes on enabling fuse inside docker
 # https://stackoverflow.com/questions/48402218/fuse-inside-docker
@@ -30,16 +29,15 @@ sudo docker run \
   --user $(id -u):$(id -g) \
   --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
-  --mount type=bind,source="$(pwd)/root.build/.ccache",target=/root/.ccache \
   registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER \
   ./build.sh
 ```
 
-You can run the last command several times, and already built artifacts will be kept in different cache directories under the current directory and reused.
+You can run the last command several times, and already built artifacts will be kept in the `fennec` build directory under the current directory and reused.
 
 If you want to run arbitrary commands in the container, drop the `./build.sh` argument at the end.
 
-If you need to run commands as `root` (e.g. to install additional packages), you can drop the `--user` option and its argument and use the `.../ceno-browser:bootstrap` image instead of the `bootstrap-$USER` one, but be warned that running `./build.sh` as is will create root-owned files and directories in your cache and source directories which you may have problems to reuse or delete later on. To avoid that, you can run `id -u` and `id -g` at the host machine to get your user and group IDs there, then run `gosu HOST_USER_ID:HOST_GROUP_ID ./build.sh` in the container.
+If you need to run commands as `root` (e.g. to install additional packages), you can drop the `--user` option and its argument and use the `.../ceno-browser:bootstrap` image instead of the `bootstrap-$USER` one, but be warned that running `./build.sh` as is will create root-owned files and directories in your build directory which you may have problems to reuse or delete later on. To avoid that, you can run `id -u` and `id -g` at the host machine to get your user and group IDs there, then run `gosu HOST_USER_ID:HOST_GROUP_ID ./build.sh` in the container.
 
 If you want to reuse the container itself, remove the `--rm` option and `./build.sh` argument and add `--name SOMETHING`. After exiting the container, run `sudo docker start -ia SOMETHING` to start it again.
 
