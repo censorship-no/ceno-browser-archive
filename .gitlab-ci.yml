@@ -40,7 +40,8 @@ build:
   # Please note that running an APK built with the default `ouinet.xml` configuration
   # is quite pointless, but it may help you check that the build succeeds.
   script:
-    - mkdir fennec && touch fennec/.finished-bootstrap
+    - mkdir -p fennec/dot-android
+    - touch fennec/.finished-bootstrap
     - echo "$CENO_DEBUG_KEYSTORE" | base64 -d > fennec/debug.keystore
     - echo "$CENO_DEBUG_KEYSTORE_PASSWORD" | base64 -d > fennec/debug.keystore-passwords
     - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" fennec/ouinet.xml; fi
@@ -49,6 +50,7 @@ build:
       --rm --user $(id -u):$(id -g)
       --device /dev/fuse --cap-add SYS_ADMIN
       --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec
+      --mount type=bind,source="$(pwd)/fennec/dot-android",target=/root/.android
       $CI_REGISTRY_IMAGE:bootstrap-$USER
       ./build.sh ${OUINET_VALUES_XML:+-x fennec/ouinet.xml}
   artifacts:
