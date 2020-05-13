@@ -47,7 +47,7 @@ build:
     - >
       docker run
       --rm --user $(id -u):$(id -g)
-      --device /dev/fuse --cap-add SYS_ADMIN
+      --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined
       --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec
       $CI_REGISTRY_IMAGE:bootstrap-$USER
       ./build.sh ${OUINET_VALUES_XML:+-x fennec/ouinet.xml}
