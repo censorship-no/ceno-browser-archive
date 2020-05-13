@@ -40,16 +40,16 @@ build:
   # Please note that running an APK built with the default `ouinet.xml` configuration
   # is quite pointless, but it may help you check that the build succeeds.
   script:
-    - echo "$CENO_DEBUG_KEYSTORE" | base64 -d - > debug.keystore
-    - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" ouinet.xml; fi
     - mkdir fennec && touch fennec/.finished-bootstrap
+    - echo "$CENO_DEBUG_KEYSTORE" | base64 -d - > debug.keystore
+    - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" fennec/ouinet.xml; fi
     - >
       docker run
       --rm --user $(id -u):$(id -g)
       --device /dev/fuse --cap-add SYS_ADMIN
       --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec
       $CI_REGISTRY_IMAGE:bootstrap-$USER
-      ./build.sh ${OUINET_VALUES_XML:+-x ouinet.xml}
+      ./build.sh ${OUINET_VALUES_XML:+-x fennec/ouinet.xml}
   artifacts:
     paths:
       - "*.aar"
