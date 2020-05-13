@@ -28,7 +28,7 @@ RUN \
 
 RUN apt-get update && apt-get install -y ccache gosu ninja-build unionfs-fuse libnotify4
 
-RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
+RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   cd gecko-dev && \
   # This would need to be invoked twice if we hadn't installed Rust above,
   # so that `gecko-dev/python/mozboot/mozboot/base.py::ensure_rust_targets` gets called.
