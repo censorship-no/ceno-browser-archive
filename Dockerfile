@@ -1,7 +1,14 @@
 # syntax=docker/dockerfile:experimental
+
+# Use this configuration to build CENO
+# with a root user inside of the build container.
+
 FROM registry.gitlab.com/equalitie/ouinet:android
+
 WORKDIR /usr/local/src/ouifennec
+# Required by some task in Fennec bootstrap.
 ENV SHELL /bin/bash
+
 RUN \
   # Bootstrapping below installs the latest version of Rust,
   # which may break the build,
@@ -18,7 +25,9 @@ RUN \
   # adds target `thumbv7neon-linux-androideabi` instead of this one for Rust >= 1.33.
   # That one might work for us, but it still needs testing.
   ~/.cargo/bin/rustup target add armv7-linux-androideabi
+
 RUN apt-get update && apt-get install -y ccache gosu ninja-build unionfs-fuse libnotify4
+
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   cd gecko-dev && \
   # This would need to be invoked twice if we hadn't installed Rust above,
