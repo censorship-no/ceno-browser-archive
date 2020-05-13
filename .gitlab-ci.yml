@@ -40,7 +40,7 @@ build:
   # Please note that running an APK built with the default `ouinet.xml` configuration
   # is quite pointless, but it may help you check that the build succeeds.
   script:
-    - mkdir fennec && fennec/.finished-bootstrap
+    - mkdir fennec && touch fennec/.finished-bootstrap
     - echo "$CENO_DEBUG_KEYSTORE" | base64 -d > fennec/debug.keystore
     - echo "$CENO_DEBUG_KEYSTORE_PASSWORD" | base64 -d > fennec/debug.keystore-passwords
     - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" fennec/ouinet.xml; fi
