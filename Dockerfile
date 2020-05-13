@@ -19,7 +19,6 @@ RUN \
   # That one might work for us, but it still needs testing.
   ~/.cargo/bin/rustup target add armv7-linux-androideabi
 RUN apt-get update && apt-get install -y ccache gosu ninja-build unionfs-fuse libnotify4
-RUN ~/.cargo/bin/cargo install --version 0.2.13 --locked sccache
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,rw \
   cd gecko-dev && \
   # This would need to be invoked twice if we hadn't installed Rust above,
