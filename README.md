@@ -15,7 +15,7 @@ and can't be changed during the runtime (See TODO).
 sudo DOCKER_BUILDKIT=1 docker build --pull \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap .
 
-sudo docker build \
+sudo DOCKER_BUILDKIT=1 docker build \
   --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
 
