@@ -149,6 +149,11 @@ function fetch_l10n {
 }
 
 function bootstrap_fennec {
+    local COOKIE_FILE="${BUILD_DIR}"/.finished-bootstrap
+    if [[ -e "${COOKIE_FILE}" ]]; then
+        return
+    fi
+
     if ! which rustc >/dev/null; then
         # Install rust https://www.rust-lang.org/en-US/install.html
         curl https://sh.rustup.rs -sSf | sh -s -- -y
@@ -157,13 +162,10 @@ function bootstrap_fennec {
         rustup default 1.37.0
     fi
 
-    local COOKIE_FILE="${BUILD_DIR}"/.finished-bootstrap
-    if [[ ! -e $COOKIE_FILE ]]; then
-        pushd "${SOURCE_DIR_RW}"/${MOZ_DIR} >/dev/null
-        ./mach bootstrap --application-choice=mobile_android --no-interactive
-        popd >/dev/null
-        touch "${COOKIE_FILE}"
-    fi
+    pushd "${SOURCE_DIR_RW}"/${MOZ_DIR} >/dev/null
+    ./mach bootstrap --application-choice=mobile_android --no-interactive
+    popd >/dev/null
+    touch "${COOKIE_FILE}"
 }
 
 function write_build_config {
@@ -196,8 +198,9 @@ CXX="${MOZBUILD_STATE_PATH}/clang/bin/clang++"
 # Use the linker installed by mach instead of the system linker.
 ac_add_options --enable-linker=lld
 
-#mk_add_options 'export CCACHE_CPP2=yes'
-#ac_add_options --with-ccache
+mk_add_options 'export CCACHE_COMPRESS=""'
+mk_add_options 'export CCACHE_CPP2=yes'
+ac_add_options --with-ccache
 
 mk_add_options MOZ_OBJDIR="${ABI_BUILD_DIR}"
 

@@ -1,0 +1,4 @@
+# Nothing is needed to create the image except for Fennec source,
+# which needs to be mounted for running the bootstrap.
+**
+!gecko-dev/**

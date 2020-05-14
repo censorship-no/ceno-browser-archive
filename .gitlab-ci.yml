@@ -1,5 +1,6 @@
 stages:
   - build-image
+  - build-user-image
   - build
 
 variables:
@@ -11,7 +12,6 @@ build-image:
   only:
     changes:
       - gecko-dev/build/
-      - ouinet/
       - Dockerfile
   tags:
     - shell
@@ -20,6 +20,18 @@ build-image:
     - docker build --pull -t $CI_REGISTRY_IMAGE:bootstrap .
     - docker push $CI_REGISTRY_IMAGE:bootstrap
 
+build-user-image:
+  stage: build-user-image
+  tags:
+    - shell
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - >
+      docker build --pull
+      --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g)
+      -t $CI_REGISTRY_IMAGE:bootstrap-$USER - < Dockerfile.user
+    - docker push $CI_REGISTRY_IMAGE:bootstrap-$USER
+
 build:
   stage: build
   tags:
@@ -27,22 +39,22 @@ build:
   # Please note that running an APK built with the default `ouinet.xml` configuration
   # is quite pointless, but it may help you check that the build succeeds.
   script:
-    - mkdir -p root.build/.cache/ root.build/.ccache/ /dev/shm/.android/
-    - echo "$CENO_DEBUG_KEYSTORE" | base64 -d - > debug.keystore
-    - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" ouinet.xml && export OUINET_VALUES_XML=ouinet.xml; fi
-    - touch gecko-dev/mozconfig
+    - mkdir -p _cache/_android _cache/_ccache _cache/_gradle
+    - mkdir -p fennec && touch fennec/.finished-bootstrap
+    - echo "$CENO_DEBUG_KEYSTORE" | base64 -d > _cache/_android/debug.keystore
+    - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" ouinet.xml; fi
     - >
       docker run
       --rm --user $(id -u):$(id -g)
+      --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined
       --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec
-      --mount type=bind,source="$(pwd)/root.build/.cache",target=/mnt/home/.cache
-      --mount type=bind,source="$(pwd)/root.build/.ccache",target=/mnt/home/.ccache
-      --env OUINET_VALUES_XML
-      $CI_REGISTRY_IMAGE:bootstrap
-      ./build.sh
+      --mount type=bind,source="$(pwd)/_cache",target=/root/.cache
+      $CI_REGISTRY_IMAGE:bootstrap-$USER
+      ./build.sh ${OUINET_VALUES_XML:+-x ouinet.xml}
   artifacts:
     paths:
-      - gecko-dev/obj-*/dist/*.apk
+      - "*.aar"
+      - "*.apk"
     expire_in: 6h
   cache:
     key: single

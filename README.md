@@ -12,9 +12,15 @@ and can't be changed during the runtime (See TODO).
 # Docker Build
 
 ```sh
-sudo DOCKER_BUILDKIT=1 docker build -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap .
-touch gecko-dev/mozconfig # avoid bootstrap already done above
-mkdir -p root.build/.cache/ root.build/.ccache/ # build cache will be stored in $PWD/ouinet.build, $PWD/ouifennec.build, and $PWD/root.build
+sudo DOCKER_BUILDKIT=1 docker build --pull \
+  -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap .
+
+sudo DOCKER_BUILDKIT=1 docker build --pull \
+  --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) \
+  -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
+
+mkdir -p _cache/_android _cache/_ccache _cache/_gradle # to hold globally reusable data
+mkdir fennec && touch fennec/.finished-bootstrap # avoid bootstrap already done above
 
 # Notes on enabling fuse inside docker
 # https://stackoverflow.com/questions/48402218/fuse-inside-docker
@@ -24,17 +30,18 @@ sudo docker run \
   --user $(id -u):$(id -g) \
   --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
-  --mount type=bind,source="$(pwd)/root.build/.cache",target=/root/.cache \
-  --mount type=bind,source="$(pwd)/root.build/.ccache",target=/root/.ccache \
-  registry.gitlab.com/censorship-no/ceno-browser:bootstrap \
+  --mount type=bind,source="$(pwd)/_cache",target=/root/.cache \
+  registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER \
   ./build.sh
 ```
 
-You can run the last command several times, and already built artifacts will be kept in different cache directories under the current directory and reused.
+The resulting AAR libraries and APK packages will be eventually left at the current directory.
+
+You can run the last command several times: already built artifacts and cached data will be kept in the `fennec` build and `_cache` directories and reused in subsequent builds. Shall you need to build a new version of the source, you may erase the whole `fennec` build directory, while keeping the `_cache` directory should be safe.
 
 If you want to run arbitrary commands in the container, drop the `./build.sh` argument at the end.
 
-If you need to run commands as `root` (e.g. to install additional packages), you can drop the `--user` option and its argument, but be warned that running `./build.sh` as is will create root-owned files and directories in your cache and source directories which you may have problems to reuse or delete later on. To avoid that, you can run `id -u` and `id -g` at the host machine to get your user and group IDs there, then run `gosu HOST_USER_ID:HOST_GROUP_ID ./build.sh` in the container.
+If you need to run commands as `root` (e.g. to install additional packages), you can drop the `--user` option and its argument and use the `.../ceno-browser:bootstrap` image instead of the `bootstrap-$USER` one, but be warned that running `./build.sh` as is will create root-owned files and directories in your build and cache directories which you may have problems to reuse or delete later on. To avoid that, you can run `id -u` and `id -g` at the host machine to get your user and group IDs there, then run `gosu HOST_USER_ID:HOST_GROUP_ID ./build.sh` in the container.
 
 If you want to reuse the container itself, remove the `--rm` option and `./build.sh` argument and add `--name SOMETHING`. After exiting the container, run `sudo docker start -ia SOMETHING` to start it again.
 
@@ -61,7 +68,7 @@ In the ouifennec directory:
 Go for lunch while the build compiles.
 
 # Adding language support 
-The locales that are included in the APK are defined in `scripts/build-fennec.sh`. To add support for more languages, update the `LOCALES` variable in this script. The l10n files will be downloaded from the Mozilla repo by the build script to `build.fennec/l10n-central/`.
+The locales that are included in the APK are defined in `scripts/build-fennec.sh`. To add support for more languages, update the `LOCALES` variable in this script. The l10n files will be downloaded from the Mozilla repo by the build script.
 
 # Uninstall using `adb`
 
