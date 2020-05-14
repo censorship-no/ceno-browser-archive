@@ -43,7 +43,7 @@ build:
     - mkdir -p _cache/_android _cache/_ccache _cache/_gradle
     - mkdir -p fennec && touch fennec/.finished-bootstrap
     - echo "$CENO_DEBUG_KEYSTORE" | base64 -d > _cache/_android/debug.keystore
-    - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" fennec/ouinet.xml; fi
+    - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" ouinet.xml; fi
     - >
       docker run
       --rm --user $(id -u):$(id -g)
@@ -51,7 +51,7 @@ build:
       --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec
       --mount type=bind,source="$(pwd)/_cache",target=/root/.cache
       $CI_REGISTRY_IMAGE:bootstrap-$USER
-      ./build.sh ${OUINET_VALUES_XML:+-x fennec/ouinet.xml}
+      ./build.sh ${OUINET_VALUES_XML:+-x ouinet.xml}
   artifacts:
     paths:
       - "*.aar"
