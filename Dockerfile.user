@@ -16,4 +16,4 @@ RUN addgroup --quiet --gid "${USER_GID}" ceno \
             --uid "${USER_UID}" --ingroup ceno \
             --disabled-password --gecos CENO ceno \
  && chown ceno:ceno ~ \
- && chown -R ceno:ceno ~/.android
+ && chown -R ceno:ceno ~/.cache

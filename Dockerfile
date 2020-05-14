@@ -36,3 +36,14 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   # `have_rust ? ensure_rust_targets() : install_rust()`
   # (note no ensure targets in second branch).
   ./mach bootstrap --application-choice=mobile_android --no-interactive
+
+# Move all dot directories that will be receiving reusable data during the build
+# into a single directory (with symbolic links from the expected locations),
+# so that the directory can be bind-mounted outside
+# and data reused between different runs.
+RUN \
+  cd ~ && \
+  mkdir -p .android .ccache .gradle .cache && \
+  mv .android .cache/_android && ln -s .cache/_android .android && \
+  mv .ccache  .cache/_ccache  && ln -s .cache/_ccache  .ccache && \
+  mv .gradle  .cache/_gradle  && ln -s .cache/_gradle  .gradle

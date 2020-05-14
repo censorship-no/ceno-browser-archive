@@ -19,6 +19,7 @@ sudo DOCKER_BUILDKIT=1 docker build --pull \
   --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
 
+mkdir _cache # this will hold globally reusable data
 mkdir fennec && touch fennec/.finished-bootstrap # avoid bootstrap already done above
 
 # Notes on enabling fuse inside docker
@@ -29,6 +30,7 @@ sudo docker run \
   --user $(id -u):$(id -g) \
   --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
+  --mount type=bind,source="$(pwd)/_cache",target=/root/.cache \
   registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER \
   ./build.sh
 ```
