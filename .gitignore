@@ -1,4 +1,6 @@
-.vagrant/
-build.ouinet/
-build.fennec/
+_cache/
 debug.keystore
+debug.keystore-passwords
+fennec/
+ouinet-*-debug/
+ouinet-*-release/
