@@ -19,7 +19,7 @@ sudo DOCKER_BUILDKIT=1 docker build --pull \
   --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
 
-mkdir _cache # this will hold globally reusable data
+mkdir -p _cache/_android _cache/_ccache _cache/_gradle # to hold globally reusable data
 mkdir fennec && touch fennec/.finished-bootstrap # avoid bootstrap already done above
 
 # Notes on enabling fuse inside docker
