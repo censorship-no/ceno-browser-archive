@@ -12,7 +12,6 @@ build-image:
   only:
     changes:
       - gecko-dev/build/
-      - ouinet/
       - Dockerfile
   tags:
     - shell
