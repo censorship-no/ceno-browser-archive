@@ -42,8 +42,7 @@ build:
   script:
     - mkdir -p _cache/_android _cache/_ccache _cache/_gradle
     - mkdir -p fennec && touch fennec/.finished-bootstrap
-    - echo "$CENO_DEBUG_KEYSTORE" | base64 -d > fennec/debug.keystore
-    - echo "$CENO_DEBUG_KEYSTORE_PASSWORD" | base64 -d > fennec/debug.keystore-passwords
+    - echo "$CENO_DEBUG_KEYSTORE" | base64 -d > _cache/_android/debug.keystore
     - if [ "$OUINET_VALUES_XML" ]; then cp "$OUINET_VALUES_XML" fennec/ouinet.xml; fi
     - >
       docker run
