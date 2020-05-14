@@ -35,6 +35,8 @@ sudo docker run \
   ./build.sh
 ```
 
+The resulting AAR libraries and APK packages will be eventually left at the current directory.
+
 You can run the last command several times: already built artifacts and cached data will be kept in the `fennec` build and `_cache` directories and reused in subsequent builds. Shall you need to build a new version of the source, you may erase the whole `fennec` build directory, while keeping the `_cache` directory should be safe.
 
 If you want to run arbitrary commands in the container, drop the `./build.sh` argument at the end.
