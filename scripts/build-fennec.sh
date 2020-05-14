@@ -198,7 +198,6 @@ CXX="${MOZBUILD_STATE_PATH}/clang/bin/clang++"
 # Use the linker installed by mach instead of the system linker.
 ac_add_options --enable-linker=lld
 
-mk_add_options 'export CCACHE_DIR=${BUILD_DIR}/ccache'
 mk_add_options 'export CCACHE_COMPRESS=""'
 mk_add_options 'export CCACHE_CPP2=yes'
 ac_add_options --with-ccache
