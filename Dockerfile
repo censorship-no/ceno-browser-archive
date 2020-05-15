@@ -41,6 +41,8 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
 # into a single directory (with symbolic links from the expected locations),
 # so that the directory can be bind-mounted outside
 # and data reused between different runs.
+# Please note that the bind-mounted directory
+# should already contain the subdirectories listed below.
 RUN \
   cd ~ && \
   mkdir -p .android .ccache .gradle .cache && \
