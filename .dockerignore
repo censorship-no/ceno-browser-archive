@@ -2,3 +2,4 @@
 # which needs to be mounted for running the bootstrap.
 **
 !gecko-dev/**
+!.git/modules/gecko-dev/**
