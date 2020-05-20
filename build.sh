@@ -92,6 +92,7 @@ if $CLEAN; then
     exit
 fi
 
+echo "--------------------------------------------------------- 1"
 $BUILD_RELEASE || $BUILD_DEBUG || BUILD_DEBUG=true
 
 if $BUILD_RELEASE; then
@@ -101,6 +102,7 @@ if $BUILD_RELEASE; then
     [[ -z $RELEASE_KEYSTORE_PASSWORDS_FILE ]] && echo "Missing keystore password file" && usage
 fi
 
+echo "--------------------------------------------------------- 2"
 if [[ ${#ABIS[@]} -eq 0 ]]; then
     if $BUILD_RELEASE; then
         ABIS=${SUPPORTED_ABIS[@]}
@@ -109,6 +111,7 @@ if [[ ${#ABIS[@]} -eq 0 ]]; then
     fi
 fi
 
+echo "--------------------------------------------------------- 3"
 if $BUILD_DEBUG; then
     DEBUG_KEYSTORE_FILE="${BUILD_DIR}/debug.keystore"
     DEBUG_KEYSTORE_KEY_ALIAS=androiddebugkey
@@ -128,6 +131,7 @@ if $BUILD_DEBUG; then
     fi
 fi
 
+echo "--------------------------------------------------------- 10"
 DATE="$(date  +'%Y-%m-%d_%H%m')"
 for variant in debug release; do
     if [[ $variant = debug ]]; then
@@ -157,6 +161,7 @@ for variant in debug release; do
         OUIFENNEC_VERSION_NUMBER_FLAGS=
     fi
 
+    echo "--------------------------------------------------------- 11"
     for ABI in ${ABIS[@]}; do
         OUINET_TOOLS_DIR="${BUILD_DIR}/.ouinet-tools"
         mkdir -p "${OUINET_TOOLS_DIR}"
@@ -164,7 +169,9 @@ for variant in debug release; do
         OUINET_BUILD_DIR="${BUILD_DIR}/ouinet-${ABI}-${variant}"
         mkdir -p "${OUINET_BUILD_DIR}"
         pushd "${OUINET_BUILD_DIR}" >/dev/null
+        echo "--------------------------------------------------------- 12"
         TOOLS_DIR="${OUINET_TOOLS_DIR}" ABI=${ABI} "${SOURCE_DIR}"/ouinet/scripts/build-android.sh ${OUINET_VARIANT_FLAGS}
+        echo "--------------------------------------------------------- 13"
         popd >/dev/null
 
         OUINET_AAR_BUILT="${OUINET_BUILD_DIR}"/build-android-${ABI}-${variant}/ouinet/outputs/aar/ouinet-${variant}.aar
