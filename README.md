@@ -11,14 +11,32 @@ and can't be changed during the runtime (See TODO).
 
 # Docker Build
 
+This only needs to be run when the Fennec code base is upgraded:
+
 ```sh
 sudo DOCKER_BUILDKIT=1 docker build --pull \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap .
+```
 
+Since that build takes significant time and bandwidth, you may want to try
+downloading a pre-built image (still a few gigabytes) instead:
+
+```sh
+sudo docker pull registry.gitlab.com/censorship-no/ceno-browser:bootstrap
+```
+
+Whenever you build or get a new bootstrap image, you need to create a derived
+image to run the build as a normal user:
+
+```sh
 sudo DOCKER_BUILDKIT=1 docker build --pull \
   --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
+```
 
+To actually build the software, run these:
+
+```sh
 mkdir -p _cache/_android _cache/_ccache _cache/_gradle # to hold globally reusable data
 mkdir fennec && touch fennec/.finished-bootstrap # avoid bootstrap already done above
 
