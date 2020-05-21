@@ -97,8 +97,8 @@ uninstall the app one would invoke:
 $ adb uninstall ie.equalit.ceno
 ```
 
-# TODO
+# Additional Info
 
-## Technical
+We CA certificates usedy by Ouinet are not the system ones because Boost.Asio can't find them. So we're using the ones from https://curl.haxx.se/docs/caextract.html and they are located in gecko-dev/mobile/android/app/src/main/assets/ceno/cacert.pem
 
-* Get rid of our [`OUINET_QUICK_HACK`](https://github.com/equalitie/gecko-dev/commit/2de7aad32981201d5a75cfbc9c49acf38f21dc0c)
+The gecko-dev branch we've forked from (and with which it's easiest to merge again) is `esr68`.
