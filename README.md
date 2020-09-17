@@ -38,7 +38,7 @@ To actually build the software, run these:
 
 ```sh
 mkdir -p _cache/_android _cache/_ccache _cache/_gradle # to hold globally reusable data
-mkdir fennec && touch fennec/.finished-bootstrap # avoid bootstrap already done above
+mkdir -p fennec && touch fennec/.finished-bootstrap # avoid bootstrap already done above
 
 # Notes on enabling fuse inside docker
 # https://stackoverflow.com/questions/48402218/fuse-inside-docker
@@ -73,16 +73,28 @@ Build the APK locally with the following script:
 
 # To Make A Release Build
 
-Get the upload keystore file and store it in `~/upload-keystore.jks`. Create a file `~/.upload-keystore.pass` that contains the keystore password on the first line and key password on the second line.
+> **Note:** The instructions below must be done at the source directory. Invocations to `./build.sh` may be direct or via the Docker container as explained above.
 
-**Optional** Update the version number. CENO is currently using the same version as the release of Firefox it is forked from. If you want to change the version, call `build.sh -v <version-number>` to update the relevant numbers in your build.
+Before building, you may want to *clean previous build files* by running `./build.sh -c`. This will also remove APK and AAR files in the current directory. If you want to keep these files, please *back them up* elsewhere first.
 
-The *build number* which corresponds to the version code in the APK is automatically generated from the current timestamp so it does not need to manually updated.
+> **Note:** If you use the Docker container and you cleaned the build files, remember to `touch fennec/.finished-bootstrap` again as explained above before proceeding.
 
-In the ouifennec directory:
+ 1. Choose a *version number*. CENO builds with the same version as the release of Firefox it is forked from, but for releases you need to specify an explicit version (like `0.0.42`) to update the relevant numbers in your build. The *build number* which corresponds to the version code in the APK is automatically generated from the current timestamp so it does not need to be manually updated.
+
+ 2. Create a `ouinet.xml` file with the *Ouinet client configuration* that will be embedded in CENO.
+
+ 3. Choose a set of *target architectures* to build packages for. Currently supported ones are: `armeabi-v7a` (ARM 32 bit), `arm64-v8a` (ARM 64 bit), `x86` (Intel 32 bit), `x86_64` (Intel 64 bit). If none is selected, all of them will be built.
+
+ 4. Get the *upload keystore file* and store it in `upload-keystore.jks`. Create a file `upload-keystore.pass` that contains the keystore password on the first line and key password on the second line. Please remember to keep these files private (you may also want to delete them after the build).
+
+Finally run (for release `v0.0.42` and ARM-only packages as an example):
+
 ```
-./build.sh -rx /path/to/ouinet.xml
+./build.sh -rv 0.0.42 -x ouinet.xml \
+  -a armeabi-v7a -a arm64-v8a \
+  -k upload-keystore.jks -p upload-keystore.pass
 ```
+
 Go for lunch while the build compiles.
 
 # Adding language support 
