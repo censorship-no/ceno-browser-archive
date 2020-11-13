@@ -28,7 +28,7 @@ RUN \
 
 RUN apt-get update && apt-get install -y \
   # Needed by Gecko build process.
-  ccache gosu ninja-build libnotify-bin \
+  ccache gosu ninja-build libnotify-bin python3 \
   # Needed by CENO build scripts.
   unionfs-fuse
 
