@@ -33,13 +33,16 @@ RUN apt-get update && apt-get install -y \
   unionfs-fuse
 
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
+  export MOZCONFIG=/tmp/mozconfig.bootstrap _BSOBJ=/tmp/obj-bootstrap && \
+  echo 'mk_add_options MOZ_OBJDIR="'$_BSOBJ'"' > "$MOZCONFIG" && \
   cd gecko-dev && \
   # This would need to be invoked twice if we hadn't installed Rust above,
   # so that `gecko-dev/python/mozboot/mozboot/base.py::ensure_rust_targets` gets called.
   # It won't normally due to logic being such:
   # `have_rust ? ensure_rust_targets() : install_rust()`
   # (note no ensure targets in second branch).
-  ./mach bootstrap --application-choice=mobile_android --no-interactive
+  ./mach bootstrap --application-choice=mobile_android --no-interactive && \
+  rm -rf "$MOZCONFIG" "$_BSOBJ"
 
 # Move all dot directories that will be receiving reusable data during the build
 # into a single directory (with symbolic links from the expected locations),
