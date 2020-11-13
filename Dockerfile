@@ -26,7 +26,11 @@ RUN \
   # That one might work for us, but it still needs testing.
   ~/.cargo/bin/rustup target add armv7-linux-androideabi
 
-RUN apt-get update && apt-get install -y ccache gosu ninja-build unionfs-fuse libnotify-bin
+RUN apt-get update && apt-get install -y \
+  # Needed by Gecko build process.
+  ccache gosu ninja-build libnotify-bin \
+  # Needed by CENO build scripts.
+  unionfs-fuse
 
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   cd gecko-dev && \
