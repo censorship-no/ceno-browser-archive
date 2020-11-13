@@ -158,8 +158,8 @@ function bootstrap_fennec {
         # Install rust https://www.rust-lang.org/en-US/install.html
         curl https://sh.rustup.rs -sSf | sh -s -- -y
         rustup update
-        rustup toolchain install 1.37.0
-        rustup default 1.37.0
+        rustup toolchain install 1.41.1
+        rustup default 1.41.1
     fi
 
     pushd "${SOURCE_DIR_RW}"/${MOZ_DIR} >/dev/null

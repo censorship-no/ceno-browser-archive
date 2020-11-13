@@ -16,8 +16,8 @@ RUN \
   # See <https://bugzilla.mozilla.org/show_bug.cgi?id=1585099>.
   wget -q -O- https://sh.rustup.rs | sh -s -- -y && \
   ~/.cargo/bin/rustup update && \
-  ~/.cargo/bin/rustup toolchain install 1.37.0 && \
-  ~/.cargo/bin/rustup default 1.37.0
+  ~/.cargo/bin/rustup toolchain install 1.41.1 && \
+  ~/.cargo/bin/rustup default 1.41.1
 RUN \
   # Enable ARMv7 Android target,
   # see <https://bugzilla.mozilla.org/show_bug.cgi?id=1384231>.
