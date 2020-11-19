@@ -50,7 +50,7 @@ sudo docker run \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
   --mount type=bind,source="$(pwd)/_cache",target=/root/.cache \
   registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER \
-  ./build.sh
+  ./build.sh [BUILD_OPTION]...
 ```
 
 The resulting AAR libraries and APK packages will be eventually left at the current directory.
