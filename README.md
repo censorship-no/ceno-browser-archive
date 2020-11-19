@@ -22,14 +22,14 @@ This only needs to be run when the Fennec code base is upgraded:
 
 ```sh
 sudo DOCKER_BUILDKIT=1 docker build --pull \
-  -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap .
+  -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-a29 .
 ```
 
 Since that build takes significant time and bandwidth, you may want to try
 downloading a pre-built image (still a few gigabytes) instead:
 
 ```sh
-sudo docker pull registry.gitlab.com/censorship-no/ceno-browser:bootstrap
+sudo docker pull registry.gitlab.com/censorship-no/ceno-browser:bootstrap-a29
 ```
 
 Whenever you build or get a new bootstrap image, you need to create a derived
@@ -38,7 +38,7 @@ image to run the build as a normal user:
 ```sh
 sudo DOCKER_BUILDKIT=1 docker build \
   --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) \
-  -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
+  -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-a29-$USER - < Dockerfile.user
 ```
 
 To actually build the software, run these:
@@ -56,7 +56,7 @@ sudo docker run \
   --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
   --mount type=bind,source="$(pwd)/_cache",target=/root/.cache \
-  registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER \
+  registry.gitlab.com/censorship-no/ceno-browser:bootstrap-a29-$USER \
   ./build.sh [BUILD_OPTION]...
 ```
 
