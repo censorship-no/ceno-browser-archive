@@ -29,7 +29,7 @@ Whenever you build or get a new bootstrap image, you need to create a derived
 image to run the build as a normal user:
 
 ```sh
-sudo DOCKER_BUILDKIT=1 docker build --pull \
+sudo DOCKER_BUILDKIT=1 docker build \
   --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
 ```
