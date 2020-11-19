@@ -4,10 +4,17 @@
 
 A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 
-# Set up injector's parameters
+# Developer Build
 
-These are currently hardcoded in [ouinet.xml](https://github.com/equalitie/gecko-dev/blob/ouinet/mobile/android/app/src/main/res/values/ouinet.xml)
-and can't be changed during the runtime (See TODO).
+The client configuration is currently hardcoded at build time and cannot be changed at run time. Building an APK with the default injector parameters in the [ouinet.xml][] client configuration file is quite pointless, but it may help you check that the build succeeds. If you want a useful configuration, copy your customized `ouinet.xml` file to the current directory and add the parameters `-x ouinet.xml` to the invocation of `build.sh`.
+
+[ouinet.xml]: https://github.com/equalitie/gecko-dev/blob/ouinet/mobile/android/app/src/main/res/values/ouinet.xml
+
+Thus you can build the APK locally with the following command:
+
+```
+./build.sh -x ouinet.xml
+```
 
 # Docker Build
 
@@ -62,14 +69,6 @@ If you want to run arbitrary commands in the container, drop the `./build.sh` ar
 If you need to run commands as `root` (e.g. to install additional packages), you can drop the `--user` option and its argument and use the `.../ceno-browser:bootstrap` image instead of the `bootstrap-$USER` one, but be warned that running `./build.sh` as is will create root-owned files and directories in your build and cache directories which you may have problems to reuse or delete later on. To avoid that, you can run `id -u` and `id -g` at the host machine to get your user and group IDs there, then run `gosu HOST_USER_ID:HOST_GROUP_ID ./build.sh` in the container.
 
 If you want to reuse the container itself, remove the `--rm` option and `./build.sh` argument and add `--name SOMETHING`. After exiting the container, run `sudo docker start -ia SOMETHING` to start it again.
-
-Also, please note that running an APK built with the default `ouinet.xml` configuration is quite pointless, but it may help you check that the build succeeds. If you want a useful configuration, copy your `ouinet.xml` file to the current directory and add the parameters `-x ouinet.xml` after `./build.sh`.
-
-# Developer Build
-Build the APK locally with the following script:
-```
-./build.sh -x /path/to/ouinet.xml
-```
 
 # To Make A Release Build
 
