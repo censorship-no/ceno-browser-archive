@@ -25,15 +25,13 @@ sudo DOCKER_BUILDKIT=1 docker build --pull \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap .
 ```
 
-Since that build takes significant time and bandwidth, you may want to try
-downloading a pre-built image (still a few gigabytes) instead:
+Since that build takes significant time and bandwidth, you may want to try downloading a pre-built image (still a few gigabytes) instead:
 
 ```sh
 sudo docker pull registry.gitlab.com/censorship-no/ceno-browser:bootstrap
 ```
 
-Whenever you build or get a new bootstrap image, you need to create a derived
-image to run the build as a normal user:
+Whenever you build or get a new bootstrap image, you need to create a derived image to run the build as a normal container user with numeric identifiers matching those of your local user (instead of `root`; see below for more information):
 
 ```sh
 sudo DOCKER_BUILDKIT=1 docker build \
@@ -41,7 +39,9 @@ sudo DOCKER_BUILDKIT=1 docker build \
   -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
 ```
 
-To actually build the software, run these:
+If that command fails with `addgroup: The GID [or UID] '<ID>' is already in use.`, your user's identifiers clash with the image's system ones and you will need to run the build as the container's `root` (see below). This is known to happen under macOS.
+
+To actually build the software as a normal container user, run these:
 
 ```sh
 mkdir -p _cache/_android _cache/_ccache _cache/_gradle # to hold globally reusable data
@@ -64,9 +64,9 @@ The resulting AAR libraries and APK packages will be eventually left at the curr
 
 You can run the last command several times: already built artifacts and cached data will be kept in the `fennec` build and `_cache` directories and reused in subsequent builds. Shall you need to build a new version of the source, you may erase the whole `fennec` build directory, while keeping the `_cache` directory should be safe.
 
-If you want to run arbitrary commands in the container, drop the `./build.sh` argument at the end.
+If you need to run commands as `root` in the container (e.g. to install additional packages), you can drop the `--user` option and its argument and use the `.../ceno-browser:bootstrap` image instead of the `bootstrap-$USER` one, but be warned that running `./build.sh` as is will create root-owned files and directories in your build and cache directories which you may have problems to reuse or delete later on. To avoid that, you can run `id -u` and `id -g` at the host machine to get your user and group IDs there, then run `gosu HOST_USER_ID:HOST_GROUP_ID ./build.sh` in the container.
 
-If you need to run commands as `root` (e.g. to install additional packages), you can drop the `--user` option and its argument and use the `.../ceno-browser:bootstrap` image instead of the `bootstrap-$USER` one, but be warned that running `./build.sh` as is will create root-owned files and directories in your build and cache directories which you may have problems to reuse or delete later on. To avoid that, you can run `id -u` and `id -g` at the host machine to get your user and group IDs there, then run `gosu HOST_USER_ID:HOST_GROUP_ID ./build.sh` in the container.
+If you want to run arbitrary commands in the container, drop the `./build.sh` argument at the end.
 
 If you want to reuse the container itself, remove the `--rm` option and `./build.sh` argument and add `--name SOMETHING`. After exiting the container, run `sudo docker start -ia SOMETHING` to start it again.
 
