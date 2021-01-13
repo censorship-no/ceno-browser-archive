@@ -12,6 +12,16 @@ MOZ_DIR=gecko-dev
 L10N_DIR=l10n-central
 L10N_REPO='https://hg.mozilla.org/l10n-central/'
 LOCALES='fa az' # en-US is included by default, you do not need to list it here
+# For each and every locale above, a commit from the Mercurial repo `l10n-central/<LOCALE>`
+# must be specified which contains adequate translations for `gecko-dev`.
+# As a rule of thumb for Fennec ESR68, look for a commit like
+# "Remove obsolete strings and reformat files" from Francesco Lodolo around 2020-08-15,
+# and choose the previous one.
+declare -A LOCALE_COMMITS
+LOCALE_COMMITS=(
+    [fa]=5a4bb020cf09
+    [az]=dd56aead51fa
+)
 DIST_DIR="${SOURCE_DIR}"/distribution
 
 IS_RELEASE_BUILD=0
@@ -144,6 +154,7 @@ function fetch_l10n {
         else
             (cd $LOCALE; hg -q pull)
         fi
+        (cd $LOCALE; hg update ${LOCALE_COMMITS[$LOCALE]})
     done
     popd >/dev/null
 }
