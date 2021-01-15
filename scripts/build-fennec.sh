@@ -190,13 +190,13 @@ function write_build_config {
     pushd "${ABI_BUILD_DIR}" >/dev/null
 
     cat > mozconfig-new <<MOZCONFIG_BASE
-export MOZ_INSTALL_TRACKING=
 export MOZ_TELEMETRY_REPORTING=
 
 # Build Firefox for Android:
 ac_add_options --enable-application=mobile/android
 ac_add_options --with-android-min-sdk=16
 ac_add_options --target=${TARGET}
+ac_add_options --without-google-play-services
 
 # With the following Android SDK and NDK
 ac_add_options --with-android-sdk="${MOZBUILD_STATE_PATH}/android-sdk-linux"
