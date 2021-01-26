@@ -35,7 +35,7 @@ L10N_DIR="${SOURCE_DIR}"/mozilla-l10n
 # Then a Git mirror must be produced and the equivalent commit
 # (or some descendant in the `ceno` branch)
 # be used in the submodule placed under `$L10N_DIR`.
-LOCALES="$( (cd "$L10N_DIR" && ls) )" # en-US is included by default
+LOCALES="en-US $( (cd "$L10N_DIR" && echo *) )"
 DIST_DIR="${SOURCE_DIR}"/distribution
 
 IS_RELEASE_BUILD=0
@@ -261,7 +261,7 @@ function package_fennec {
     pushd "${ABI_BUILD_DIR}" >/dev/null
     "${SOURCE_DIR_RW}"/${MOZ_DIR}/mach package
     if [ $IS_RELEASE_BUILD -eq 1 ]; then
-        "${SOURCE_DIR_RW}"/${MOZ_DIR}/mach package-multi-locale --locales en-US ${LOCALES}
+        "${SOURCE_DIR_RW}"/${MOZ_DIR}/mach package-multi-locale --locales ${LOCALES}
         "${SOURCE_DIR_RW}"/${MOZ_DIR}/mach gradle app:assembleWithGeckoBinariesRelease
         BUILT_APK=$(ls -tr "${ABI_BUILD_DIR}"/dist/ceno-*.multi.android-*.apk | tail -1)
     else
