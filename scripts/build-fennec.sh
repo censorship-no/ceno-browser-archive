@@ -9,32 +9,33 @@ SOURCE_DIR=$(dirname -- $(dirname -- "$(readlink -f -- "$BASH_SOURCE")"))
 SOURCE_DIR_RW=${BUILD_DIR}/source-rw
 
 MOZ_DIR=gecko-dev
-L10N_DIR=l10n-central
-L10N_REPO='https://hg.mozilla.org/l10n-central/'
-LOCALES='es-ES fa fr ru zh-CN' # en-US is included by default, you do not need to list it here
-# For each and every locale above, a commit from the Mercurial repo `l10n-central/<LOCALE>`
-# must be specified which contains adequate translations for `gecko-dev`.
+L10N_DIR="${SOURCE_DIR}"/mozilla-l10n
+# For each locale to be included,
+# a commit from the Mercurial repo `https://hg.mozilla.org/l10n-central/<LOCALE>` must be found
+# which contains adequate translations for `gecko-dev`.
 # As a rule of thumb for Fennec ESR68, look for a commit like
 # "Remove obsolete strings and reformat files" from Francesco Lodolo around 2020-08-15,
 # and choose the previous one.
 #
-# Other interesting locales:
+# Interesting locales and their Mercurial commits:
 #
 #     [ar]=1c4231166ddf
 #     [az]=dd56aead51fa
 #     [be]=9d2bff64ddfb
+#     [es-ES]=ad1444f4f833
+#     [fa]=5a4bb020cf09
+#     [fr]=4f9e24a696ee
 #     [ko]=963c496ffab2
+#     [ru]=3a9587227699
 #     [tr]=62ca6a8eaeba
 #     [ur]=7d53bce5ae98
 #     [vi]=2a000025928a
-declare -A LOCALE_COMMITS
-LOCALE_COMMITS=(
-    [es-ES]=ad1444f4f833
-    [fa]=5a4bb020cf09
-    [fr]=4f9e24a696ee
-    [ru]=3a9587227699
-    [zh-CN]=be07f660b174
-)
+#     [zh-CN]=be07f660b174
+#
+# Then a Git mirror must be produced and the equivalent commit
+# (or some descendant in the `ceno` branch)
+# be used in the submodule placed under `$L10N_DIR`.
+LOCALES="$( (cd "$L10N_DIR" && ls) )" # en-US is included by default
 DIST_DIR="${SOURCE_DIR}"/distribution
 
 IS_RELEASE_BUILD=0
@@ -155,23 +156,6 @@ function mount_cow {
     fi
 }
 
-function fetch_l10n {
-    pushd "${SOURCE_DIR_RW}"/${MOZ_DIR} >/dev/null
-    if [[ ! -d $L10N_DIR ]]; then
-        mkdir $L10N_DIR
-    fi
-    cd $L10N_DIR
-    for LOCALE in $LOCALES; do
-        if [ ! -d $LOCALE ]; then
-            hg clone ${L10N_REPO}${LOCALE}
-        else
-            (cd $LOCALE; hg -q pull)
-        fi
-        (cd $LOCALE; hg update ${LOCALE_COMMITS[$LOCALE]})
-    done
-    popd >/dev/null
-}
-
 function bootstrap_fennec {
     local COOKIE_FILE="${BUILD_DIR}"/.finished-bootstrap
     if [[ -e "${COOKIE_FILE}" ]]; then
@@ -229,7 +213,7 @@ ac_add_options --with-ccache
 mk_add_options MOZ_OBJDIR="${ABI_BUILD_DIR}"
 
 ac_add_options --with-android-distribution-directory="${DIST_DIR}"
-ac_add_options --with-l10n-base="${SOURCE_DIR_RW}/${MOZ_DIR}/${L10N_DIR}"
+ac_add_options --with-l10n-base="${L10N_DIR}"
 
 ac_add_options --disable-crashreporter
 # Don't build tests
@@ -300,7 +284,6 @@ function sign_apk {
 
 
 mount_cow
-fetch_l10n
 bootstrap_fennec
 write_build_config
 build_fennec
