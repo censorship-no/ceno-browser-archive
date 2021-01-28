@@ -158,13 +158,10 @@ for variant in debug release; do
     fi
 
     for ABI in ${ABIS[@]}; do
-        OUINET_TOOLS_DIR="${BUILD_DIR}/.ouinet-tools"
-        mkdir -p "${OUINET_TOOLS_DIR}"
-
         OUINET_BUILD_DIR="${BUILD_DIR}/ouinet-${ABI}-${variant}"
         mkdir -p "${OUINET_BUILD_DIR}"
         pushd "${OUINET_BUILD_DIR}" >/dev/null
-        TOOLS_DIR="${OUINET_TOOLS_DIR}" ABI=${ABI} "${SOURCE_DIR}"/ouinet/scripts/build-android.sh ${OUINET_VARIANT_FLAGS}
+        ABI=${ABI} "${SOURCE_DIR}"/ouinet/scripts/build-android.sh ${OUINET_VARIANT_FLAGS}
         popd >/dev/null
 
         OUINET_AAR_BUILT="${OUINET_BUILD_DIR}"/build-android-${ABI}-${variant}/ouinet/outputs/aar/ouinet-${variant}.aar
