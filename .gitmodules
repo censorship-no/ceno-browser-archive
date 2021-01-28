@@ -7,3 +7,23 @@
 [submodule "distribution"]
 	path = distribution
 	url = https://github.com/equalitie/ouifennec-distribution.git
+[submodule "mozilla-l10n/es-ES"]
+	path = mozilla-l10n/es-ES
+	url = https://github.com/censorship-no/mozilla-l10n-es-ES.git
+	branch = ceno
+[submodule "mozilla-l10n/fa"]
+	path = mozilla-l10n/fa
+	url = https://github.com/censorship-no/mozilla-l10n-fa.git
+	branch = ceno
+[submodule "mozilla-l10n/fr"]
+	path = mozilla-l10n/fr
+	url = https://github.com/censorship-no/mozilla-l10n-fr.git
+	branch = ceno
+[submodule "mozilla-l10n/ru"]
+	path = mozilla-l10n/ru
+	url = https://github.com/censorship-no/mozilla-l10n-ru.git
+	branch = ceno
+[submodule "mozilla-l10n/zh-CN"]
+	path = mozilla-l10n/zh-CN
+	url = https://github.com/censorship-no/mozilla-l10n-zh-CN.git
+	branch = ceno
