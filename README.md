@@ -4,7 +4,28 @@
 
 A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 
-# Developer Build
+# Contributing
+
+Interested in contributing to the project? Great! For starters, make sure to review and agree to the terms of our [Code of Conduct](https://gitlab.com/censorship-no/ceno-browser/CODE_OF_CONDUCT.md)
+
+Here are some ways to help CENO Browser improve:
+
+## Translations
+
+Translation support is needed for:
+* Android strings
+* the [CENO web extension](https://github.com/censorship-no/ceno-web-ext/)
+* The [user manual](https://github.com/censorship-no/ceno-docs/)
+
+We use Weblate for continuously-updated translations. To get started, create an account at https://weblate.org and visit https://hosted.weblate.org/projects/censorship-no/ to join the project.
+
+## Tackle a bug
+
+## Improve documentation
+
+# Building
+
+## Developer Build
 
 The client configuration is currently hardcoded at build time and cannot be changed at run time. Building an APK with the default injector parameters in the [ouinet.xml][] client configuration file is quite pointless, but it may help you check that the build succeeds. If you want a useful configuration, copy your customized `ouinet.xml` file to the current directory and add the parameters `-x ouinet.xml` to the invocation of `build.sh`.
 
@@ -16,7 +37,7 @@ Thus you can build the APK locally with the following command:
 ./build.sh -x ouinet.xml
 ```
 
-# Docker Build
+## Docker Build
 
 This only needs to be run when the Fennec code base is upgraded:
 
@@ -70,7 +91,7 @@ If you want to run arbitrary commands in the container, drop the `./build.sh` ar
 
 If you want to reuse the container itself, remove the `--rm` option and `./build.sh` argument and add `--name SOMETHING`. After exiting the container, run `sudo docker start -ia SOMETHING` to start it again.
 
-# To Make A Release Build
+## To Make A Release Build
 
 > **Note:** The instructions below must be done at the source directory. Invocations to `./build.sh` may be direct or via the Docker container as explained above.
 
@@ -96,10 +117,10 @@ Finally run (for release `v0.0.42` and ARM-only packages as an example):
 
 Go for lunch while the build compiles.
 
-# Adding language support 
+## Adding language support 
 The locales that are included in the APK are defined in `scripts/build-fennec.sh`. To add support for more languages, update the `LOCALES` variable in this script. The l10n files will be downloaded from the Mozilla repo by the build script.
 
-# Uninstall using `adb`
+## Uninstall using `adb`
 
 The ceno-browser's application package name is `ie.equalit.ceno` and thus to
 uninstall the app one would invoke:
@@ -108,8 +129,8 @@ uninstall the app one would invoke:
 $ adb uninstall ie.equalit.ceno
 ```
 
-# Additional Info
+## Additional Info
 
-We CA certificates usedy by Ouinet are not the system ones because Boost.Asio can't find them. So we're using the ones from https://curl.haxx.se/docs/caextract.html and they are located in gecko-dev/mobile/android/app/src/main/assets/ceno/cacert.pem
+The CA certificates used by Ouinet are not the system ones because Boost.Asio can't find them. So we're using the ones from https://curl.haxx.se/docs/caextract.html and they are located in gecko-dev/mobile/android/app/src/main/assets/ceno/cacert.pem
 
 The gecko-dev branch we've forked from (and with which it's easiest to merge again) is `esr68`.
