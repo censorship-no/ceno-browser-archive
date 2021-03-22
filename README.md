@@ -6,7 +6,38 @@
 
 A clone of Firefox For Android (Fennec) for storing and sharing web content in a distributed cache via Ouinet.
 
-# Developer Build
+## ▶️ Access
+
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+      alt="Get it on Play Store"
+      height="80">](https://play.google.com/store/apps/details?id=ie.equalit.ceno)
+[<img src="https://github.com/censorship-no/ceno-browser/blob/master/paskoocheh_badge.png"
+      alt="Get it on Paskoocheh"
+      height="80">](https://paskoocheh.com/tools/124/android.html?utm_source=UpdatePage)
+      
+## 🚀 Features
+
+🚫🌴 Offline-first.
+CENO is designed with internet shutdown scenarios in mind. Websites are shared by a global network of peers, and stored in a distributed cache for availability when traditional networks are blocked or go down.
+
+🔓👀 Unlock the web.
+Access any website. Frequently requested content is cached on the network and cannot be forcibly removed.
+
+💲🌐 Reduce Data Costs.
+By routing user traffic through peer-to-peer networks, CENO Browser incurs less data costs while still providing users with circumvention capability.
+
+📖👐 Free and open source.
+CENO Browser is powered by Ouinet, an open source library enabling third party developers to incorporate the CENO network into their apps for peer-to-peer connectivity.
+
+## 👪 Contributing!
+* Test the app with different devices
+* Report issues in the [issue tracker](https://github.com/censorship-no/ceno-browser/issues)
+* Create a [Pull Request](https://opensource.guide/how-to-contribute/#opening-a-pull-request)
+* Help increasing the test coverage by contributing unit tests
+* Translate the app on [Weblate](https://www.transifex.com/nextcloud/nextcloud/android-deck/)
+
+## 🔧 Building
+### Developer Build
 
 The client configuration is currently hardcoded at build time and cannot be changed at run time. Building an APK with the default injector parameters in the [ouinet.xml][] client configuration file is quite pointless, but it may help you check that the build succeeds. If you want a useful configuration, copy your customized `ouinet.xml` file to the current directory and add the parameters `-x ouinet.xml` to the invocation of `build.sh`.
 
@@ -18,7 +49,7 @@ Thus you can build the APK locally with the following command:
 ./build.sh -x ouinet.xml
 ```
 
-# Docker Build
+### Docker Build
 
 This only needs to be run when the Fennec code base is upgraded:
 
@@ -72,7 +103,7 @@ If you want to run arbitrary commands in the container, drop the `./build.sh` ar
 
 If you want to reuse the container itself, remove the `--rm` option and `./build.sh` argument and add `--name SOMETHING`. After exiting the container, run `sudo docker start -ia SOMETHING` to start it again.
 
-# To Make A Release Build
+### To Make A Release Build
 
 > **Note:** The instructions below must be done at the source directory. Invocations to `./build.sh` may be direct or via the Docker container as explained above.
 
@@ -98,10 +129,12 @@ Finally run (for release `v0.0.42` and ARM-only packages as an example):
 
 Go for lunch while the build compiles.
 
-# Adding language support 
+### Adding language support 
 The locales that are included in the APK are defined in `scripts/build-fennec.sh`. To add support for more languages, update the `LOCALES` variable in this script. The l10n files will be downloaded from the Mozilla repo by the build script.
 
-# Uninstall using `adb`
+## Uninstalling 
+
+*Uninstall using `adb`*
 
 The ceno-browser's application package name is `ie.equalit.ceno` and thus to
 uninstall the app one would invoke:
@@ -110,8 +143,11 @@ uninstall the app one would invoke:
 $ adb uninstall ie.equalit.ceno
 ```
 
-# Additional Info
+## Additional Info
 
-We CA certificates usedy by Ouinet are not the system ones because Boost.Asio can't find them. So we're using the ones from https://curl.haxx.se/docs/caextract.html and they are located in gecko-dev/mobile/android/app/src/main/assets/ceno/cacert.pem
+The CA certificates used by Ouinet are not the system ones because Boost.Asio can't find them. So we're using the ones from https://curl.haxx.se/docs/caextract.html and they are located in gecko-dev/mobile/android/app/src/main/assets/ceno/cacert.pem
 
 The gecko-dev branch we've forked from (and with which it's easiest to merge again) is `esr68`.
+
+## 📓 License
+All contributions to this repository are considered to be licensed under the [MIT License](/LICENSE).
