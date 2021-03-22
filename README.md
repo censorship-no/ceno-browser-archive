@@ -1,10 +1,10 @@
-# OuiFennec
+# CENO Browser
 
 [![pipeline status](https://gitlab.com/censorship-no/ceno-browser/badges/master/pipeline.svg)](https://gitlab.com/censorship-no/ceno-browser/commits/master)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/censorship-no/ceno-browser)
 ![GitHub](https://img.shields.io/github/license/censorship-no/ceno-browser)
 
-A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
+A clone of Firefox For Android (Fennec) for storing and sharing web content in a distributed cache via Ouinet.
 
 # Developer Build
 
