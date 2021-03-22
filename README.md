@@ -4,7 +4,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/censorship-no/ceno-browser)
 ![GitHub](https://img.shields.io/github/license/censorship-no/ceno-browser)
 
-A clone of Firefox For Android (Fennec) for storing and sharing web content in a distributed cache via Ouinet.
+CENO (Censorship.No!) is a mobile web browser, built on Mozilla's Firefox for Android (Fennec). It uses peer-to-peer technology to deliver websites to your phone and caches popular content with cooperating peers. CENO can be used to bypass Internet censorship and help others retrieve blocked pages.
 
 ## ▶️ Access
 
