@@ -17,16 +17,16 @@ A clone of Firefox For Android (Fennec) for storing and sharing web content in a
       
 ## 🚀 Features
 
-🚫🌴 Offline-first.
+🌴 Offline-first.
 CENO is designed with internet shutdown scenarios in mind. Websites are shared by a global network of peers, and stored in a distributed cache for availability when traditional networks are blocked or go down.
 
-🔓👀 Unlock the web.
+🔓 Unlock the web.
 Access any website. Frequently requested content is cached on the network and cannot be forcibly removed.
 
-💲🌐 Reduce Data Costs.
+💲 Reduce Data Costs.
 By routing user traffic through peer-to-peer networks, CENO Browser incurs less data costs while still providing users with circumvention capability.
 
-📖👐 Free and open source.
+👐 Free and open source.
 CENO Browser is powered by Ouinet, an open source library enabling third party developers to incorporate the CENO network into their apps for peer-to-peer connectivity.
 
 ## 👪 Contributing!
