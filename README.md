@@ -34,7 +34,7 @@ CENO Browser is powered by Ouinet, an open source library enabling third party d
 * Report issues in the [issue tracker](https://github.com/censorship-no/ceno-browser/issues)
 * Create a [Pull Request](https://opensource.guide/how-to-contribute/#opening-a-pull-request)
 * Help increasing the test coverage by contributing unit tests
-* Translate the app on [Weblate](https://www.transifex.com/nextcloud/nextcloud/android-deck/)
+* Translate the app on [Weblate](https://hosted.weblate.org/projects/censorship-no/)
 
 ## 🔧 Building
 ### Developer Build
