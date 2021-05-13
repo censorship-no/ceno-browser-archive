@@ -6,7 +6,7 @@ A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 
 # Contributing
 
-Interested in contributing to the project? Great! For starters, make sure to review and agree to the terms of our [Code of Conduct](https://gitlab.com/censorship-no/ceno-browser/CODE_OF_CONDUCT.md)
+Interested in contributing to the project? Great! For starters, make sure to review and agree to the terms of our [Code of Conduct](CODE_OF_CONDUCT.md)
 
 Here are some ways to help CENO Browser improve:
 
