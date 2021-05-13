@@ -6,16 +6,16 @@ A clone of Firefox For Android (Fennec) with Ouinet/Client in it.
 
 # Contributing
 
-Interested in contributing to the project? Great! For starters, make sure to review and agree to the terms of our [Code of Conduct](CODE_OF_CONDUCT.md)
+Interested in contributing to the project? Great! For starters, make sure to review and agree to the terms of our [Code of Conduct](https://gitlab.com/censorship-no/ceno-browser/CODE_OF_CONDUCT.md)
 
 Here are some ways to help CENO Browser improve:
 
 ## Translations
 
-Translation support is needed for:
-* Android strings
+Want to help localize CENO in your language? Translation support is needed for:
+* the [Android app strings](
 * the [CENO web extension](https://github.com/censorship-no/ceno-web-ext/)
-* The [user manual](https://github.com/censorship-no/ceno-docs/)
+* the [User Manual](https://github.com/censorship-no/ceno-docs/)
 
 We use Weblate for continuously-updated translations. To get started, create an account at https://weblate.org and visit https://hosted.weblate.org/projects/censorship-no/ to join the project.
 
@@ -117,7 +117,7 @@ Go for lunch while the build compiles.
 ## Adding language support 
 The locales that are included in the APK are defined in `scripts/build-fennec.sh`. To add support for more languages, update the `LOCALES` variable in this script. The l10n files will be downloaded from the Mozilla repo by the build script.
 
-# Uninstall using `adb`
+## Uninstall using `adb`
 
 The ceno-browser's application package name is `ie.equalit.ceno` and thus to
 uninstall the app one would invoke:
@@ -126,7 +126,7 @@ uninstall the app one would invoke:
 $ adb uninstall ie.equalit.ceno
 ```
 
-# Additional Info
+## Additional Info
 
 The CA certificates used by Ouinet are not the system ones because Boost.Asio can't find them. So we're using the ones from https://curl.haxx.se/docs/caextract.html and they are located in gecko-dev/mobile/android/app/src/main/assets/ceno/cacert.pem
 
