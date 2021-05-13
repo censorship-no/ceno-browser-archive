@@ -1,4 +1,4 @@
-# CENO Browser
+# <img src="https://censorship.no/logo_ceno.png" alt="CENO"> Browser
 
 [![pipeline status](https://gitlab.com/censorship-no/ceno-browser/badges/master/pipeline.svg)](https://gitlab.com/censorship-no/ceno-browser/commits/master)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/censorship-no/ceno-browser)](https://github.com/censorship-no/ceno-browser/releases/latest)
@@ -18,7 +18,7 @@ CENO (Censorship.No!) is a mobile web browser, built on Mozilla's Firefox for An
       
 ## 🚀 Features
 
-🌴 **Offline-first.**<br>
+🌴 **Browse freely, anytime.**<br>
 CENO is designed with internet shutdown scenarios in mind. Websites are shared by a global network of peers, and stored in a distributed cache for availability when traditional networks are blocked or go down.
 
 🔓 **Unlock the web.**<br>
@@ -27,15 +27,29 @@ Access any website. Frequently requested content is cached on the network and ca
 💲 **Reduce Data Costs.**<br>
 By routing user traffic through peer-to-peer networks, CENO Browser incurs less data costs while still providing users with circumvention capability.
 
+🌐 **Grow the Network, Fight Censorship.**<br>
+Fight censorship by becoming a bridge! Install and run CENO Browser to instantly join the network and expand the availability of blocked websites to those in censored countries.
+
 👐 **Free and open source.**<br>
 CENO Browser is powered by Ouinet, an open source library enabling third party developers to incorporate the CENO network into their apps for peer-to-peer connectivity.
 
 ## 👪 Contributing!
+Interested in contributing to the project? Great! For starters, make sure to review and agree to the terms of our [Code of Conduct](CODE_OF_CONDUCT.md)
+
+Here are some ways to help CENO Browser improve:
 * Test the app with different devices
 * Report issues in the [issue tracker](https://github.com/censorship-no/ceno-browser/issues)
 * Create a [Pull Request](https://opensource.guide/how-to-contribute/#opening-a-pull-request)
 * Help increasing the test coverage by contributing unit tests
-* Translate the app on [Weblate](https://hosted.weblate.org/projects/censorship-no/)
+* Translate the app on [Weblate](https://hosted.weblate.org/projects/censorship-no/) 
+
+### ➿ Translations
+Translation support is needed for:
+* Android strings
+* the [CENO web extension](https://github.com/censorship-no/ceno-web-ext/)
+* The [user manual](https://github.com/censorship-no/ceno-docs/)
+
+We use Weblate for continuously-updated translations. To get started, create an account at https://weblate.org and visit https://hosted.weblate.org/projects/censorship-no/ to join the project.
 
 ## 🔧 Building
 ### Developer Build
@@ -133,7 +147,7 @@ Go for lunch while the build compiles.
 ### Adding language support 
 The locales that are included in the APK are defined in `scripts/build-fennec.sh`. To add support for more languages, update the `LOCALES` variable in this script. The l10n files will be downloaded from the Mozilla repo by the build script.
 
-### Uninstalling 
+## ❌ Uninstalling 
 
 **Uninstall using `adb`**
 
@@ -144,11 +158,11 @@ uninstall the app one would invoke:
 $ adb uninstall ie.equalit.ceno
 ```
 
-## Additional Info
+## ℹ️ Additional Info
 
 The CA certificates used by Ouinet are not the system ones because Boost.Asio can't find them. So we're using the ones from https://curl.haxx.se/docs/caextract.html and they are located in gecko-dev/mobile/android/app/src/main/assets/ceno/cacert.pem
 
 The gecko-dev branch we've forked from (and with which it's easiest to merge again) is `esr68`.
 
-## 📓 License
+## 📖 License
 All contributions to this repository are considered to be licensed under the [MIT License](/LICENSE).
