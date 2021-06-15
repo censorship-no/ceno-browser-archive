@@ -27,3 +27,7 @@
 	path = mozilla-l10n/zh-CN
 	url = https://github.com/censorship-no/mozilla-l10n-zh-CN.git
 	branch = ceno
+[submodule "mozilla-l10n/my"]
+	path = mozilla-l10n/my
+	url = https://github.com/censorship-no/mozilla-l10n-my.git
+	branch = ceno
