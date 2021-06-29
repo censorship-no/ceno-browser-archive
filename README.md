@@ -1,4 +1,4 @@
-# <img src="https://censorship.no/logo_ceno.png" alt="CENO"> Browser
+# <img src="https://censorship.no/img/logo_ceno.png" alt="CENO"> Browser
 
 [![pipeline status](https://gitlab.com/censorship-no/ceno-browser/badges/master/pipeline.svg)](https://gitlab.com/censorship-no/ceno-browser/commits/master)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/censorship-no/ceno-browser)](https://github.com/censorship-no/ceno-browser/releases/latest)
