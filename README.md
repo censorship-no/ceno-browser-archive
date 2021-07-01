@@ -122,7 +122,7 @@ If you want to reuse the container itself, remove the `--rm` option and `./build
 
 > **Note:** The instructions below must be done at the source directory. Invocations to `./build.sh` may be direct or via the Docker container as explained above.
 
-Before building, you may want to *clean previous build files* by running `./build.sh -c`. This will also remove APK and AAR files in the current directory. If you want to keep these files, please *back them up* elsewhere first.
+Before building, it is strongly recommended that you *clean previous build files* by running `./build.sh -c` (otherwise the resulting packages may break in subtle ways). This will also remove APK and AAR files in the current directory. If you want to keep these files, please *back them up* elsewhere first.
 
 > **Note:** If you use the Docker container and you cleaned the build files, remember to `touch fennec/.finished-bootstrap` again as explained above before proceeding.
 
