@@ -47,7 +47,7 @@ OUINET_CONFIG_XML=
 VERSION_NUMBER=
 
 export MOZBUILD_STATE_PATH="${HOME}/.mozbuild"
-export PATH="${MOZBUILD_STATE_PATH}/android-sdk-linux/build-tools/29.0.3/:$HOME/.cargo/bin:$PATH"
+export PATH="${MOZBUILD_STATE_PATH}/android-sdk-linux/build-tools/30.0.3/:$HOME/.cargo/bin:$PATH"
 
 function usage {
     echo "build-fennec.sh -- Builds ouifennec for android"
@@ -198,7 +198,7 @@ ac_add_options --without-google-play-services
 # With the following Android SDK and NDK
 ac_add_options --with-android-sdk="${MOZBUILD_STATE_PATH}/android-sdk-linux"
 # Only the NDK version installed by ./mach bootstrap is supported.
-ac_add_options --with-android-ndk="${MOZBUILD_STATE_PATH}/android-ndk-r20"
+ac_add_options --with-android-ndk="${MOZBUILD_STATE_PATH}/android-ndk-r21e"
 
 # Only the versions of clang and ld installed by ./mach bootstrap are supported.
 CC="${MOZBUILD_STATE_PATH}/clang/bin/clang"
