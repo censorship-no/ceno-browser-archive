@@ -27,6 +27,15 @@ RUN \
   ~/.cargo/bin/rustup target add armv7-linux-androideabi
 
 RUN apt-get update && apt-get install -y ccache gosu ninja-build unionfs-fuse libnotify-bin
+# Install replacements for private packages
+# and tell bootstrap to avoid installing them from Mozilla servers.
+ENV MOZBUILD_CENO_ENV y
+RUN apt-get update && apt-get install -y npm  clang cbindgen  clang-tidy  nasm
+RUN SCCTMP=$(mktemp -d) && cd $SCCTMP && \
+  wget -O sccache.tar.gz "https://github.com/mozilla/sccache/releases/download/0.2.9/sccache-0.2.9-x86_64-unknown-linux-musl.tar.gz" && \
+  tar -xf sccache.tar.gz && \
+  install sccache-*/sccache /usr/local/bin/ && \
+  cd && rm -rf $SCCTMP
 
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   cd gecko-dev && \
