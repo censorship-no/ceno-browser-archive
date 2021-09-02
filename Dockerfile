@@ -36,6 +36,11 @@ RUN SCCTMP=$(mktemp -d) && cd $SCCTMP && \
   tar -xf sccache.tar.gz && \
   install sccache-*/sccache /usr/local/bin/ && \
   cd && rm -rf $SCCTMP
+# Fake the locations of some packages which
+# configuration stubbornly expects in the state directory as private.
+RUN \
+  mkdir -p ~/.mozbuild && cd ~/.mozbuild && \
+  for pkg in clang; do ln -s /usr $pkg; done
 
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   cd gecko-dev && \
