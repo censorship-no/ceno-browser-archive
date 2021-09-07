@@ -30,7 +30,14 @@ RUN apt-get update && apt-get install -y ccache gosu ninja-build unionfs-fuse li
 # Install replacements for private packages
 # and tell bootstrap to avoid installing them from Mozilla servers.
 ENV MOZBUILD_CENO_ENV y
-RUN apt-get update && apt-get install -y npm  clang lld llvm cbindgen  clang-tidy  nasm
+RUN \
+  echo "deb http://deb.debian.org/debian buster-backports main" > /etc/apt/sources.list.d/buster-backports.list && \
+  apt-get update && apt-get install -y \
+    npm \
+    # The version of Clang/LLVM provided by Mozilla is available from Buster Backports.
+    clang-8 lld-8 llvm-8 cbindgen \
+    clang-tidy-8 \
+    nasm
 RUN SCCTMP=$(mktemp -d) && cd $SCCTMP && \
   wget -O sccache.tar.gz "https://github.com/mozilla/sccache/releases/download/0.2.9/sccache-0.2.9-x86_64-unknown-linux-musl.tar.gz" && \
   tar -xf sccache.tar.gz && \
@@ -40,7 +47,7 @@ RUN SCCTMP=$(mktemp -d) && cd $SCCTMP && \
 # configuration stubbornly expects in the state directory as private.
 RUN \
   mkdir -p ~/.mozbuild && cd ~/.mozbuild && \
-  for pkg in clang; do ln -s /usr $pkg; done
+  ln -s /usr/lib/llvm-8 clang
 
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   cd gecko-dev && \
