@@ -51,7 +51,10 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   # (note no ensure targets in second branch).
   ./mach bootstrap --application-choice=mobile_android --no-interactive && \
   # Remove downloaded archives which have already been unpacked.
-  rm -rf ~/.mozbuild/mozboot/
+  rm -rf ~/.mozbuild/mozboot/ && \
+  # Fix some broken permissions in Android SDK tools (and maybe others).
+  # Not really needed here, but it may come in handy for non-root users.
+  chmod -R go+rX ~/.mozbuild/
 
 # Move all dot directories that will be receiving reusable data during the build
 # into a single directory (with symbolic links from the expected locations),
