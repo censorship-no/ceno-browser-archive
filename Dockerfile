@@ -49,7 +49,9 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   # It won't normally due to logic being such:
   # `have_rust ? ensure_rust_targets() : install_rust()`
   # (note no ensure targets in second branch).
-  ./mach bootstrap --application-choice=mobile_android --no-interactive
+  ./mach bootstrap --application-choice=mobile_android --no-interactive && \
+  # Remove downloaded archives which have already been unpacked.
+  rm -rf ~/.mozbuild/mozboot/
 
 # Move all dot directories that will be receiving reusable data during the build
 # into a single directory (with symbolic links from the expected locations),
