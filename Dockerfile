@@ -27,6 +27,27 @@ RUN \
   ~/.cargo/bin/rustup target add armv7-linux-androideabi
 
 RUN apt-get update && apt-get install -y ccache gosu ninja-build unionfs-fuse libnotify-bin
+# Install replacements for private packages
+# and tell bootstrap to avoid installing them from Mozilla servers.
+ENV MOZBUILD_CENO_ENV y
+RUN \
+  echo "deb http://deb.debian.org/debian buster-backports main" > /etc/apt/sources.list.d/buster-backports.list && \
+  apt-get update && apt-get install -y \
+    npm \
+    # The version of Clang/LLVM provided by Mozilla is available from Buster Backports.
+    clang-8 lld-8 llvm-8 cbindgen \
+    clang-tidy-8 \
+    nasm
+RUN SCCTMP=$(mktemp -d) && cd $SCCTMP && \
+  wget -O sccache.tar.gz "https://github.com/mozilla/sccache/releases/download/0.2.9/sccache-0.2.9-x86_64-unknown-linux-musl.tar.gz" && \
+  tar -xf sccache.tar.gz && \
+  install sccache-*/sccache /usr/local/bin/ && \
+  cd && rm -rf $SCCTMP
+# Fake the locations of some packages which
+# configuration stubbornly expects in the state directory as private.
+RUN \
+  mkdir -p ~/.mozbuild && cd ~/.mozbuild && \
+  ln -s /usr/lib/llvm-8 clang
 
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   cd gecko-dev && \
@@ -35,7 +56,12 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   # It won't normally due to logic being such:
   # `have_rust ? ensure_rust_targets() : install_rust()`
   # (note no ensure targets in second branch).
-  ./mach bootstrap --application-choice=mobile_android --no-interactive
+  ./mach bootstrap --application-choice=mobile_android --no-interactive && \
+  # Remove downloaded archives which have already been unpacked.
+  rm -rf ~/.mozbuild/mozboot/ && \
+  # Fix some broken permissions in Android SDK tools (and maybe others).
+  # Not really needed here, but it may come in handy for non-root users.
+  chmod -R go+rX ~/.mozbuild/
 
 # Move all dot directories that will be receiving reusable data during the build
 # into a single directory (with symbolic links from the expected locations),
