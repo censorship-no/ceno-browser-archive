@@ -70,13 +70,13 @@ This only needs to be run when the Fennec code base is upgraded:
 
 ```sh
 sudo DOCKER_BUILDKIT=1 docker build --pull \
-  -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-a30 .
+  -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap .
 ```
 
 Since that build takes significant time and bandwidth, you may want to try downloading a pre-built image (still a few gigabytes) instead:
 
 ```sh
-sudo docker pull registry.gitlab.com/censorship-no/ceno-browser:bootstrap-a30
+sudo docker pull registry.gitlab.com/censorship-no/ceno-browser:bootstrap
 ```
 
 Whenever you build or get a new bootstrap image, you need to create a derived image to run the build as a normal container user with numeric identifiers matching those of your local user (instead of `root`; see below for more information):
@@ -84,7 +84,7 @@ Whenever you build or get a new bootstrap image, you need to create a derived im
 ```sh
 sudo DOCKER_BUILDKIT=1 docker build \
   --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) \
-  -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-a30-$USER - < Dockerfile.user
+  -t registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER - < Dockerfile.user
 ```
 
 If that command fails with `addgroup: The GID [or UID] '<ID>' is already in use.`, your user's identifiers clash with the image's system ones and you will need to run the build as the container's `root` (see below). This is known to happen under macOS.
@@ -104,7 +104,7 @@ sudo docker run \
   --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined \
   --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec \
   --mount type=bind,source="$(pwd)/_cache",target=/root/.cache \
-  registry.gitlab.com/censorship-no/ceno-browser:bootstrap-a30-$USER \
+  registry.gitlab.com/censorship-no/ceno-browser:bootstrap-$USER \
   ./build.sh [BUILD_OPTION]...
 ```
 
