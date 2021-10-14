@@ -26,7 +26,10 @@ RUN \
   # That one might work for us, but it still needs testing.
   ~/.cargo/bin/rustup target add armv7-linux-androideabi
 
-RUN apt-get update && apt-get install -y ccache gosu ninja-build unionfs-fuse libnotify-bin
+RUN \
+  apt-get update && apt-get install -y \
+    ccache gosu ninja-build unionfs-fuse libnotify-bin && \
+  rm -rf /var/lib/apt/lists/*
 # Install replacements for private packages
 # and tell bootstrap to avoid installing them from Mozilla servers.
 ENV MOZBUILD_CENO_ENV y
@@ -37,7 +40,8 @@ RUN \
     # The version of Clang/LLVM provided by Mozilla is available from Buster Backports.
     clang-8 lld-8 llvm-8 cbindgen \
     clang-tidy-8 \
-    nasm
+    nasm && \
+  rm -rf /var/lib/apt/lists/*
 RUN SCCTMP=$(mktemp -d) && cd $SCCTMP && \
   wget -O sccache.tar.gz "https://github.com/mozilla/sccache/releases/download/0.2.9/sccache-0.2.9-x86_64-unknown-linux-musl.tar.gz" && \
   tar -xf sccache.tar.gz && \
@@ -50,6 +54,7 @@ RUN \
   ln -s /usr/lib/llvm-8 clang
 
 RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
+  apt-get update && \
   cd gecko-dev && \
   # This would need to be invoked twice if we hadn't installed Rust above,
   # so that `gecko-dev/python/mozboot/mozboot/base.py::ensure_rust_targets` gets called.
@@ -61,7 +66,8 @@ RUN --mount=type=bind,target=/usr/local/src/ouifennec,ro \
   rm -rf ~/.mozbuild/mozboot/ && \
   # Fix some broken permissions in Android SDK tools (and maybe others).
   # Not really needed here, but it may come in handy for non-root users.
-  chmod -R go+rX ~/.mozbuild/
+  chmod -R go+rX ~/.mozbuild/ && \
+  rm -rf /var/lib/apt/lists/*
 
 # Move all dot directories that will be receiving reusable data during the build
 # into a single directory (with symbolic links from the expected locations),
