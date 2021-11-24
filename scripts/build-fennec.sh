@@ -107,15 +107,19 @@ ABI=${ABI:-armeabi-v7a}
 case "$ABI" in
     armeabi-v7a)
         TARGET=arm-linux-androideabi
+        MIN_API=16  # oldest supported by Fennec, also min Ouinet API
         ;;
     arm64-v8a)
         TARGET=aarch64
+        MIN_API=21  # oldest 64-bit API
         ;;
     x86_64)
         TARGET=x86_64
+        MIN_API=21  # oldest 64-bit API
         ;;
     x86)
         TARGET=i686
+        MIN_API=16  # oldest supported by Fennec, also min Ouinet API
         ;;
     *)
         echo "Unknown ABI: '$ABI', valid values are armeabi-v7a, arm64-v8a, x86 and x86_64."
@@ -191,7 +195,7 @@ export MOZ_TELEMETRY_REPORTING=
 
 # Build Firefox for Android:
 ac_add_options --enable-application=mobile/android
-ac_add_options --with-android-min-sdk=16
+ac_add_options --with-android-min-sdk=${MIN_API}
 ac_add_options --target=${TARGET}
 ac_add_options --without-google-play-services
 
