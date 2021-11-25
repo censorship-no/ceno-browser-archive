@@ -40,9 +40,10 @@ RUN \
     # The version of Clang/LLVM provided by Mozilla is available from Buster Backports.
     clang-8 lld-8 llvm-8 cbindgen \
     clang-tidy-8 \
-    nasm && \
+    nasm \
     # This is only needed for the x86_64 build, used for testing.
-    yasm && \
+    yasm \
+    && \
   rm -rf /var/lib/apt/lists/*
 RUN SCCTMP=$(mktemp -d) && cd $SCCTMP && \
   wget -O sccache.tar.gz "https://github.com/mozilla/sccache/releases/download/0.2.9/sccache-0.2.9-x86_64-unknown-linux-musl.tar.gz" && \
