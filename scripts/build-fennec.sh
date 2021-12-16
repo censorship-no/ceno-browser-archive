@@ -220,6 +220,7 @@ ac_add_options --with-android-distribution-directory="${DIST_DIR}"
 ac_add_options --with-l10n-base="${L10N_DIR}"
 
 ac_add_options --disable-crashreporter
+ac_add_options --disable-updater
 # Don't build tests
 ac_add_options --disable-tests
 ac_add_options --disable-ipdl-tests
@@ -228,6 +229,13 @@ MOZCONFIG_BASE
 
     if [[ $IS_RELEASE_BUILD -eq 1 ]]; then
         echo "export MOZILLA_OFFICIAL=1" >> mozconfig-new
+        # This disables Android Strict Mode for release builds
+        # (i.e. "StrictMode policy violation" messages in the Android log),
+        # according to `org.mozilla.gecko.GeckoApp.onCreate()`.
+        # It also disables site issue reporting,
+        # according to `gecko-dev/mobile/android/extensions/moz.build`
+        # and `gecko-dev/mobile/android/locales/jar.mn`.
+        echo "ac_add_options --enable-update-channel=release" >> mozconfig-new
     fi
 
     if [ "$ABI" == armeabi-v7a -o "$ABI" == x86 -o "$ABI" == x86_64 ]; then
