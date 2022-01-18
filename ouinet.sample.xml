@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<resources>
+    <string name="ouinet_cache_http_pubkey">00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff</string>
+    <string name="ouinet_injector_credentials">user:password</string>
+    <string name="ouinet_injector_tls_cert">-----BEGIN CERTIFICATE-----\
+base_64_encoded_certificate_with_backslash_at_the_end_of_each_line\
+-----END CERTIFICATE-----</string>
+    <string name="ouinet_cache_type">bep5-http</string>
+</resources>

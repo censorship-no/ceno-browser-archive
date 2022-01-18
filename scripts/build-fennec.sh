@@ -59,7 +59,7 @@ function usage {
     echo "                                password for the signing key, on separate lines. Required."
     echo "  -o <ouinet-aar>               Filename of the ouinet library AAR file. Required."
     echo "  -r                            Make a release build."
-    echo "  -x <ouinet-config-xml>        The ouinet configuration XML file to use."
+    echo "  -x <ouinet-config-xml>        The ouinet configuration XML file to use. Required."
     echo "  -v <version-number>           Set the ouifennec version number."
     exit 1
 }
@@ -102,6 +102,7 @@ done
 [[ -z $KEYSTORE_KEY_ALIAS ]] && echo "Missing key alias" && usage
 [[ -z $KEYSTORE_PASSWORDS_FILE ]] && echo "Missing keystore password file" && usage
 [[ -z $OUINET_AAR ]] && echo "Missing ouinet AAR file" && usage
+[[ -z $OUINET_CONFIG_XML ]] && echo "Missing ouinet config xml" && usage
 
 ABI=${ABI:-armeabi-v7a}
 case "$ABI" in

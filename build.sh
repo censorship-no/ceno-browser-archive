@@ -22,13 +22,13 @@ function usage {
     echo "build.sh -- Builds ouinet and ouifennec for android"
     echo "Usage: build-fennec.sh [OPTION]..."
     echo "  -c                            Remove build files (keep downloaded dependencies)"
-    echo "  -r                            Build a release build. Requires -x, -v, -k, and -p."
+    echo "  -r                            Build a release build. Requires -v, -k, and -p."
     echo "  -d                            Build a debug build. Will optionally apply -x and -v. This is the default."
     echo "  -a <abi>                      Build for android ABI <abi>. Can be specified multiple times."
     echo "                                Supported ABIs are [${SUPPORTED_ABIS[@]}]."
     echo "                                Default for debug builds is ${DEFAULT_ABI}."
     echo "                                Default for release builds is all supported ABIs."
-    echo "  -x <ouinet-config-xml>        The ouinet configuration XML file to use."
+    echo "  -x <ouinet-config-xml>        The ouinet configuration XML file to use. Required when building."
     echo "  -v <version-number>           The version number to use on the APK."
     echo "  -k <keystore-file>            The keystore to use for signing the release APK."
     echo "                                Must contain the signing key aliased as '${RELEASE_KEYSTORE_KEY_ALIAS}'."
@@ -94,10 +94,11 @@ fi
 
 $BUILD_RELEASE || $BUILD_DEBUG || BUILD_DEBUG=true
 
+[[ -z $OUINET_CONFIG_XML ]] && echo "Missing ouinet config xml" && usage
+
 if $BUILD_RELEASE; then
-    [[ -z $OUINET_CONFIG_XML ]] && echo "Missing ouinet config xml" && usage
     [[ -z $VERSION_NUMBER ]] && echo "Missing version number" && usage
-    [[ -z $RELEASE_KEYSTORE_FILE ]] && echo "Missing keystore filexml" && usage
+    [[ -z $RELEASE_KEYSTORE_FILE ]] && echo "Missing keystore file" && usage
     [[ -z $RELEASE_KEYSTORE_PASSWORDS_FILE ]] && echo "Missing keystore password file" && usage
 fi
 
@@ -146,11 +147,7 @@ for variant in debug release; do
         OUIFENNEC_VARIANT_FLAGS=-r
     fi
 
-    if [[ -n $OUINET_CONFIG_XML ]]; then
-        OUIFENNEC_OUINET_CONFIG_XML_FLAGS="-x $(realpath ${OUINET_CONFIG_XML})"
-    else
-        OUIFENNEC_OUINET_CONFIG_XML_FLAGS=
-    fi
+    OUINET_CONFIG_XML="$(realpath ${OUINET_CONFIG_XML})"
     if [[ -n $VERSION_NUMBER ]]; then
         OUIFENNEC_VERSION_NUMBER_FLAGS="-v ${VERSION_NUMBER}"
     else
@@ -176,7 +173,7 @@ for variant in debug release; do
             -a "${KEYSTORE_KEY_ALIAS}" \
             -p "${KEYSTORE_PASSWORDS_FILE}" \
             -o "${OUINET_AAR}" \
-            ${OUIFENNEC_OUINET_CONFIG_XML_FLAGS} \
+            -x "${OUINET_CONFIG_XML}" \
             ${OUIFENNEC_VERSION_NUMBER_FLAGS} \
             ${OUIFENNEC_VARIANT_FLAGS}
         popd >/dev/null
