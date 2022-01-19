@@ -54,9 +54,7 @@ We use Weblate for continuously-updated translations. To get started, create an 
 ## 🔧 Building
 ### Developer Build
 
-The client configuration is currently hardcoded at build time and cannot be changed at run time. Building an APK with the default injector parameters in the [ouinet.xml][] client configuration file is quite pointless, but it may help you check that the build succeeds. If you want a useful configuration, copy your customized `ouinet.xml` file to the current directory and add the parameters `-x ouinet.xml` to the invocation of `build.sh`.
-
-[ouinet.xml]: https://github.com/equalitie/gecko-dev/blob/ouinet/mobile/android/app/src/main/res/values/ouinet.xml
+The client configuration is currently hardcoded at build time and cannot be changed at run time.  You may customize a copy of the provided `ouinet.sample.xml` with your values, put it in the current directory as `ouinet.xml` (conventionally), and pass it to the invocation of `build.sh` with the option `-x`.  Using `ouinet.sample.xml` as provided is quite pointless, but it may still help you check that the build succeeds.
 
 Thus you can build the APK locally with the following command:
 
