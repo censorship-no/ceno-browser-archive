@@ -142,8 +142,43 @@ Finally run (for release `v0.0.42` and ARM-only packages as an example):
 
 Go for lunch while the build compiles.
 
-### Adding language support 
-The locales that are included in the APK are defined in `scripts/build-fennec.sh`. To add support for more languages, update the `LOCALES` variable in this script. The l10n files will be downloaded from the Mozilla repo by the build script.
+### Adding support for a language
+
+CENO localization (l10n) is based on Mozilla repositories from <https://hg.mozilla.org/l10n-central/>. For a given `$LOCALE` (like `my` for generic Burmese or `zh-CN` for China's Chinese), we mirror its Mercurial repo to Git and create a `ceno` branch with CENO-specific changes, then use it as a submodule in `ceno-browser`.
+
+```
+$ apt-get install git-remote-hg
+$ git clone "hg::https://hg.mozilla.org/l10n-central/$LOCALE" mozilla-l10n-$LOCALE,censorship-no
+$ cd mozilla-l10n-$LOCALE,censorship-no
+$ git remote rename origin upstream
+```
+
+Now a GitHub mirror repository `https://github.com/censorship-no/mozilla-l10n-$LOCALE` is created empty and all commits pushed to it:
+
+```
+$ git remote add origin "git@github.com:censorship-no/mozilla-l10n-$LOCALE.git"
+$ git push --set-upstream origin
+```
+
+A commit in the repo must be found which contains adequate translations for `gecko-dev`. As a rule of thumb for Fennec ESR68, look for a commit like "Remove obsolete strings and reformat files" from Francesco Lodolo around 2020-08-15, and choose the previous one. Let `$BASE_COMMIT` be the Git hash of that commit, then it is used as a base for the `ceno` branch:
+
+```
+$ git checkout "$BASE_COMMIT"
+$ git checkout -b ceno
+$ git push --set-upstream origin ceno
+```
+
+Then the default branch of the GitHub repo is switched to `ceno`. Further CENO-specific changes must be pushed to that branch.
+
+To add the language to `ceno-browser`:
+
+```
+$ cd /path/to/ceno-browser/mozilla-l10n
+$ git submodule add "https://github.com/censorship-no/mozilla-l10n-$LOCALE.git" "$LOCALE"
+$ git commit ...
+```
+
+The release build (not the debug one) will include the new language.
 
 ## ❌ Uninstalling 
 
