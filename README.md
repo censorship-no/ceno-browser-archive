@@ -157,7 +157,7 @@ Now a GitHub mirror repository `https://github.com/censorship-no/mozilla-l10n-$L
 
 ```
 $ git remote add origin "git@github.com:censorship-no/mozilla-l10n-$LOCALE.git"
-$ git push --set-upstream origin
+$ git push --mirror --set-upstream origin
 ```
 
 A commit in the repo must be found which contains adequate translations for `gecko-dev`. As a rule of thumb for Fennec ESR68, look for a commit like "Remove obsolete strings and reformat files" from Francesco Lodolo around 2020-08-15, and choose the previous one. Let `$BASE_COMMIT` be the Git hash of that commit, then it is used as a base for the `ceno` branch:
