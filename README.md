@@ -2,7 +2,7 @@
 
 [![pipeline status](https://gitlab.com/censorship-no/ceno-browser/badges/master/pipeline.svg)](https://gitlab.com/censorship-no/ceno-browser/commits/master)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/censorship-no/ceno-browser)](https://github.com/censorship-no/ceno-browser/releases/latest)
-[![GitHub](https://img.shields.io/github/license/censorship-no/ceno-browser)](https://github.com/censorship-no/ceno-browser/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 [![Weblate](https://hosted.weblate.org/widgets/censorship-no/-/android-strings/svg-badge.svg)](https://hosted.weblate.org/projects/censorship-no/android-strings/)
 
 CENO (Censorship.No!) is a mobile web browser, built on Mozilla's Firefox for Android (Fennec). It uses peer-to-peer technology to deliver websites to your phone and caches popular content with cooperating peers. CENO can be used to bypass Internet censorship and help others retrieve blocked pages.
