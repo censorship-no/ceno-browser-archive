@@ -59,7 +59,7 @@ function usage {
     echo "  -p <keystore-password-file>   The password file containing passwords to unlock the keystore file."
     echo "                                Must contain the password for the keystore, followed by the"
     echo "                                password for the signing key, on separate lines. Required."
-    echo "  -o <ouinet-aar>               Filename of the ouinet library AAR file. Required."
+    echo "  -o <ouinet-aar>               Filename of the ouinet library AAR file."
     echo "  -r                            Make a release build."
     echo "  -x <ouinet-config-xml>        The ouinet configuration XML file to use. Required."
     echo "  -v <version-number>           Set the ouifennec version number."
@@ -81,7 +81,6 @@ while getopts k:a:p:o:rx:v: option; do
             KEYSTORE_PASSWORDS_FILE="${OPTARG}"
             ;;
         o)
-            [[ -n $OUINET_AAR ]] && usage
             OUINET_AAR="${OPTARG}"
             ;;
         r)
@@ -103,7 +102,6 @@ done
 [[ -z $KEYSTORE_FILE ]] && echo "Missing keystore file" && usage
 [[ -z $KEYSTORE_KEY_ALIAS ]] && echo "Missing key alias" && usage
 [[ -z $KEYSTORE_PASSWORDS_FILE ]] && echo "Missing keystore password file" && usage
-[[ -z $OUINET_AAR ]] && echo "Missing ouinet AAR file" && usage
 [[ -z $OUINET_CONFIG_XML ]] && echo "Missing ouinet config xml" && usage
 
 ABI=${ABI:-armeabi-v7a}
