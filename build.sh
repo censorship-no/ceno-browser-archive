@@ -6,6 +6,7 @@ BUILD_DIR=$(pwd)
 SOURCE_DIR=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
 
 SUPPORTED_ABIS=(armeabi-v7a arm64-v8a x86 x86_64)
+RELEASE_DEFAULT_ABIS=(armeabi-v7a arm64-v8a)
 DEFAULT_ABI=armeabi-v7a
 RELEASE_KEYSTORE_KEY_ALIAS=upload
 
@@ -104,7 +105,7 @@ fi
 
 if [[ ${#ABIS[@]} -eq 0 ]]; then
     if $BUILD_RELEASE; then
-        ABIS=${SUPPORTED_ABIS[@]}
+        ABIS=${RELEASE_DEFAULT_ABIS[@]}
     else
         ABIS=($DEFAULT_ABI)
     fi
