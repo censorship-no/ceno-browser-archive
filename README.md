@@ -62,6 +62,18 @@ Thus you can build the APK locally with the following command:
 ./build.sh -x ouinet.xml
 ```
 
+By default, the latest version of the Ouinet library is automatically downloaded from Maven Central repository and used for building CENO Browser. You can also specify a different Ouinet version by setting `OUINET_VERSION` as follows:
+
+```bash
+OUINET_VERSION=0.20.0 ./build.sh -x ouinet.xml
+```
+
+You can also build Ouinet locally as part of the CENO Browser build process by using the option `-o` and specifying the target ABIs with the `-a` flag:
+
+```bash
+./build.sh -a armeabi-v7a -x ouinet.xml -o
+```
+
 ### Docker Build
 
 This only needs to be run when the Fennec code base is upgraded:
