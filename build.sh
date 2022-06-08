@@ -178,7 +178,7 @@ for variant in debug release; do
         OUIFENNEC_BUILD_DIR="${BUILD_DIR}/fennec"
         mkdir -p "${OUIFENNEC_BUILD_DIR}"
         pushd "${OUIFENNEC_BUILD_DIR}" >/dev/null
-        ABI=${ABI} "${SOURCE_DIR}"/scripts/build-fennec.sh \
+        ABI=${ABI} OUINET_VERSION=${OUINET_VERSION} "${SOURCE_DIR}"/scripts/build-fennec.sh \
             -k "${KEYSTORE_FILE}" \
             -a "${KEYSTORE_KEY_ALIAS}" \
             -p "${KEYSTORE_PASSWORDS_FILE}" \
