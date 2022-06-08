@@ -260,10 +260,16 @@ MOZCONFIG_BASE
     fi
 
     export MOZCONFIG="${ABI_BUILD_DIR}/mozconfig"
-    export OUINET_ABI="${ABI}"
+
     if [[ -n $OUINET_AAR ]]; then
       export OUINET_BUILDDIR=$(dirname $(realpath "${OUINET_AAR}"))
       export OUINET_LIBRARY=$(basename "${OUINET_AAR}" .aar)
+    else
+      if [[ -z $OUINET_VERSION ]]; then
+          OUINET_VERSION="$(<../ouinet/version.txt)"
+      fi
+      export OUINET_VERSION
+      export OUINET_ABI="${ABI}"
     fi
 }
 
