@@ -140,7 +140,7 @@ Before building, it is strongly recommended that you *clean previous build files
 
  2. Create a `ouinet.xml` file with the *Ouinet client configuration* that will be embedded in CENO.
 
- 3. Choose a set of *target architectures* to build packages for. Currently supported ones are: `armeabi-v7a` (ARM 32 bit), `arm64-v8a` (ARM 64 bit), `x86` (Intel 32 bit), `x86_64` (Intel 64 bit). If none is selected, all of them will be built.
+ 3. Choose a set of *target architectures* to build packages for. Currently supported ones are: `armeabi-v7a` (ARM 32 bit), `arm64-v8a` (ARM 64 bit), `x86` (Intel 32 bit), `x86_64` (Intel 64 bit). If none is selected, `armeabi-v7a` and `arm64-v8a` will be built.
 
  4. Get the *upload keystore file* and store it in `upload-keystore.jks`. Create a file `upload-keystore.pass` that contains the keystore password on the first line and key password on the second line. Please remember to keep these files private (you may also want to delete them after the build).
 
