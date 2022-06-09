@@ -6,12 +6,15 @@ BUILD_DIR=$(pwd)
 SOURCE_DIR=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
 
 SUPPORTED_ABIS=(armeabi-v7a arm64-v8a x86 x86_64)
+RELEASE_DEFAULT_ABIS=(armeabi-v7a arm64-v8a)
 DEFAULT_ABI=armeabi-v7a
 RELEASE_KEYSTORE_KEY_ALIAS=upload
 
 CLEAN=false
 BUILD_RELEASE=false
 BUILD_DEBUG=false
+BUILD_OUINET=false
+
 ABIS=()
 OUINET_CONFIG_XML=
 VERSION_NUMBER=
@@ -24,6 +27,7 @@ function usage {
     echo "  -c                            Remove build files (keep downloaded dependencies)"
     echo "  -r                            Build a release build. Requires -v, -k, and -p."
     echo "  -d                            Build a debug build. Will optionally apply -x and -v. This is the default."
+    echo "  -o                            Build ouinet from sources and pass the resulting AAR to build-fennec."
     echo "  -a <abi>                      Build for android ABI <abi>. Can be specified multiple times."
     echo "                                Supported ABIs are [${SUPPORTED_ABIS[@]}]."
     echo "                                Default for debug builds is ${DEFAULT_ABI}."
@@ -38,7 +42,7 @@ function usage {
     exit 1
 }
 
-while getopts crda:x:v:k:p: option; do
+while getopts crdoa:x:v:k:p: option; do
     case "$option" in
         c)
             CLEAN=true
@@ -48,6 +52,9 @@ while getopts crda:x:v:k:p: option; do
             ;;
         d)
             BUILD_DEBUG=true
+            ;;
+        o)
+            BUILD_OUINET=true
             ;;
         a)
             supported=false
@@ -104,7 +111,7 @@ fi
 
 if [[ ${#ABIS[@]} -eq 0 ]]; then
     if $BUILD_RELEASE; then
-        ABIS=${SUPPORTED_ABIS[@]}
+        ABIS=${RELEASE_DEFAULT_ABIS[@]}
     else
         ABIS=($DEFAULT_ABI)
     fi
@@ -155,25 +162,28 @@ for variant in debug release; do
     fi
 
     for ABI in ${ABIS[@]}; do
-        OUINET_BUILD_DIR="${BUILD_DIR}/ouinet-${ABI}-${variant}"
-        mkdir -p "${OUINET_BUILD_DIR}"
-        pushd "${OUINET_BUILD_DIR}" >/dev/null
-        ABI=${ABI} "${SOURCE_DIR}"/ouinet/scripts/build-android.sh ${OUINET_VARIANT_FLAGS}
-        popd >/dev/null
+        if $BUILD_OUINET; then
+            OUINET_BUILD_DIR="${BUILD_DIR}/ouinet-${ABI}-${variant}"
+            mkdir -p "${OUINET_BUILD_DIR}"
+            pushd "${OUINET_BUILD_DIR}" >/dev/null
+            ABI=${ABI} "${SOURCE_DIR}"/ouinet/scripts/build-android.sh ${OUINET_VARIANT_FLAGS}
+            popd >/dev/null
 
-        OUINET_AAR_BUILT="${OUINET_BUILD_DIR}"/build-android-${ABI}-${variant}/ouinet/outputs/aar/ouinet-${variant}.aar
-        OUINET_AAR="$(realpath ${BUILD_DIR}/ouinet-${ABI}-${variant}-${DATE}.aar)"
-        cp "${OUINET_AAR_BUILT}" "${OUINET_AAR}"
+            OUINET_AAR_BUILT="${OUINET_BUILD_DIR}"/build-android-${ABI}-${variant}/ouinet/outputs/aar/ouinet-${variant}.aar
+            OUINET_AAR="$(realpath ${BUILD_DIR}/ouinet-${ABI}-${variant}-${DATE}.aar)"
+            cp "${OUINET_AAR_BUILT}" "${OUINET_AAR}"
+            OUINET_AAR_BUILT_PARAMS="-o ${OUINET_AAR}"
+        fi
 
         OUIFENNEC_BUILD_DIR="${BUILD_DIR}/fennec"
         mkdir -p "${OUIFENNEC_BUILD_DIR}"
         pushd "${OUIFENNEC_BUILD_DIR}" >/dev/null
-        ABI=${ABI} "${SOURCE_DIR}"/scripts/build-fennec.sh \
+        ABI=${ABI} OUINET_VERSION=${OUINET_VERSION} "${SOURCE_DIR}"/scripts/build-fennec.sh \
             -k "${KEYSTORE_FILE}" \
             -a "${KEYSTORE_KEY_ALIAS}" \
             -p "${KEYSTORE_PASSWORDS_FILE}" \
-            -o "${OUINET_AAR}" \
             -x "${OUINET_CONFIG_XML}" \
+            ${OUINET_AAR_BUILT_PARAMS} \
             ${OUIFENNEC_VERSION_NUMBER_FLAGS} \
             ${OUIFENNEC_VARIANT_FLAGS}
         popd >/dev/null

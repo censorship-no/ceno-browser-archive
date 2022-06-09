@@ -62,6 +62,18 @@ Thus you can build the APK locally with the following command:
 ./build.sh -x ouinet.xml
 ```
 
+By default, the latest version of the Ouinet library is automatically downloaded from Maven Central repository and used for building CENO Browser. You can also specify a different Ouinet version by setting `OUINET_VERSION` as follows:
+
+```bash
+OUINET_VERSION=0.20.0 ./build.sh -x ouinet.xml
+```
+
+You can also build Ouinet locally as part of the CENO Browser build process by using the option `-o` and specifying the target ABIs with the `-a` flag:
+
+```bash
+./build.sh -a armeabi-v7a -x ouinet.xml -o
+```
+
 ### Docker Build
 
 This only needs to be run when the Fennec code base is upgraded:
@@ -128,7 +140,7 @@ Before building, it is strongly recommended that you *clean previous build files
 
  2. Create a `ouinet.xml` file with the *Ouinet client configuration* that will be embedded in CENO.
 
- 3. Choose a set of *target architectures* to build packages for. Currently supported ones are: `armeabi-v7a` (ARM 32 bit), `arm64-v8a` (ARM 64 bit), `x86` (Intel 32 bit), `x86_64` (Intel 64 bit). If none is selected, all of them will be built.
+ 3. Choose a set of *target architectures* to build packages for. Currently supported ones are: `armeabi-v7a` (ARM 32 bit), `arm64-v8a` (ARM 64 bit), `x86` (Intel 32 bit), `x86_64` (Intel 64 bit). If none is selected, `armeabi-v7a` and `arm64-v8a` will be built.
 
  4. Get the *upload keystore file* and store it in `upload-keystore.jks`. Create a file `upload-keystore.pass` that contains the keystore password on the first line and key password on the second line. Please remember to keep these files private (you may also want to delete them after the build).
 
