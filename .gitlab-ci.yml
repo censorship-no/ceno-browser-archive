@@ -50,7 +50,7 @@ build:
       --mount type=bind,source="$(pwd)",target=/usr/local/src/ouifennec
       --mount type=bind,source="$(pwd)/_cache",target=/root/.cache
       $CI_REGISTRY_IMAGE:bootstrap-$USER
-      ./build.sh ${OUINET_VALUES_XML:+-x ouinet.xml}
+      ./build.sh ${OUINET_VALUES_XML:+-x ouinet.xml} -o
   artifacts:
     paths:
       - "*.aar"
