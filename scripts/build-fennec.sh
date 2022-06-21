@@ -282,6 +282,9 @@ function build_fennec {
 function package_fennec {
     pushd "${ABI_BUILD_DIR}" >/dev/null
     "${SOURCE_DIR_RW}"/${MOZ_DIR}/mach package
+    # If this condition is forced to be true (e.g. `if true || [ $IS_RELEASE_...`),
+    # the debug build will eventually fail, but the `multi.android` APK below will be created
+    # and it can be used to test locale-specific features.
     if [ $IS_RELEASE_BUILD -eq 1 ]; then
         "${SOURCE_DIR_RW}"/${MOZ_DIR}/mach package-multi-locale --locales ${LOCALES}
         "${SOURCE_DIR_RW}"/${MOZ_DIR}/mach gradle app:assembleWithGeckoBinariesRelease
