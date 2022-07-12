@@ -118,7 +118,7 @@ sudo docker run \
   ./build.sh [BUILD_OPTION]...
 ```
 
-The resulting AAR libraries and APK packages will be eventually left at the current directory.
+The resulting APK packages will be eventually left at the current directory. If you chose to build Ouinet with the `-o` option, the AAR libraries will be left there too.
 
 You can run the last command several times: already built artifacts and cached data will be kept in the `fennec` build and `_cache` directories and reused in subsequent builds. Shall you need to build a new version of the source, you may erase the whole `fennec` build directory, while keeping the `_cache` directory should be safe. If you are asked for a `root` password after the container starts, the `fennec/.finished-bootstrap` may be missing; if it is not, please file a bug.
 
@@ -132,7 +132,7 @@ If you want to reuse the container itself, remove the `--rm` option and `./build
 
 > **Note:** The instructions below must be done at the source directory. Invocations to `./build.sh` may be direct or via the Docker container as explained above.
 
-Before building, it is strongly recommended that you *clean previous build files* by running `./build.sh -c` (otherwise the resulting packages may break in subtle ways). This will also remove APK and AAR files in the current directory. If you want to keep these files, please *back them up* elsewhere first.
+Before building, it is strongly recommended that you *clean previous build files* by running `./build.sh -c` (otherwise the resulting packages may break in subtle ways). This will also remove any APK and AAR files in the current directory. If you want to keep these files, please *back them up* elsewhere first.
 
 > **Note:** If you use the Docker container and you cleaned the build files, remember to `touch fennec/.finished-bootstrap` again as explained above before proceeding.
 
