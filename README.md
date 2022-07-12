@@ -192,6 +192,12 @@ $ git commit ...
 
 The release build (not the debug one) will include the new language.
 
+### Configuring BitTorrent bootstrap servers
+
+If you want to harden your CENO Browser build against the blocking of BitTorrent bootstrap servers (no relation with the Docker bootstrap image!), you may use the `ouinet_bt_bootstrap_extras` string in the client configuration `ouinet.xml` file. Just make it a space-separated string of `HOST` or `HOST:PORT` bootstrap servers, where `HOST` may be a host name, an IPv4 address, or a bracketed IPv6 address.
+
+If you want to use specific bootstraps for a specific country, add a `ouinet_bt_bootstrap_extras_XX` string to `ouinet.xml`, where `XX` is the ISO 3166-1 alpha-2 code for the country (like `US` for the United States or `FR` for France). If there is no such country-specific string for the user's locale, CENO will revert to the generic `ouinet_bt_bootstrap_extras`.
+
 ## ❌ Uninstalling
 
 **Uninstall using `adb`**
