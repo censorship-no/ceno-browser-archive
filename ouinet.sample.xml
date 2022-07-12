@@ -11,4 +11,7 @@ base_64_encoded_certificate_with_backslash_at_the_end_of_each_line\
 -----END CERTIFICATE-----</string>
     <string name="ouinet_cache_type">bep5-http</string>
     <string name="ouinet_bt_bootstrap_extras">HOST1 HOST2:PORT ...</string>
+    <string name="ouinet_bt_bootstrap_extras_XX">HOST1_COUNTRY_XX ...</string>
+    <string name="ouinet_bt_bootstrap_extras_XY">HOST1_COUNTRY_XY ...</string>
+    <string name="ouinet_bt_bootstrap_extras_XZ">HOST1_COUNTRY_XZ ...</string>
 </resources>
