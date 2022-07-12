@@ -15,22 +15,22 @@ CENO (Censorship.No!) is a mobile web browser, built on Mozilla's Firefox for An
 [<img src="https://github.com/censorship-no/ceno-browser/blob/master/paskoocheh_badge.png"
       alt="Get it on Paskoocheh"
       height="80">](https://paskoocheh.com/tools/124/android.html?utm_source=UpdatePage)
-      
+
 ## 🚀 Features
 
-🌴 **Browse freely, anytime.**<br>
+🌴 **Browse freely, anytime.**  
 CENO is designed with internet shutdown scenarios in mind. Websites are shared by a global network of peers, and stored in a distributed cache for availability when traditional networks are blocked or go down.
 
-🔓 **Unlock the web.**<br>
+🔓 **Unlock the web.**  
 Access any website. Frequently requested content is cached on the network and cannot be forcibly removed.
 
-💲 **Reduce Data Costs.**<br>
+💲 **Reduce Data Costs.**  
 By routing user traffic through peer-to-peer networks, CENO Browser incurs less data costs while still providing users with circumvention capability.
 
-🌐 **Grow the Network, Fight Censorship.**<br>
+🌐 **Grow the Network, Fight Censorship.**  
 Fight censorship by becoming a bridge! Install and run CENO Browser to instantly join the network and expand the availability of blocked websites to those in censored countries.
 
-👐 **Free and open source.**<br>
+👐 **Free and open source.**  
 CENO Browser is powered by Ouinet, an open source library enabling third party developers to incorporate the CENO network into their apps for peer-to-peer connectivity.
 
 ## 👪 Contributing!
@@ -41,7 +41,7 @@ Here are some ways to help CENO Browser improve:
 * Report issues in the [issue tracker](https://github.com/censorship-no/ceno-browser/issues)
 * Create a [Pull Request](https://opensource.guide/how-to-contribute/#opening-a-pull-request)
 * Help increasing the test coverage by contributing unit tests
-* Translate the app on [Weblate](https://hosted.weblate.org/projects/censorship-no/) 
+* Translate the app on [Weblate](https://hosted.weblate.org/projects/censorship-no/)
 
 ### ➿ Translations
 Translation support is needed for:
@@ -192,7 +192,7 @@ $ git commit ...
 
 The release build (not the debug one) will include the new language.
 
-## ❌ Uninstalling 
+## ❌ Uninstalling
 
 **Uninstall using `adb`**
 
